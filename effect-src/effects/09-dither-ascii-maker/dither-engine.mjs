@@ -628,7 +628,15 @@ export function createDitherPipeline({
             ctx.fillStyle = fill
             lastFill = fill
           }
-          ctx.fillText(ch, x * cw, y * cs)
+          const px = x * cw, py = y * cs
+          const dx = px - (s.cursorX ?? -10000), dy = py - (s.cursorY ?? -10000)
+          const distance = Math.hypot(dx, dy)
+          const influence = Math.exp(-distance * distance / (2 * 105 * 105)) * (s.cursorStrength || 0)
+          const ripple = Math.sin(distance * 0.065 - t * 5) * influence * 7
+          const push = influence * 20 + ripple
+          const ox = distance > 0 ? dx / distance * push : 0
+          const oy = distance > 0 ? dy / distance * push : 0
+          ctx.fillText(ch, px + ox, py + oy)
         }
       }
       lines.push(line)

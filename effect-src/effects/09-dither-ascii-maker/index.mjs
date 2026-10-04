@@ -240,6 +240,17 @@ export async function mount(host, initial = {}) {
     if (canvas.width !== fitted[0]) canvas.width = fitted[0]
     if (canvas.height !== fitted[1]) canvas.height = fitted[1]
   }
+  let cursorTarget = { x: -2, y: -2 }, cursor = { x: -2, y: -2 }, cursorActive = 0, targetActive = 0
+  const interactionArea = host.closest('.portrait-hero') || host
+  const cursorMove = (event) => {
+    const box = host.getBoundingClientRect()
+    cursorTarget = { x: (event.clientX - box.left) / box.width, y: (event.clientY - box.top) / box.height }
+    if (!targetActive) cursor = { ...cursorTarget }
+    targetActive = 1
+  }
+  const cursorLeave = () => { targetActive = 0 }
+  interactionArea.addEventListener('pointermove', cursorMove)
+  interactionArea.addEventListener('pointerleave', cursorLeave)
   const draw = () => {
     if (disposed) return
     const selectedSource = state.source === "sample" ? null : source
@@ -253,6 +264,12 @@ export async function mount(host, initial = {}) {
     context.fillStyle = state.paper
     context.fillRect(0, 0, canvas.width, canvas.height)
     const cropped = cropSource(document, picture, state, canvas.width, canvas.height)
+    cursor.x += (cursorTarget.x - cursor.x) * 0.16
+    cursor.y += (cursorTarget.y - cursor.y) * 0.16
+    cursorActive += (targetActive - cursorActive) * 0.12
+    state.cursorX = cursor.x * canvas.width
+    state.cursorY = cursor.y * canvas.height
+    state.cursorStrength = motion.matches ? 0 : cursorActive
     renderer.pipeline(context, cropped, canvas.width, canvas.height, state, 1, state.time)
     if (compare) {
       compare.original.width = canvas.width
@@ -526,6 +543,8 @@ export async function mount(host, initial = {}) {
       observer?.disconnect()
       releaseVideo(video)
       video = null
+      interactionArea.removeEventListener('pointermove', cursorMove)
+      interactionArea.removeEventListener('pointerleave', cursorLeave)
       root.remove()
     },
   }

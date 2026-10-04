@@ -241,7 +241,7 @@ export async function mount(host, initial = {}) {
     if (canvas.height !== fitted[1]) canvas.height = fitted[1]
   }
   let cursorTarget = { x: -2, y: -2 }, cursor = { x: -2, y: -2 }, cursorActive = 0, targetActive = 0
-  const interactionArea = host.closest('.portrait-hero') || host
+  const interactionArea = document.documentElement
   const cursorMove = (event) => {
     const box = host.getBoundingClientRect()
     cursorTarget = { x: (event.clientX - box.left) / box.width, y: (event.clientY - box.top) / box.height }

@@ -23,9 +23,9 @@ const button=document.querySelector('.motion-toggle'),host=document.getElementBy
 try {
  const settings=await (await fetch('./ascii-config.json')).json();
  const effect=await mount(host,settings);
- let playing=false; host.hidden=true; await effect.update({settings:{playing:false}});
- const label=()=>{button.textContent=playing?'Hide ASCII background':'Show ASCII background';button.setAttribute('aria-pressed',String(playing));};label();
- button.addEventListener('click',async()=>{playing=!playing;host.hidden=!playing;await effect.update({settings:{playing}});playing=effect.snapshot().playback.playing;label();});
+ let playing=!matchMedia("(prefers-reduced-motion: reduce)").matches; host.hidden=false; await effect.update({settings:{playing}});
+ const label=()=>{button.textContent=!host.hidden?'Hide ASCII background':'Show ASCII background';button.setAttribute('aria-pressed',String(playing));};label();
+ button.addEventListener('click',async()=>{host.hidden=!host.hidden;playing=!host.hidden&&!matchMedia('(prefers-reduced-motion: reduce)').matches;await effect.update({settings:{playing}});playing=effect.snapshot().playback.playing;label();});
  const observer=new IntersectionObserver(([e])=>effect.update({settings:{playing:playing&&e.isIntersecting}}),{threshold:0});observer.observe(host);
  window.addEventListener('pagehide',()=>{observer.disconnect();effect.dispose();},{once:true});
 } catch(error){button.hidden=true;console.error('ASCII background could not load',error);}

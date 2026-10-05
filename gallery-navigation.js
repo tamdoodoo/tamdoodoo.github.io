@@ -38,7 +38,7 @@ if (gallery) {
       button.setAttribute('aria-label', `View image ${index + 1} of ${figures.length}`);
       button.setAttribute('aria-controls', figure.id);
       const source = figure.querySelector('img');
-      if (source) { const image = document.createElement('img'); image.src = source.currentSrc || source.src; image.alt = ''; image.loading = 'lazy'; button.append(image); }
+      if (source) { const image = document.createElement('img'); image.src = figure.dataset.thumbnail || source.currentSrc || source.src; image.alt = ''; image.loading = 'lazy'; button.append(image); }
       else button.textContent = String(index + 1).padStart(2, '0');
       button.addEventListener('click', () => figure.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}));
       track.append(button);

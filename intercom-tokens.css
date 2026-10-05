@@ -16,8 +16,8 @@
 
   /* Typography — Font Families */
   --font-saans: 'dm-sans-36pt', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-saansmono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-serrif: 'Newsreader', Georgia, serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-saansmono: "dm-sans-36pt", sans-serif;
+  --font-serrif: "dm-sans-36pt", sans-serif;
   --font-mediumll: 'dm-sans-36pt', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */

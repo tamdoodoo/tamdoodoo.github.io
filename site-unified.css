@@ -1,0 +1,9 @@
+/* One typeface across all portfolio content and controls. */
+body,body *{font-family:"dm-sans-36pt",sans-serif!important}
+/* Both headers share the same column tracks, top alignment and navigation rhythm. */
+.portrait-header,body:has(.gallery) header{align-items:start}
+.portrait-header nav,body:has(.gallery) header nav{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;font-size:18px;line-height:1.4;margin:0;padding:0;align-self:start}
+@media(max-width:760px){
+.portrait-header,body:has(.gallery) header{grid-template-columns:1fr;grid-template-rows:56px auto;gap:16px;padding-top:24px;padding-bottom:24px}
+.portrait-header nav,body:has(.gallery) header nav{grid-column:1;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));font-size:16px}
+}

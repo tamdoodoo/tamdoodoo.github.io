@@ -18,7 +18,7 @@ if (gallery) {
     figures.forEach((figure, index) => {
       const rect = figure.getBoundingClientRect();
       const d = rect.top > line ? rect.top - line : rect.bottom < line ? line - rect.bottom : 0;
-      if (d < distance) { closest = index; distance = d; }
+      if (d <= distance) { closest = index; distance = d; }
     });
     if (!figures.length || active === closest) return;
     active = closest;
@@ -40,7 +40,7 @@ if (gallery) {
       const source = figure.querySelector('img');
       if (source) { const image = document.createElement('img'); image.src = figure.dataset.thumbnail || source.currentSrc || source.src; image.alt = ''; image.loading = 'lazy'; button.append(image); }
       else button.textContent = String(index + 1).padStart(2, '0');
-      button.addEventListener('click', () => figure.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}));
+      button.addEventListener('click', () => (figure.previousElementSibling?.classList.contains('motion-anchor') ? figure.previousElementSibling : figure).scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}));
       track.append(button);
       return button;
     });

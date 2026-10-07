@@ -42,7 +42,7 @@ if (gallery) {
       const thumb = figure.dataset.thumbnail || source?.currentSrc || source?.src || figure.querySelector('video')?.poster;
       if (thumb) { const image = document.createElement('img'); image.src = thumb; image.alt = ''; image.loading = 'lazy'; button.append(image); }
       else button.textContent = String(index + 1).padStart(2, '0');
-      button.addEventListener('click', () => { const target = figure.previousElementSibling?.classList.contains('motion-anchor') ? figure.previousElementSibling : figure; window.lenis ? window.lenis.scrollTo(target) : target.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}); });
+      button.addEventListener('click', () => { const target = figure.previousElementSibling?.classList.contains('motion-anchor') ? figure.previousElementSibling : figure; window.lenis ? window.lenis.scrollTo(target, {offset: -((document.querySelector('body > header')?.offsetHeight || 0) + 24)}) : target.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}); });
       track.append(button);
       return button;
     });

@@ -17,7 +17,7 @@ aside.info>h1{margin:0;font-size:40px;line-height:1.2;font-weight:400;letter-spa
 
 /* Showcase */
 .gallery{grid-column:7/-1} /* images run to the right edge of the grid */
-.gallery>figure{margin:0 0 64px}
+.gallery>figure{margin:0 0 96px} /* one gap for every showcase item on every case study */
 .gallery>figure>figcaption{padding-top:10px;font-size:12px;color:#888}
 .gallery>.case-story{margin-top:64px}
 
@@ -48,3 +48,9 @@ aside.info>h1{margin:0;font-size:40px;line-height:1.2;font-weight:400;letter-spa
 /* Header: smaller "Tam Do" so the header matches the homepage's pinned bar (70px tall) */
 body:has(.gallery) header{padding-top:18px;padding-bottom:18px;align-items:center}
 body:has(.gallery) header .name{font-size:28px;line-height:34px;letter-spacing:-.8px}
+
+/* Pinned nav bar on case studies, matching the homepage's: stays at the top while scrolling */
+body:has(.gallery) header{position:sticky;top:0;z-index:40;background:var(--paper,#faf9f6)}
+body:has(.gallery) .info{top:calc(70px + 32px)}                       /* info column stops below the bar */
+body:has(.gallery) .gallery>figure{scroll-margin-top:calc(70px + 24px)} /* thumbnail jumps land below the bar */
+@media(max-width:760px){body:has(.gallery) header{padding-top:14px;padding-bottom:14px}}

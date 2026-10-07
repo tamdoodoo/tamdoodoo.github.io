@@ -29,4 +29,4 @@ try {
  const observer=new IntersectionObserver(([e])=>effect.update({settings:{playing:playing&&e.isIntersecting}}),{threshold:0});observer.observe(host);
  window.addEventListener('pagehide',()=>{observer.disconnect();effect.dispose();},{once:true});
 } catch(error){button.hidden=true;console.error('ASCII background could not load',error);}
-</script><script>function updateClock(){document.getElementById("local-clock").textContent="HCM, "+new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Ho_Chi_Minh",hour:"2-digit",minute:"2-digit"}).format(new Date())}updateClock();setInterval(updateClock,60000)</script><script type="module" src="/site-motion.js?v=23"></script></body></html>
+</script><script>function updateClock(){document.getElementById("local-clock").textContent="HCM, "+new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Ho_Chi_Minh",hour:"2-digit",minute:"2-digit"}).format(new Date())}updateClock();setInterval(updateClock,60000)</script><script type="module" src="/site-motion.js?v=24"></script></body></html>

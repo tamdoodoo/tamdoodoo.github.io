@@ -176,7 +176,7 @@ if (bar && topMenu) {
 }
 
 // Portrait intro: same language as the link hover — blue block glyphs (░▒▓█▚▞▖▗▘▝) that reshuffle,
-// then resolve column by column, left to right, into the photo.
+// then the whole portrait cross-fades into the photo.
 const portrait = document.querySelector('.portrait-photo');
 if (portrait && root.classList.contains('has-motion')) {
   const photo = portrait.querySelector('img');
@@ -215,13 +215,13 @@ if (portrait && root.classList.contains('has-motion')) {
       [(x, y) => ctx.fillRect(x, y, CS, CS)],                                    // █
     ];
     const hash = (a, b, c) => { const v = Math.sin(a * 127.1 + b * 311.7 + c * 74.7) * 43758.5453; return v - Math.floor(v); };
-    const DURATION = 1600, STEP = 70, FEATHER = .08, start = performance.now();
+    const DURATION = 1600, STEP = 70, start = performance.now();
     const frame = now => {
       const elapsed = now - start, t = Math.min(1, elapsed / DURATION), seed = Math.floor(elapsed / STEP);
       ctx.globalAlpha = 1; ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
+      // the whole portrait resolves together (no sweep): glyphs shuffle, then cross-fade into the photo
+      const m = Math.min(1, Math.max(0, (t - 0.45) / 0.55)), a = m * m * (3 - 2 * m);
       for (let cx = 0; cx < cols; cx++) {
-        // like the link text: column x resolves once t passes 0.3 + 0.7·(x / cols), with a soft edge
-        const a = Math.min(1, Math.max(0, (t - (0.3 + 0.7 * cx / cols)) / FEATHER));
         const x = cx * CS;
         if (a < 1) {
           ctx.globalAlpha = 1; ctx.fillStyle = INK;

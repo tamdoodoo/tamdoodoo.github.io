@@ -63,14 +63,16 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const DURATION = 1000; // full resolve
   const STEP = 70;       // how often the blocks reshuffle
   const TARGETS = '.portrait-header nav a, body > header nav a, body > header .name, .site-bar .name, .site-bar nav a, .case-link, footer a, .bottom a, .contact a, .motion-toggle .toggle-label';
+  const segmenter = typeof Intl.Segmenter === 'function' ? new Intl.Segmenter() : null;
+  const splitGraphemes = str => segmenter ? Array.from(segmenter.segment(str), s => s.segment) : [...str];
   document.querySelectorAll(TARGETS).forEach(el => {
-    let frame = 0, label = null, text = '', cells = [];
+    let frame = 0, label = null, text = '', chars = [], cells = [];
     // Never swap DOM nodes while the pointer may be pressing them: a click only registers if the element
     // under the cursor survives from mousedown to mouseup. So the animation settles in place, and the
     // per-letter cells are only unwrapped back to plain text once the pointer has left.
     const settle = () => {
       cancelAnimationFrame(frame);
-      cells.forEach((c, i) => { c.textContent = [...text][i]; });
+      cells.forEach((c, i) => { c.textContent = chars[i]; });
     };
     const unwrap = () => {
       settle();
@@ -83,6 +85,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       if (!label?.isConnected) {
         cells = [];
         text = el.textContent.trim();
+        chars = splitGraphemes(text); // keeps e.g. an arrow and its text-style marker (↗︎) together
         label = document.createElement('span');
         label.className = 'dither-text';
         label.setAttribute('aria-hidden', 'true');
@@ -96,7 +99,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const box = label.getBoundingClientRect();
         label.style.width = `${box.width}px`;
         label.style.height = `${box.height}px`;
-        cells = [...text].map(ch => { const c = document.createElement('span'); c.className = 'dither-char'; c.textContent = ch; return c; });
+        cells = chars.map(ch => { const c = document.createElement('span'); c.className = 'dither-char'; c.textContent = ch; return c; });
         label.replaceChildren(...cells);
         cells.forEach(c => { c.style.width = `${c.getBoundingClientRect().width}px`; });
       }
@@ -105,8 +108,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const elapsed = now - start, t = elapsed / DURATION;
         if (t >= 1) return settle();
         const seed = Math.floor(elapsed / STEP);
-        [...text].forEach((ch, i) => {
-          const scrambled = /\S/.test(ch) && t <= 0.3 + 0.7 * (i / text.length); // letters and arrows alike
+        chars.forEach((ch, i) => {
+          const scrambled = /\S/.test(ch) && t <= 0.3 + 0.7 * (i / chars.length); // letters and arrows alike
           cells[i].textContent = scrambled ? GLYPHS[(seed * 7 + i * 13 + Math.floor(Math.random() * 3)) % GLYPHS.length] : ch;
         });
         frame = requestAnimationFrame(tick);
@@ -122,6 +125,8 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     trigger.addEventListener('focus', () => { if (trigger.matches(':focus-visible')) run(); }); // keyboard only; a mouse click also focuses
     trigger.addEventListener('blur', unwrap);
     trigger.addEventListener('pointerdown', settle);
+    el.ditherRun = run;      // lets touch devices play the effect without hover (see card activation below)
+    el.ditherUnwrap = unwrap;
   });
 }
 
@@ -242,4 +247,29 @@ if (portrait && root.classList.contains('has-motion')) {
   (photo.complete ? Promise.resolve() : new Promise(r => { photo.onload = photo.onerror = r; }))
     .then(() => photo.decode?.().catch(() => {})).then(play).catch(done);
   setTimeout(done, 4000); // never leave the portrait hidden
+}
+
+// Touch screens: no hover, so the frontmost card whose cover image is mostly visible becomes "active":
+// the image zooms and "Explore project" dithers and turns blue, as on desktop hover.
+if (matchMedia('(hover: none)').matches) {
+  const panels = [...document.querySelectorAll('.case-panel')];
+  let active = null, queued = false;
+  const pick = () => {
+    queued = false;
+    let best = null, bestShown = 0.6;                    // at least 60% of the image uncovered and on screen
+    panels.forEach((panel, i) => {
+      const img = panel.querySelector('.case-image')?.getBoundingClientRect();
+      if (!img || !img.height) return;
+      const nextTop = panels[i + 1]?.getBoundingClientRect().top ?? Infinity;  // a later card slides over this one
+      const shown = Math.max(0, Math.min(img.bottom, nextTop, innerHeight) - Math.max(img.top, 0)) / img.height;
+      if (shown >= bestShown) { best = panel; bestShown = shown; }
+    });
+    if (best === active) return;
+    if (active) { active.classList.remove('is-active'); active.querySelector('.case-link')?.ditherUnwrap?.(); }
+    active = best;
+    if (active) { active.classList.add('is-active'); active.querySelector('.case-link')?.ditherRun?.(); }
+  };
+  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(pick); } }, {passive: true});
+  addEventListener('resize', pick);
+  pick();
 }

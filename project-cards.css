@@ -70,7 +70,6 @@ section.contact{margin-top:172px;padding-bottom:56px}
 @media(prefers-reduced-motion:reduce){.site-bar{transition:none}}
 /* Cards stop just below the pinned header (its height is measured into --bar-h by site-motion.js) */
 .case-stack .case-panel{top:calc(var(--bar-h,82px) + 24px)}
-@media(max-width:480px){.case-stack .case-panel{top:auto}}
 html{scroll-padding-top:var(--bar-h,0px)}
 
 /* Background toggle: icon only; the label slides out on hover/focus (button grows to the left) */
@@ -90,3 +89,14 @@ button.motion-toggle:is(:hover,:focus-visible) .toggle-label{max-width:220px;opa
 .intro-rule p:nth-of-type(n){font-size:16px;font-weight:400;line-height:1.5;letter-spacing:-.16px;color:var(--color-iron,#414141)}
 /* Card titles: blue on hover, no underline (the split words only showed it in the gaps) */
 .case-head h3 a,.case-head h3 a:hover,.case-head h3 a:focus-visible{text-decoration:none}
+
+/* Phones: inner padding, and the cards stack (overlap) on scroll like on desktop */
+@media(max-width:760px){.case-stack .case-panel{padding:28px 20px 32px}}
+@media(max-width:480px){.case-stack .case-panel{position:sticky;top:calc(var(--bar-h,61px) + 12px)}}
+@media(prefers-reduced-motion:reduce){.case-stack .case-panel{position:relative;top:auto}}
+/* Touch screens have no hover: the frontmost card plays the hover state when its image is in view (site-motion.js) */
+@media(hover:none){
+  .case-panel.is-active .case-link{color:var(--accent,#0007cb)}
+  .case-panel.is-active .case-image.cover img{scale:1.06}
+}
+@media(prefers-reduced-motion:reduce){.case-panel.is-active .case-image.cover img{scale:1}}

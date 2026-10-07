@@ -23,7 +23,7 @@
   /* Typography — Scale */
   --text-caption: 12px;
   --leading-caption: 1.4;
-  --tracking-caption: 1.2px;
+  --tracking-caption: 0px;
   --text-body-sm: 14px;
   --leading-body-sm: 1.4;
   --tracking-body-sm: 0px;

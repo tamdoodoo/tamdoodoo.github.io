@@ -5,6 +5,7 @@ if (gallery) {
   nav.setAttribute('aria-label', 'Showcase image navigation');
   const track = document.createElement('div');
   track.className = 'thumb-track';
+  track.setAttribute('data-lenis-prevent', ''); // wheel scrolls the strip, not the page
   const count = document.createElement('span');
   count.className = 'gallery-count';
   nav.append(track, count);
@@ -38,9 +39,10 @@ if (gallery) {
       button.setAttribute('aria-label', `View image ${index + 1} of ${figures.length}`);
       button.setAttribute('aria-controls', figure.id);
       const source = figure.querySelector('img');
-      if (source) { const image = document.createElement('img'); image.src = figure.dataset.thumbnail || source.currentSrc || source.src; image.alt = ''; image.loading = 'lazy'; button.append(image); }
+      const thumb = figure.dataset.thumbnail || source?.currentSrc || source?.src || figure.querySelector('video')?.poster;
+      if (thumb) { const image = document.createElement('img'); image.src = thumb; image.alt = ''; image.loading = 'lazy'; button.append(image); }
       else button.textContent = String(index + 1).padStart(2, '0');
-      button.addEventListener('click', () => (figure.previousElementSibling?.classList.contains('motion-anchor') ? figure.previousElementSibling : figure).scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}));
+      button.addEventListener('click', () => { const target = figure.previousElementSibling?.classList.contains('motion-anchor') ? figure.previousElementSibling : figure; window.lenis ? window.lenis.scrollTo(target) : target.scrollIntoView({behavior: reduced() ? 'instant' : 'smooth', block: 'start'}); });
       track.append(button);
       return button;
     });

@@ -155,7 +155,7 @@ export function createDitherPipeline({
   function animate(rgb, cols, rows, s, t) {
     if (!t || s.anim === "none" || s.anim === "flicker") return
     const sp = 0.4 + (s.speed / 100) * 2.6
-    if (s.anim === "ripple") {
+    if (s.anim === "ripple" || s.anim === "ripple+flicker") {
       for (let y = 0; y < rows; y++)
         for (let x = 0; x < cols; x++) {
           const dx = x / cols - 0.5,
@@ -181,7 +181,7 @@ export function createDitherPipeline({
     }
   }
   const tickOf = (s, t) =>
-    s.anim === "flicker" && t ? Math.floor(t * (1.5 + (s.speed / 100) * 6)) + 1 : 0
+    (s.anim === "flicker" || s.anim === "ripple+flicker") && t ? Math.floor(t * (1.5 + (s.speed / 100) * 6)) + 1 : 0
 
   /* ---------- dither ---------- */
   const K = (list, div) => list.map(([x, y, w]) => [x, y, w / div])
@@ -604,7 +604,7 @@ export function createDitherPipeline({
               if (d > 0.2) ch = hash(x, y, tick + 5) < 0.5 ? "0" : "1"
             } else {
               let idx = Math.min(nR - 1, Math.floor(d * nR))
-              if (tick && idx > 0 && hash(x, y, tick) < 0.07)
+              if (tick && idx > 0 && hash(x, y, tick) < (s.flickerRate ?? 0.07))
                 idx = Math.max(1, Math.min(nR - 1, idx + (hash(y, x, tick) < 0.5 ? -1 : 1)))
               ch = ramp[idx]
             }

@@ -7,3 +7,7 @@ body,body *{font-family:"dm-sans-36pt",sans-serif!important}
 .portrait-header,body:has(.gallery) header{grid-template-columns:1fr;grid-template-rows:56px auto;gap:16px;padding-top:24px;padding-bottom:24px}
 .portrait-header nav,body:has(.gallery) header nav{grid-column:1;grid-row:2;grid-template-columns:repeat(3,minmax(0,1fr));font-size:16px}
 }
+/* Caption/label style: no tracking (token --tracking-caption is 0; these two were hard-coded) */
+.scope-label,.placeholder{letter-spacing:0}
+/* Header links: hover/click area hugs the text instead of filling the grid column */
+.portrait-header nav a,body>header nav a,body>header .name{justify-self:start;width:max-content}

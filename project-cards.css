@@ -100,3 +100,5 @@ button.motion-toggle:is(:hover,:focus-visible) .toggle-label{max-width:220px;opa
   .case-panel.is-active .case-image.cover img{scale:1.06}
 }
 @media(prefers-reduced-motion:reduce){.case-panel.is-active .case-image.cover img{scale:1}}
+/* Fourth card continues the shading so each overlap stays visible */
+.case-stack .case-panel:nth-child(4){background:#e6e2db}

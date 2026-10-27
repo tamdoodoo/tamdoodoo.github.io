@@ -1,0 +1,127 @@
+/* Livelyhood — shared styles (fonts, buttons, header, side menu, footer).
+   Pages are built at the 1440px Figma size inside .canvas; site.js scales the canvas to the window width. */
+@font-face{font-family:"Be Vietnam Pro";src:url(assets/fonts/BeVietnamPro-Light.ttf);font-weight:300;font-display:swap}
+@font-face{font-family:"Be Vietnam Pro";src:url(assets/fonts/BeVietnamPro-Regular.ttf);font-weight:400;font-display:swap}
+@font-face{font-family:"Be Vietnam Pro";src:url(assets/fonts/BeVietnamPro-Medium.ttf);font-weight:500;font-display:swap}
+@font-face{font-family:"Be Vietnam Pro";src:url(assets/fonts/BeVietnamPro-MediumItalic.ttf);font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:"Be Vietnam Pro";src:url(assets/fonts/BeVietnamPro-SemiBold.ttf);font-weight:600;font-display:swap}
+
+:root{--bg:#1E0404;--bg-alt:#150101;--deep:#430707;--cream:#FFF4DC;--red:#FF0004;--line:rgba(217,217,217,.3);--z:1}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--cream);font-family:"Be Vietnam Pro",sans-serif;font-weight:300;-webkit-font-smoothing:antialiased}
+body{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+img{display:block}
+:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+
+/* 1440px design canvas, scaled to the window (desktop only) */
+.canvas{position:relative;width:1440px;zoom:var(--z);overflow:hidden}
+.abs{position:absolute}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:62px;padding:19px 64px;border-radius:41px;border:1px solid #fff;
+  font-weight:500;font-size:20px;line-height:24px;letter-spacing:-1px;white-space:nowrap;transition:background-color .25s,color .25s,border-color .25s}
+.btn-primary{background:#fff;color:var(--deep)}
+.btn-primary:hover{background:var(--cream);border-color:var(--cream)}
+.btn-secondary{color:#fff}
+.btn-secondary:hover{background:#fff;color:var(--deep)}
+.btn-sm{height:auto;padding:12px 24px;font-size:18px;letter-spacing:0}
+
+/* Header (scrolls with the page, as in the prototype) */
+.site-header{position:absolute;top:0;left:0;width:1440px;height:105px;z-index:30;background:rgba(30,4,4,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.site-header .logo{position:absolute;left:36px;top:36px;width:190.056px;height:39.159px;transition:opacity .2s}
+.site-header .logo:hover{opacity:.8}
+.site-header .menu-btn{position:absolute;left:1364px;top:45px;width:32px;height:21px}
+
+/* Side menu drawer */
+.side-menu{position:fixed;inset:0;z-index:100;zoom:var(--z);visibility:hidden;transition:visibility 0s .45s}
+.side-menu.is-open{visibility:visible;transition:none}
+.side-menu .scrim{position:absolute;inset:0;width:100%;height:100%;background:#000;opacity:0;transition:opacity .45s cubic-bezier(.2,.8,.2,1)}
+.side-menu.is-open .scrim{opacity:.6}
+.side-menu .drawer{position:absolute;top:0;right:0;width:520px;height:calc(100vh / var(--z));display:flex;flex-direction:column;overflow:hidden;
+  border-left:1px solid rgba(217,217,217,.2);transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  background:radial-gradient(520px 750px at 0 100%,rgba(255,0,4,.35) 0,rgba(142,0,2,.275) 30%,rgba(86,0,1,.2375) 45%,rgba(29,0,0,.2) 60%,rgba(0,0,0,0) 100%),#000}
+.side-menu.is-open .drawer{transform:none}
+.side-menu .drawer-head{display:flex;justify-content:flex-end;padding:32px 32px 32px 40px}
+.side-menu .close{width:49px;height:49px;border-radius:24.5px;display:flex;align-items:center;justify-content:center}
+.side-menu nav{border-top:1px solid var(--line)}
+.menu-item{display:flex;align-items:center;justify-content:space-between;height:88px;padding:0 40px;border-bottom:1px solid var(--line);
+  font-weight:500;font-size:32px;line-height:1.1;letter-spacing:-.96px;text-transform:uppercase;color:var(--cream)}
+.menu-item .label{display:flex;align-items:center;gap:16px}
+.menu-item .dot{width:10px;height:10px;border-radius:50%;background:var(--red);display:none}
+.menu-item[aria-current=page] .dot{display:block}
+.menu-item .arrow{width:36px;height:36px;opacity:0;transition:opacity .2s}
+.menu-item:hover{background:radial-gradient(619px 88px at 50% 100%,rgba(184,28,20,.95) 0,rgba(129,17,13,.775) 25%,rgba(74,6,5,.6) 50%,rgba(37,3,3,.3) 75%,rgba(0,0,0,0) 100%)}
+.menu-item:hover .arrow,.menu-item:focus-visible .arrow{opacity:1}
+.menu-item:focus-visible{outline:none;border:2px solid var(--cream)}
+.side-menu .drawer-foot{margin-top:auto;display:flex;flex-direction:column;align-items:flex-start;gap:28px;padding:24px 40px 40px}
+.side-menu .secondary{display:flex;gap:28px;font-weight:500;font-size:16px}
+.side-menu .secondary a{text-decoration:underline;text-underline-position:from-font}
+.side-menu .secondary a:hover{color:#fff}
+.side-menu .cta{height:52px;padding:0 28px;border-radius:26px;background:#fff;color:var(--deep);display:flex;align-items:center;font-weight:500;font-size:16px;letter-spacing:-.16px;transition:background-color .25s}
+.side-menu .cta:hover{background:var(--cream)}
+
+/* Footer */
+.site-footer{position:relative;width:1440px;height:761.82px;background:#000;overflow:hidden}
+.site-footer .glow{position:absolute;left:460px;top:-420px;width:1500px;height:1100px;border-radius:642px;opacity:.75;filter:blur(60px);
+  background:radial-gradient(circle 930px at 750px 550px,#FF0004 0,#C70003 15.5%,#8E0002 31%,#560001 46.5%,#390001 54.25%,#1D0000 62%,rgba(29,0,0,0) 72%)}
+.site-footer .cols{position:absolute;left:60px;top:80px;width:1320px;display:flex;justify-content:space-between;align-items:flex-start}
+.site-footer .brand{display:flex;flex-direction:column;gap:24px;width:682.5px}
+.site-footer .brand-top{display:flex;flex-direction:column;gap:16px}
+.site-footer .brand-top img{width:237px;height:58px}
+.site-footer .brand-top p{margin:0;font-weight:400;font-size:16px;line-height:24px;white-space:nowrap}
+.site-footer .contact{display:flex;flex-direction:column;gap:14px;padding-top:16px}
+.site-footer .contact div{display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:22px}
+.site-footer .contact a{font-weight:500}
+.site-footer .contact span{font-weight:400}
+.site-footer .contact img{width:24px;height:24px}
+.site-footer .links{display:flex;gap:56px}
+.site-footer .links div{display:flex;flex-direction:column;gap:14px}
+.site-footer .links h4{margin:0 0 16px;font-weight:400;font-size:12px;line-height:16px;letter-spacing:.96px;text-transform:uppercase;opacity:.6}
+.site-footer .links a{font-weight:500;font-size:16px;line-height:22px;letter-spacing:-.32px;white-space:nowrap;text-decoration-color:var(--red);text-underline-offset:4px;transition:color .2s}
+.site-footer .links a:hover{color:#fff}
+.site-footer .links a[aria-current=page]{text-decoration-line:underline}
+.site-footer .wordmark{position:absolute;left:60px;top:433.52px;width:1320px;height:204.305px}
+.site-footer .divider{position:absolute;left:60px;top:677.82px;width:1320px;height:1px;background:var(--line)}
+.site-footer .copy{position:absolute;left:60px;top:701.82px;margin:0;font-weight:400;font-size:14px;line-height:20px;opacity:.7}
+
+/* Forms (prototype only: validate, then show the sent state; nothing is submitted) */
+html{scroll-behavior:smooth}
+.form-field{display:flex;flex-direction:column;gap:12px;position:relative}
+.form-label{font-size:16px;line-height:24px;color:var(--cream)}
+.form-input{width:100%;height:52px;padding:0 20px;border:1px solid #fff;border-radius:26px;background:transparent;
+  font:inherit;font-weight:300;font-size:16px;color:var(--cream);outline:none;transition:border-color .2s,box-shadow .2s}
+textarea.form-input{height:auto;padding:16px 20px;line-height:24px;resize:none}
+.form-input::placeholder{color:var(--cream);opacity:1}
+.form-input:focus{box-shadow:0 0 0 1px #fff}
+.form-input:focus::placeholder{opacity:.45}
+.form-field.is-invalid .form-input,.form-chips.is-invalid .chip span,.consent.is-invalid .box{border-color:#FF575A}
+.form-error{position:absolute;left:20px;top:100%;margin:4px 0 0;font-size:12px;line-height:16px;color:#FF575A}
+.form-chips{display:flex;gap:12px;position:relative;margin:0;padding:0;border:0}
+.form-chips .form-error{left:0}
+.chip{position:relative;cursor:pointer}
+.chip input,.consent input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.chip span{display:flex;align-items:center;height:44px;padding:0 20px;border:1px solid #fff;border-radius:22px;
+  font-weight:500;font-size:15px;color:var(--cream);white-space:nowrap;transition:background-color .2s,color .2s}
+.chip:hover span{background:rgba(255,255,255,.08)}
+.chip input:checked+span{background:#fff;color:var(--deep)}
+.chip input:focus-visible+span{outline:2px solid var(--cream);outline-offset:3px}
+.consent{position:relative;display:flex;gap:16px;align-items:flex-start;cursor:pointer}
+.consent .box{flex:none;position:relative;width:24px;height:24px;border:1px solid #fff;border-radius:12px;transition:background-color .2s}
+.consent input:checked+.box{background:#fff}
+.consent input:checked+.box::after{content:"✓";position:absolute;left:6.5px;top:2px;font-weight:600;font-size:13px;color:var(--deep)}
+.consent input:focus-visible+.box{outline:2px solid var(--cream);outline-offset:3px}
+.consent .text{padding-top:1px;font-size:14px;line-height:20px;color:var(--cream)}
+.consent .text a{text-decoration:underline;text-underline-position:from-font}
+.consent .form-error{left:40px}
+.pill-btn{display:inline-flex;align-items:center;justify-content:center;height:52px;min-width:220px;padding:0 28px;border:1px solid #fff;border-radius:26px;
+  font-weight:500;font-size:16px;letter-spacing:-.16px;white-space:nowrap;cursor:pointer;transition:background-color .25s,color .25s,border-color .25s}
+.pill-btn.primary{background:#fff;color:var(--deep)}
+.pill-btn.primary:hover{background:var(--cream);border-color:var(--cream)}
+.pill-btn.outline{color:var(--cream)}
+.pill-btn.outline:hover{background:#fff;color:var(--deep)}
+.form-sent{display:flex;flex-direction:column;gap:24px;align-items:flex-start;padding:24px 0}
+.form-sent[hidden]{display:none}
+.form-sent .tick{display:flex;align-items:center;justify-content:center;width:72px;height:72px;border:1px solid #fff;border-radius:36px;font-weight:300;font-size:28px}
+.form-sent p{margin:0;width:520px;font-weight:500;font-size:24px;line-height:27.6px;letter-spacing:-.72px}

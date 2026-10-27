@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Livelyhood — Live shopping shows from Singapore</title>
+<meta name="description" content="Livelyhood makes live shopping shows. Creators host, products get shown properly, and viewers shop while they watch.">
+<link rel="icon" href="assets/home/logomark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* Homepage — positions and sizes follow the Figma frame "Homepage" (1440 × 6989) */
+  .home{height:6989px;background:var(--bg)}
+  .glow{position:absolute;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .glow>div{flex:none;transform:rotate(-108.7deg);position:relative}
+  .glow img{position:absolute;max-width:none;width:auto;height:auto}
+  .t-cream{color:var(--cream)} .t-white{color:#fff}
+  .light{font-weight:300} .reg{font-weight:400} .med{font-weight:500} .semi{font-weight:600}
+  p,h1,h2,h3{margin:0}
+
+  /* Hero (0–2003) */
+  .hero{left:0;top:0;width:1440px;height:2003px;overflow:clip}
+  .hero h1{position:absolute;left:40px;top:187.51px;font-weight:600;font-size:127.301px;line-height:1.08;letter-spacing:-8.9111px;text-transform:uppercase;white-space:nowrap;color:#fff}
+  .hero .ring{position:absolute;left:127px;top:1220.4px;width:1186px;height:516.4px}
+  .hero .intro{position:absolute;left:40px;top:773px;width:353px;font-size:20px;line-height:24px;letter-spacing:-.1px;color:#fff}
+  .hero .ctas{position:absolute;left:1114px;top:751px;width:263px;display:flex;flex-direction:column;gap:16px}
+  .hero .ctas .btn{width:100%;padding:19px 0}
+  .hero .tagline{position:absolute;left:45px;top:1340px;width:456px;font-weight:500;font-size:48px;line-height:1.1;letter-spacing:-4.32px;color:var(--cream)}
+  .hero .explore{position:absolute;left:45px;top:1576px;width:375px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
+  /* The phone rides down with the page and settles beside the show card (sticky, as in the prototype) */
+  .phone-track{position:absolute;left:720px;top:381px;bottom:0;pointer-events:none}
+  .phone-wrap{position:sticky;top:0;transform:translateX(-50%);height:1030px;padding:40px 8px;display:flex;align-items:center;justify-content:center;pointer-events:auto}
+  .phone{position:relative;width:382px;height:700px;border:1px solid #fff;border-radius:38px}
+  .phone .screen{position:absolute;left:12px;top:13.5px;width:356px;height:668px;border-radius:24px;background:#290403;object-fit:cover}
+  .phone .live{position:absolute;left:32px;top:33.5px;height:28px;padding:0 12px;border-radius:14px;background:var(--red);display:flex;align-items:center;gap:6px;
+    font-weight:500;font-size:12px;letter-spacing:.72px;color:var(--cream)}
+  .phone .live[hidden]{display:none}
+  .phone .live img{width:6px;height:6px}
+  .show-card{position:absolute;left:1010px;top:1349px;width:354px;display:flex;flex-direction:column;gap:40px}
+  .show-card .head{display:flex;flex-direction:column;gap:14px}
+  .show-card .name{font-weight:500;font-size:32px;line-height:1;letter-spacing:-2.88px;color:var(--cream)}
+  .show-card .rule{width:344px;height:.5px}
+  .show-card .meta{display:flex;flex-direction:column;gap:8px}
+  .show-card .tags{display:flex;align-items:center;gap:7px;font-size:12px;line-height:24px;letter-spacing:-.6px;color:#fff;white-space:nowrap}
+  .show-card .tags i{width:3px;height:3px;background:url(assets/home/dot-3.svg) no-repeat}
+  .show-card .body{width:354px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
+  .show-card .arrows{display:flex;gap:12px}
+  .round-btn{width:50px;height:50px;border:1px solid #d9d9d9;border-radius:100px;display:flex;align-items:center;justify-content:center;transition:background-color .25s}
+  .round-btn:hover{background:rgba(255,255,255,.12)}
+  .round-btn img{width:24px;height:24px}
+  .round-btn.prev img{transform:scaleX(-1)}
+  .see-all{left:720px;top:1909px;transform:translateX(-50%)}
+
+  /* Partner logos (2003–2630) */
+  .partners{left:0;top:2003px;width:1440px;padding:120px 60px;display:flex;flex-direction:column;gap:64px}
+  .partners .hr{width:1320px;height:1px;margin:-.5px 0}
+  .partners .block{display:flex;flex-direction:column;gap:40px}
+  .partners h2{font-weight:500;font-size:80px;line-height:1.11;letter-spacing:-4.8px;white-space:nowrap;color:var(--cream)}
+  .partners .logos{display:flex;gap:16px}
+  .logo-tile{flex:1 0 0;height:128px;border:1px solid rgba(217,217,217,.3);border-radius:24px;background:rgba(255,244,220,.04);display:flex;align-items:center;justify-content:center}
+  .logo-tile span{display:flex;align-items:center;gap:10px;opacity:.8;font-weight:500;font-size:20px;letter-spacing:-.6px;color:var(--cream)}
+  .logo-tile img{width:28px;height:28px}
+
+  /* How it works (2664–3900) */
+  .how-label{left:60px;top:2689px;width:241px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
+  .how-title{left:500px;top:2664px;width:649px;font-weight:500;font-size:80px;line-height:1.11;letter-spacing:-4.8px;color:var(--cream)}
+  .how-sub{left:507px;top:2875px;font-size:20px;line-height:24px;letter-spacing:-1px;white-space:nowrap;color:#fff}
+  .num-text{font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-3.6px;color:#fff;white-space:nowrap}
+  .num{left:60px;width:102px;height:102px;border:1px solid #d9d9d9;border-radius:51px;display:flex;align-items:center;justify-content:center;
+    font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-3.6px;color:#fff}
+  .step{left:507px;width:456px;display:flex;flex-direction:column;gap:24px}
+  .step h3{font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-3.6px;color:var(--cream)}
+  .step p{width:423px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
+
+  /* For creators / For brands (4042–5565) */
+  .audiences{left:0;top:4042px;width:1440px;height:1523px;background:var(--bg-alt)}
+  .audiences h2{position:absolute;transform:translateX(-50%);font-weight:500;font-size:64px;line-height:1;letter-spacing:-5.76px;white-space:nowrap;color:var(--cream)}
+  .audiences .lede{position:absolute;left:60px;width:335px;font-weight:400;font-size:24px;line-height:1.1;letter-spacing:-1.44px;color:var(--cream)}
+  .audiences .copy{position:absolute;width:415px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
+  .audiences .copy p+p{margin-top:24px}
+  .audiences .photo{position:absolute;width:393px;height:401px;border-radius:16px;overflow:hidden}
+  .audiences .photo img{position:absolute;max-width:none}
+  .audiences .rule{position:absolute;left:60px;top:724.5px;width:1328px;height:1px}
+
+  /* Starting in Singapore (5442–6227) */
+  .singapore{left:-1px;top:5442px;width:1440px;height:785px;background:var(--bg);overflow:hidden}
+  .singapore .map{position:absolute;left:-418px;top:-41px;width:1443px;height:1004px;overflow:hidden}
+  .singapore .map img{position:absolute;left:-.05%;top:4.08%;width:100.1%;height:95.92%;max-width:none}
+  .singapore h2{position:absolute;left:60px;top:113px;width:456px;font-weight:500;font-size:48px;line-height:1.1;letter-spacing:-4.32px;color:var(--cream)}
+  .singapore .place{position:absolute;left:513px;top:327px;font-weight:500;font-size:24px;line-height:1.1;letter-spacing:-2.16px;white-space:nowrap;color:var(--cream)}
+  .singapore .patch{position:absolute;left:295px;top:359px;width:161px;height:24px;background:linear-gradient(90deg,#250202,#1d0202)}
+  .singapore .copy{position:absolute;left:954px;top:114px;width:426px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
+  .singapore .copy p+p{margin-top:24px}
+  .singapore .ctas{position:absolute;left:955px;top:490px;width:333px;display:flex;flex-direction:column;gap:16px}
+  .singapore .ctas .btn{width:100%;padding:19px 0}
+  .footer-slot{left:0;top:6227px}
+  .home .btn:not(.btn-sm){text-transform:capitalize} /* Figma capitalises these labels */
+</style>
+</head>
+<body data-page="home">
+<main class="canvas home">
+  <!-- Background glows (drawn first, behind content) -->
+  <div class="glow" style="left:-1410px;top:2276px;width:1977.364px;height:2225.448px" aria-hidden="true"><div style="width:1855.433px;height:1459.471px"><img src="assets/home/glow-ellipse26.svg" alt="" style="inset:-34.26% -26.95%;width:153.9%;height:168.52%"></div></div>
+  <div class="glow" style="left:407px;top:685px;width:1977.364px;height:2225.448px" aria-hidden="true"><div style="width:1855.433px;height:1459.471px"><img src="assets/home/glow-ellipse26.svg" alt="" style="inset:-34.26% -26.95%;width:153.9%;height:168.52%"></div></div>
+  <div class="glow" style="left:497.39px;top:6374.51px;width:277.31px;height:216.119px" aria-hidden="true"><div style="width:145.759px;height:243.426px"><img src="assets/home/glow-ellipse31.svg" alt="" style="inset:-205.4% -343.03%;width:786.06%;height:510.8%"></div></div>
+
+  <!-- How it works -->
+  <p class="abs how-label">How it works</p>
+  <h2 class="abs how-title">The shopping channel grew up</h2>
+  <p class="abs how-sub">It's live, it's social and it's actually fun to watch.</p>
+
+  <img class="abs" src="assets/home/divider-881.svg" alt="" style="left:507px;top:2965.5px;width:881px;height:1px">
+  <img class="abs" src="assets/home/circle-102.svg" alt="" style="left:60px;top:3030px;width:102px;height:102px"><span class="abs num-text" style="left:102px;top:3058px">1</span>
+  <div class="abs step" style="top:3038px"><h3>Creators host</h3><p>Get to know the people behind the recommendations. Our hosts bring their personality, perspective and product knowledge to every show.</p></div>
+  <div class="abs" style="left:1037px;top:3003px;width:308px;height:210px;overflow:hidden"><img src="assets/home/icon-livestream.svg" alt="" style="position:absolute;left:34.51%;top:13.18%;width:36.15%;height:74.21%"></div>
+
+  <img class="abs" src="assets/home/divider-881.svg" alt="" style="left:507px;top:3263.5px;width:881px;height:1px">
+  <div class="abs num" style="top:3382px">2</div>
+  <div class="abs step" style="top:3365px"><h3>Products Perform</h3><p>Products are demonstrated, discussed and experienced as part of the content rather than simply listed for sale.</p></div>
+  <img class="abs" src="assets/home/icon-products.svg" alt="" style="left:1086px;top:3336px;width:204px;height:210px">
+
+  <img class="abs" src="assets/home/divider-881.svg" alt="" style="left:507px;top:3609.5px;width:881px;height:1px">
+  <div class="abs num" style="top:3713px">3</div>
+  <div class="abs step" style="top:3711px"><h3>Audiences Buy Live</h3><p>Watching, chatting, discovering and purchasing happen in one place, at the same moment.</p></div>
+  <img class="abs" src="assets/home/icon-audience.svg" alt="" style="left:1065px;top:3684px;width:246px;height:210px">
+
+  <a class="abs btn btn-secondary btn-sm see-all" href="shows-and-creators.html">See All Shows</a>
+
+  <!-- Hero -->
+  <section class="abs hero" aria-label="Introduction">
+    <img class="ring" src="assets/home/hero-ring.svg" alt="" aria-hidden="true">
+    <h1>Live shopping<br>is the new prime time</h1>
+    <p class="intro">Livelyhood makes live shopping shows. Creators host, products get shown properly, and viewers shop while they watch.</p>
+    <p class="tagline">A good host.<br>A great find.<br>A reason to keep watching.</p>
+    <p class="explore">Explore the shows bringing products into the conversation.</p>
+    <div class="phone-track">
+      <div class="phone-wrap">
+        <div class="phone">
+          <img class="screen" data-phone-screen src="assets/home/phone-screen-truly-yours.png" alt="Truly Yours live show on a phone" width="356" height="668">
+          <span class="live" data-phone-live hidden><img src="assets/home/live-dot.svg" alt="">LIVE</span>
+        </div>
+      </div>
+    </div>
+    <div class="show-card" data-show-card aria-live="polite">
+      <div class="head">
+        <p class="name" data-name>Truly Yours</p>
+        <img class="rule" src="assets/home/divider-344.svg" alt="" width="344" height="0.5">
+        <div class="meta">
+          <p class="tags" data-tags><span>Jewellery</span><i></i><span>Gifting</span><i></i><span>Story</span></p>
+          <p class="body" data-body>Some pieces mean more. Discover jewellery through the stories behind it, ideas for styling it, and the people you’d give it to—including yourself.</p>
+        </div>
+      </div>
+      <div class="arrows">
+        <button class="round-btn prev" type="button" data-prev aria-label="Previous show"><img src="assets/home/chevron-right.svg" alt=""></button>
+        <button class="round-btn" type="button" data-next aria-label="Next show"><img src="assets/home/chevron-right.svg" alt=""></button>
+      </div>
+    </div>
+    <div class="ctas">
+      <a class="btn btn-primary" href="shows-and-creators.html">Watch a Show</a>
+      <a class="btn btn-secondary" href="for-brands.html">Partner With Us</a>
+    </div>
+  </section>
+
+  <!-- Brands we've put on air -->
+  <section class="abs partners" aria-labelledby="partners-title">
+    <img class="hr" src="assets/home/divider-1320.svg" alt="" width="1320" height="1">
+    <div class="block">
+      <h2 id="partners-title">Brands we've put on air.</h2>
+      <div class="logos">
+        <div class="logo-tile"><span><img src="assets/home/logomark.svg" alt="">Brand 01</span></div>
+        <div class="logo-tile"><span><img src="assets/home/logomark.svg" alt="">Brand 02</span></div>
+        <div class="logo-tile"><span><img src="assets/home/logomark.svg" alt="">Brand 03</span></div>
+        <div class="logo-tile"><span><img src="assets/home/logomark.svg" alt="">Brand 04</span></div>
+        <div class="logo-tile"><span><img src="assets/home/logomark.svg" alt="">Brand 05</span></div>
+        <div class="logo-tile"><span><img src="assets/home/logomark.svg" alt="">Brand 06</span></div>
+      </div>
+    </div>
+    <img class="hr" src="assets/home/divider-1320.svg" alt="" width="1320" height="1">
+  </section>
+
+  <!-- For creators / For brands -->
+  <section class="abs audiences" aria-label="For creators and brands">
+    <h2 style="left:223px;top:160px">For creators</h2>
+    <p class="lede" style="top:264px">Give your audience something to come back for.</p>
+    <div class="photo" style="left:522px;top:160px"><img src="assets/home/for-creators.png" alt="A creator filmed on several phones at once" style="left:-16.79%;top:-15.02%;width:133.58%;height:163.64%"></div>
+    <div class="copy" style="left:973px;top:171px"><p>Have a point of view, a passion or an idea you could talk about for hours? Let’s turn it into a show.</p><p>Livelyhood helps you develop a recurring format, connect with products and brands, and bring it to life with production support. You bring your voice and a reason for people to tune in.</p></div>
+    <a class="abs btn btn-primary" href="shows-and-creators.html#apply" style="left:973px;top:499px;width:263px;padding:19px 0">Apply to Host</a>
+    <img class="rule" src="assets/home/divider-1328.svg" alt="" width="1328" height="1">
+    <h2 style="left:204px;top:871px">For brands</h2>
+    <p class="lede" style="top:975px">Let people see what makes your product worth buying.</p>
+    <p class="copy" style="left:500px;top:882px">Put your product inside a show people choose to watch. A host who knows it demonstrates it, answers questions as they come in and gives viewers a reason to buy on the spot. We handle the format, the host and the production.</p>
+    <a class="abs btn btn-primary" href="for-brands.html" style="left:500px;top:1041px;padding:19px 32px">Explore Brand Partnerships</a>
+    <div class="photo" style="left:970px;top:871px"><img src="assets/home/for-brands.png" alt="Shopping trolley filled with gold and silver handbags" style="left:-15.77%;top:-29.14%;width:132.05%;height:199.24%"></div>
+  </section>
+
+  <!-- Starting in Singapore -->
+  <section class="abs singapore" aria-labelledby="sg-title">
+    <div class="map"><img src="assets/home/singapore-map.png" alt="Dotted globe centred on Southeast Asia, with Singapore marked"></div>
+    <div class="glow" style="left:-849px;top:-186px;width:1325.441px;height:1491.735px" aria-hidden="true"><div style="width:1243.711px;height:978.294px"><img src="assets/home/glow-ellipse32.svg" alt="" style="inset:-34.26% -26.95%;width:153.9%;height:168.52%"></div></div>
+    <h2 id="sg-title">Starting in Singapore. Built for more.</h2>
+    <div class="patch" aria-hidden="true"></div>
+    <img class="abs" src="assets/home/map-pin-tail.svg" alt="" style="left:297.5px;top:381.5px;width:46px;height:31.5px">
+    <img class="abs" src="assets/home/map-label-line.svg" alt="" style="left:310.65px;top:343.5px;width:185.35px;height:64.85px">
+    <p class="place">Singapore</p>
+    <div class="copy"><p>We’re building Livelyhood around shows people recognise, hosts they connect with and products they’re curious about.</p><p>Our starting point is original live shopping shows from Singapore. Our ambition is to develop formats and creator talent that can reach audiences across Southeast Asia.</p><p>Have a product, a personality or a show idea that belongs on screen? Let’s talk.</p></div>
+    <div class="ctas">
+      <a class="btn btn-primary" href="about.html">About Livelyhood</a>
+      <a class="btn btn-secondary" href="for-brands.html">Partner With Us</a>
+    </div>
+  </section>
+
+  <div class="abs footer-slot"><div data-site-footer></div></div>
+  <div data-site-header></div>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

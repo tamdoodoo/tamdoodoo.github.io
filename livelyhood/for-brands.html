@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>For Brands — Livelyhood</title>
+<meta name="description" content="Put your product inside live shows people choose to watch, with a host who knows it, an audience asking questions and a buy button on screen.">
+<link rel="icon" href="assets/home/logomark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* For Brands — follows the Figma frame "For Brands — Desktop 1440" (sections stacked, 9427 tall) */
+  p,h1,h2,h3,dl,dd,ol{margin:0}
+  ol{list-style:none;padding:0}
+  .sec{position:relative;width:1440px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;pointer-events:none}
+  .h40{font-weight:500;font-size:40px;line-height:42px;letter-spacing:-1.6px;white-space:nowrap;color:var(--cream)}
+  .label{font-size:12px;line-height:16px;color:var(--cream)}
+  .glow-ic{display:flex;align-items:center;justify-content:center;border-radius:50%}
+  .flip{background-repeat:no-repeat;background-size:600% 500%;background-position:0 0}
+
+  /* Hero */
+  .hero{height:973.398px;background:var(--bg)}
+  .hero .blob{left:600px;top:-300px;width:1400px;height:1400px;opacity:.75;filter:blur(80px);
+    background:radial-gradient(circle 989.95px at 50% 50%,#FF9FA0 0,#FF7779 7.5%,#FF5052 15%,#FF3C3F 18.75%,#FF282B 22.5%,#FF1418 26.25%,#FF0A0E 28.125%,#FF0004 30%,#C70003 39%,#8E0002 48%,#560001 57%,#390001 61.5%,#1D0000 66%,rgba(29,0,0,0) 72%)}
+  .hero .copy{position:absolute;left:60px;top:312.9px;width:914px;display:flex;flex-direction:column;gap:32px}
+  .hero h1{font-weight:600;font-size:80px;line-height:95px;letter-spacing:-4px;text-transform:uppercase;color:#fff}
+  .hero .lede{width:426px;font-size:18px;line-height:28px;letter-spacing:-1px;color:var(--cream)}
+  .hero .ctas{display:flex;gap:12px;margin-top:16px}
+  .hero .show{position:absolute;left:998px;top:158.398px;width:382px;height:715px;border-radius:32px;overflow:hidden}
+  .hero .show img{width:100%;height:100%;object-fit:cover}
+  .live-tag{position:absolute;left:17.25px;top:16.97px;display:flex;align-items:center;gap:7.597px;height:35.454px;padding:0 15.195px;border-radius:17.727px;background:var(--red);
+    font-weight:500;font-size:15.195px;line-height:22.792px;letter-spacing:.9117px;color:var(--cream)}
+  .live-tag i{width:7.597px;height:7.597px;border-radius:3.799px;background:var(--cream)}
+
+  /* Why live */
+  .why{height:834.141px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .why .grid{display:grid;grid-template-columns:628.32px 628.32px;column-gap:63.36px;height:554.781px}
+  .why .left{display:flex;flex-direction:column;justify-content:space-between}
+  .why h2{width:560px;font-weight:500;font-size:56px;line-height:56px;letter-spacing:-2.8px;color:var(--cream)}
+  .why h2 em{font-style:italic}
+  .why .square{position:relative;width:316.797px;height:316.797px;border-radius:24px;background:var(--bg);overflow:hidden}
+  .why .square .flip{position:absolute;left:46.4px;top:46.4px;width:224px;height:224px;opacity:0;transition:opacity .3s}
+  .why .square .flip.is-on{opacity:1}
+  .why ol{border-bottom:1px solid rgba(217,217,217,.5)}
+  .why li{position:relative;height:184.594px;border-top:1px solid rgba(217,217,217,.5);padding:28px 24px 32px;display:flex;flex-direction:column;gap:16px;overflow:hidden;cursor:default}
+  .why li::before{content:"";position:absolute;left:0;top:0;width:628.32px;height:183.594px;opacity:0;transition:opacity .3s;pointer-events:none;
+    background:radial-gradient(547.6px 274.04px at 345.58px 237.32px,rgba(255,0,4,.75) 0,rgba(236,1,4,.675) 10%,rgba(212,2,5,.6) 20%,rgba(181,3,5,.525) 30%,rgba(140,4,6,.45) 46.635%,rgba(140,4,6,0) 88.462%)}
+  .why li.is-on::before{opacity:1}
+  .why li > *{position:relative}
+  .why h3{font-weight:500;font-size:24px;line-height:27.6px;letter-spacing:-.72px;white-space:nowrap;color:var(--cream)}
+  .why li p:last-child{width:380px;font-size:16px;line-height:24px;color:var(--cream)}
+
+  /* Three ways in */
+  .ways{height:1081.72px;background:var(--bg);padding:139.68px 60px 0}
+  .ways .head{display:flex;justify-content:space-between;align-items:flex-end}
+  .ways h2{font-weight:500;font-size:80px;line-height:98.496px;letter-spacing:-5.184px;white-space:nowrap;color:var(--cream)}
+  .ways .tags{display:flex;gap:8px}
+  .panels{display:flex;gap:16px;height:640px;margin-top:63.36px}
+  .panel-way{--ease:cubic-bezier(.2,.8,.2,1);position:relative;flex:320.383 0 0;min-width:0;height:640px;border-radius:24px;background:#2a0505;overflow:hidden;
+    transition:flex-grow .6s var(--ease),background-color .6s var(--ease)}
+  .panel-way.is-on{flex-grow:647.234;background:var(--deep)}
+  .panel-way .top{position:absolute;left:24px;right:24px;top:24px;display:flex;justify-content:space-between;align-items:flex-start}
+  .num-c{display:flex;align-items:center;justify-content:center;width:49px;height:49px;border:1px solid #fff;border-radius:24.5px;font-weight:400;font-size:20px;color:var(--cream)}
+  .panel-way .art{position:absolute;left:24px;right:24px;top:89px;bottom:var(--art-b);display:flex;align-items:center;justify-content:center;transition:bottom .6s var(--ease)}
+  .panel-way.is-on .art{bottom:249.844px}
+  .panel-way .art img{position:absolute;opacity:0;transition:opacity .4s}
+  .panel-way .art .sm{width:140px;height:140px}
+  .panel-way .art .lg{width:160px;height:160px}
+  .panel-way:not(.is-on) .art .sm,.panel-way.is-on .art .lg{opacity:1}
+  .panel-way h3{position:absolute;left:24px;top:var(--title-t);width:273px;font-weight:500;font-size:31.68px;line-height:34.848px;letter-spacing:-1.2672px;color:var(--cream);transition:top .6s var(--ease)}
+  .panel-way.is-on h3{top:406.16px;width:auto;white-space:nowrap}
+  .panel-way.is-on h3 br{display:none}
+  .panel-way .more{position:absolute;left:24px;top:457.008px;width:599.234px;display:flex;flex-direction:column;gap:20px;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s}
+  .panel-way.is-on .more{opacity:1;visibility:visible;transition:opacity .4s .25s}
+  .panel-way .more > p{width:440px;font-size:16px;line-height:24px;color:var(--cream)}
+  .panel-way .best{display:flex;gap:24px;align-items:flex-end;padding-top:20px;border-top:1px solid rgba(217,217,217,.5)}
+  .panel-way .best div{flex:1;display:flex;flex-direction:column;gap:6px}
+  .panel-way .best div p:last-child{width:366px;font-weight:400;font-size:16px;line-height:24px;color:var(--cream)}
+  .panel-way .best .pill-btn{min-width:0}
+
+  /* What's included */
+  .incl{height:957.719px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .incl ol{margin-top:63.36px;border-bottom:1px solid rgba(217,217,217,.5)}
+  .incl li{position:relative;display:flex;align-items:center;gap:24px;width:1320px;height:143px;padding:40px 0;border-top:1px solid rgba(217,217,217,.5);transition:padding-left .3s cubic-bezier(.2,.8,.2,1)}
+  .incl li.is-on{padding-left:12px}
+  .incl li .label{width:88px;flex:none}
+  .incl h3{font-weight:500;font-size:62px;line-height:62px;letter-spacing:-3.1px;white-space:nowrap;color:var(--cream)}
+  .incl li > p:last-of-type{margin-left:auto;width:424px;font-size:16px;line-height:24px;color:var(--cream)}
+  .incl .flip{position:absolute;left:724px;top:3px;width:136px;height:136px;opacity:0;transition:opacity .3s;pointer-events:none}
+  .incl li.is-on .flip{opacity:1}
+
+  /* How it works */
+  .how{height:696.953px;background:var(--bg)}
+  .how .blob{left:-900px;top:-300px;width:1300px;height:1300px;opacity:.7;filter:blur(80px);
+    background:radial-gradient(circle 919.24px at 50% 50%,#FF0004 0,#C70003 15%,#8E0002 30%,#560001 45%,#390001 52.5%,#1D0000 60%,rgba(29,0,0,0) 70%)}
+  .how .inner{position:absolute;left:60px;top:139.68px;width:1320px}
+  .how .eyebrow{font-size:16px;line-height:24px;color:var(--cream)}
+  .how h2{padding-top:16px}
+  .how ol{margin-top:96px;display:grid;grid-template-columns:repeat(4,330px)}
+  .how li{padding-right:24px;display:flex;flex-direction:column;gap:24px}
+  .how .rail{display:flex;align-items:center}
+  .how .circ{flex:none;width:88px;height:88px;border:1px solid #fff;border-radius:44px;display:flex;align-items:center;justify-content:center}
+  .how .circ img{width:40px;height:40px}
+  .how .rail i{margin-left:16px;width:202px;height:1px;background:rgba(217,217,217,.5)}
+  .how .t{display:flex;flex-direction:column;gap:12px}
+  .how h3{font-weight:500;font-size:24px;line-height:27.6px;letter-spacing:-.72px;white-space:nowrap;color:var(--cream)}
+  .how li > p{width:300px;font-size:16px;line-height:24px;color:var(--cream)}
+
+  /* Numbers you can act on */
+  .nums{height:960.72px;background:var(--bg-alt);padding-top:139.68px;display:flex;flex-direction:column;align-items:center}
+  .nums h2{height:96px;font-weight:500;font-size:72px;line-height:72px;letter-spacing:-3.6px;white-space:nowrap;color:var(--cream)}
+  .nums .sub{width:526px;text-align:center;font-weight:400;font-size:20px;line-height:26px;color:var(--cream)}
+  .bento{margin-top:63.36px;display:grid;grid-template-columns:repeat(4,318px);grid-template-rows:240px 240px;gap:16px}
+  .bento .chart{grid-row:1 / span 2;padding:28px;border-radius:24px;background:#2b0202;display:flex;flex-direction:column;gap:24px}
+  .bento .chart .row{display:flex;justify-content:space-between;align-items:center}
+  .bento .chart .row:first-child{justify-content:flex-start;gap:8px}
+  .bento .chart .row i{width:8px;height:8px;border-radius:4px;background:var(--red)}
+  .bento .chart img{width:262px;height:360px}
+  .bento .metric{padding:28px;border-radius:24px;background:#1c0a0a;display:flex;flex-direction:column;justify-content:space-between}
+  .bento .metric .glow-ic{width:64px;height:64px;
+    background:radial-gradient(87.4px 34.5px at 32px 46.528px,rgba(255,0,0,.46) 2.1%,rgba(191,0,0,.345) 26.6%,rgba(128,0,0,.23) 51.1%,rgba(64,0,0,.115) 75.5%,rgba(0,0,0,0) 100%),rgba(21,1,1,.2)}
+  .bento .metric .glow-ic img{width:32px;height:32px}
+  .bento .metric .glow-ic img.s24{width:24px;height:24px}
+  .bento .metric p{width:262px;font-weight:500;font-size:24px;line-height:27.6px;letter-spacing:-.72px;color:var(--cream)}
+
+  /* Case studies */
+  .cases{height:974.359px;background:var(--bg)}
+  .cases .tint{position:absolute;inset:0;opacity:.9;background:linear-gradient(118.276deg,#1e0404 8.4861%,#3a0303 37.546%,#8a0404 66.606%,#d10a0c 91.514%)}
+  .cases .blob{left:660px;top:-500px;width:1200px;height:1200px;opacity:.5;filter:blur(80px);background:radial-gradient(circle 848.53px at 50% 50%,#FF0004 0,rgba(255,0,4,0) 68%)}
+  .cases .grid{position:absolute;left:60px;top:139.68px;width:1320px;height:695px;display:grid;grid-template-columns:391.23px 410.8px 391.23px;column-gap:63.36px;align-items:center}
+  .cases .intro{display:flex;flex-direction:column;gap:28px}
+  .cases .intro > p:first-child{font-size:16px;line-height:24px;color:var(--cream)}
+  .cases h2{width:392px;font-weight:500;font-size:86.4px;line-height:82.08px;letter-spacing:-4.32px;color:var(--cream)}
+  .cases .intro .lede{width:360px;font-weight:400;font-size:20px;line-height:26px;color:var(--cream)}
+  .cases .dots{display:flex;gap:8px;padding-top:12px;height:20px}
+  .cases .dots button{width:8px;height:8px;border-radius:4px;background:rgba(255,244,220,.4);transition:width .3s,background-color .3s}
+  .cases .dots button[aria-current=true]{width:40px;background:var(--cream)}
+  .cases .phone{position:relative;width:410.805px;height:695px;border-radius:32px;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.35)}
+  .cases .phone img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+  .cases .phone span{position:absolute;border:1px solid #fff}
+  .cases .detail{display:flex;flex-direction:column;gap:28px;transition:opacity .3s}
+  .cases .is-swapping{opacity:0}
+  .cases .detail h3{padding-bottom:20px;border-bottom:1px solid rgba(255,244,220,.5);font-weight:500;font-size:40px;line-height:42px;letter-spacing:-1.6px;white-space:nowrap;color:var(--cream)}
+  .cases dl{display:flex;flex-direction:column;gap:20px}
+  .cases dl > div{display:flex;flex-direction:column;gap:4px}
+  .cases dt{font-size:12px;line-height:16px;color:var(--cream)}
+  .cases dd{width:392px;font-weight:400;font-size:16px;line-height:24px;letter-spacing:-.5px;color:#fff}
+  .cases .result{padding:24px;border-radius:24px;background:rgba(30,4,4,.55);gap:10px}
+  .cases .result dt{display:flex;align-items:center;gap:8px}
+  .cases .result dt i{width:8px;height:8px;border-radius:4px;background:var(--red)}
+  .cases .result dd{width:344px;font-weight:500;font-size:32px;line-height:42px;letter-spacing:-1.6px;color:var(--cream)}
+  .cases .links{position:relative;height:100px}
+  .cases .links .pill-btn{position:absolute;left:0;top:0;min-width:0}
+  .cases .replay{position:absolute;left:0;top:68px;display:flex;align-items:center;gap:10px;font-weight:500;font-size:16px;color:var(--cream)}
+  .cases .replay span{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid #d9d9d9;border-radius:16px}
+  .cases .replay img{width:24px;height:24px}
+  .cases .arrows{display:flex;gap:16px}
+  .cases .arrows button{display:flex;align-items:center;justify-content:center;width:64px;height:64px;border:1px solid var(--cream);border-radius:32px;transition:background-color .25s}
+  .cases .arrows button:hover{background:rgba(255,244,220,.12)}
+  .cases .arrows img{width:20px;height:20px}
+
+  /* FAQ */
+  .faq{background:var(--bg-alt);padding:139.68px 60px}
+  .faq .grid{display:grid;grid-template-columns:648px 648px;column-gap:24px;align-items:start}
+  .faq dl{border-bottom:1px solid rgba(217,217,217,.5)}
+  .faq dl > div{border-top:1px solid rgba(217,217,217,.5)}
+  .faq dt button{display:flex;align-items:center;justify-content:space-between;width:648px;padding:24px 0;text-align:left;
+    font-weight:500;font-size:20px;line-height:26px;letter-spacing:-.4px;color:var(--cream)}
+  .faq dt .pm{position:relative;display:flex;align-items:center;justify-content:center;width:49px;height:49px;border:1px solid #d9d9d9;border-radius:24.5px;transition:background-color .25s}
+  .faq dt .pm img{position:absolute;width:14px;height:14px;transition:opacity .2s}
+  .faq dt .pm .minus,.faq dt button[aria-expanded=true] .plus{opacity:0}
+  .faq dt button[aria-expanded=true] .pm{background:#fff}
+  .faq dt button[aria-expanded=true] .minus{opacity:1}
+  .faq dt button:hover .pm{border-color:#fff}
+  .faq dd{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}
+  .faq dd.is-open{grid-template-rows:1fr}
+  .faq dd > div{overflow:hidden}
+  .faq dd p{width:576px;padding-bottom:28px;font-size:16px;line-height:24px;color:var(--cream)}
+
+  /* Enquiry form */
+  .enquiry{background:var(--bg);padding:139.68px 60px}
+  .enquiry .blob{left:740px;top:-300px;width:1400px;height:1400px;opacity:.6;filter:blur(80px);
+    background:radial-gradient(circle 989.95px at 50% 50%,#FF0004 0,#C70003 15%,#8E0002 30%,#560001 45%,#390001 52.5%,#1D0000 60%,rgba(29,0,0,0) 70%)}
+  .enquiry .row{position:relative;display:flex;gap:24px;align-items:flex-start}
+  .enquiry .intro{width:424px;display:flex;flex-direction:column;gap:24px}
+  .enquiry h2{padding-top:24px;font-weight:500;font-size:48px;line-height:56px;letter-spacing:-3.6px;color:var(--cream)}
+  .enquiry .intro p{font-weight:400;font-size:20px;line-height:26px;color:var(--cream)}
+  .enquiry form{width:872px;padding:56px;border-radius:32px;background:rgba(21,1,1,.53)}
+  .enquiry .fields{display:grid;grid-template-columns:367px 367px;grid-template-rows:repeat(4,88px) 80px 196px 126px;gap:28px 24px}
+  .enquiry .fields[hidden]{display:none}
+  .enquiry .wide{grid-column:1 / span 2}
+  .enquiry fieldset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:12px}
+  .enquiry legend{padding:0 0 24px;font-size:16px;line-height:24px;color:var(--cream)}
+  .enquiry textarea.form-input{height:160px}
+  .enquiry .send{display:flex;flex-direction:column;align-items:flex-start;gap:24px;padding-top:8px}
+  .enquiry .consent{width:560px}
+  .enquiry .consent .text{width:520px}
+</style>
+</head>
+<body data-page="brands">
+<main class="canvas">
+  <section class="sec hero" aria-labelledby="brands-title">
+    <div class="blob" aria-hidden="true"></div>
+    <div class="copy">
+      <h1 id="brands-title">Your product<br>deserves airtime.</h1>
+      <p class="lede">Livelyhood puts your product inside live shows people choose to watch, with a host who knows it, an audience asking questions and a buy button on screen.</p>
+      <div class="ctas">
+        <a class="pill-btn primary" href="#enquiry">Discuss a Partnership</a>
+        <a class="pill-btn outline" href="shows-and-creators.html">Watch a Show</a>
+      </div>
+    </div>
+    <div class="show">
+      <img src="assets/brands/hero-show.png" alt="A host presenting a skincare product during a live beauty show" width="382" height="715">
+      <span class="live-tag"><i></i>LIVE</span>
+    </div>
+  </section>
+
+  <section class="sec why" aria-labelledby="why-title" data-why>
+    <div class="grid">
+      <div class="left">
+        <h2 id="why-title">People buy what they can see <em>working</em>.</h2>
+        <div class="square" aria-hidden="true">
+          <div class="flip is-on" data-flip style="background-image:url(assets/brands/dots-why-eye.png)"></div>
+          <div class="flip" data-flip style="background-image:url(assets/brands/dots-why-chat.png)"></div>
+          <div class="flip" data-flip style="background-image:url(assets/brands/dots-why-cart.png)"></div>
+        </div>
+      </div>
+      <ol>
+        <li class="is-on"><p class="label">01</p><h3>Shown, not listed.</h3><p>Viewers see your product used up close, in real time, by someone they trust.</p></li>
+        <li><p class="label">02</p><h3>Questions answered on the spot.</h3><p>Size, fit, finish, how it works. The host answers while the viewer is still deciding.</p></li>
+        <li><p class="label">03</p><h3>From watching to checkout in one place.</h3><p>Discovery, conversation and purchase happen in the same moment.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec ways" aria-labelledby="ways-title" data-ways>
+    <div class="head">
+      <h2 id="ways-title">Three ways in.</h2>
+      <p class="tags label" aria-hidden="true"><span>Feature</span><span>•</span><span>Branded show</span><span>•</span><span>Pilot</span></p>
+    </div>
+    <div class="panels">
+      <article class="panel-way is-on" tabindex="0" style="--art-b:125.688px;--title-t:530.312px">
+        <div class="top"><span class="num-c">1</span><p class="label">Feature</p></div>
+        <div class="art" aria-hidden="true"><img class="sm" src="assets/brands/way-feature-sm.svg" alt=""><img class="lg" src="assets/brands/way-feature-lg.svg" alt=""></div>
+        <h3>Feature in an <br>existing show.</h3>
+        <div class="more">
+          <p>Put your product in front of an audience that already tunes in. The quickest way to go live.</p>
+          <div class="best"><div><p class="label">Best for</p><p>Launches, gifting seasons and trying a new product.</p></div>
+            <a class="pill-btn primary" href="#enquiry" data-way="Feature">Discuss This Option</a></div>
+        </div>
+      </article>
+      <article class="panel-way" tabindex="0" style="--art-b:125.688px;--title-t:530.312px">
+        <div class="top"><span class="num-c">2</span><p class="label">Branded show</p></div>
+        <div class="art" aria-hidden="true"><img class="sm" src="assets/brands/way-branded-sm.svg" alt=""><img class="lg" src="assets/brands/way-branded-lg.svg" alt=""></div>
+        <h3>Create a <br>branded show.</h3>
+        <div class="more">
+          <p>A recurring format built around your brand, with a host matched to your customers.</p>
+          <div class="best"><div><p class="label">Best for</p><p>Brands ready to make live a regular sales channel.</p></div>
+            <a class="pill-btn primary" href="#enquiry" data-way="Branded show">Discuss This Option</a></div>
+        </div>
+      </article>
+      <article class="panel-way" tabindex="0" style="--art-b:90.844px;--title-t:565.156px">
+        <div class="top"><span class="num-c">3</span><p class="label">Pilot</p></div>
+        <div class="art" aria-hidden="true"><img class="sm" src="assets/brands/way-pilot-sm.svg" alt=""><img class="lg" src="assets/brands/way-pilot-lg.svg" alt=""></div>
+        <h3>Start with a pilot.</h3>
+        <div class="more">
+          <p>One episode to see how your product performs live before committing to more.</p>
+          <div class="best"><div><p class="label">Best for</p><p>Brands new to live commerce.</p></div>
+            <a class="pill-btn primary" href="#enquiry" data-way="Pilot">Discuss This Option</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec incl" aria-labelledby="incl-title" data-incl>
+    <h2 class="h40" id="incl-title">Everything it takes to go live.</h2>
+    <ol>
+      <li><p class="label">01</p><h3>Strategy.</h3><p>We agree the goal, the audience and the format before anything goes on air.</p><div class="flip" data-flip aria-hidden="true" style="background-image:url(assets/brands/dots-strategy.png)"></div></li>
+      <li><p class="label">02</p><h3>Creator matching.</h3><p>We pair your product with a host your customers will listen to.</p><div class="flip" data-flip aria-hidden="true" style="background-image:url(assets/brands/dots-creator.png)"></div></li>
+      <li><p class="label">03</p><h3>Production.</h3><p>Set, crew, run of show and the live broadcast itself.</p><div class="flip" data-flip aria-hidden="true" style="background-image:url(assets/brands/dots-production.png)"></div></li>
+      <li><p class="label">04</p><h3>Reporting.</h3><p>After every show, a clear report on what happened and what to change.</p><div class="flip" data-flip aria-hidden="true" style="background-image:url(assets/brands/dots-reporting.png)"></div></li>
+    </ol>
+  </section>
+
+  <section class="sec how" aria-labelledby="how-title">
+    <div class="blob" aria-hidden="true"></div>
+    <div class="inner">
+      <p class="eyebrow">How it works</p>
+      <h2 class="h40" id="how-title">From brief to broadcast.</h2>
+      <ol>
+        <li><div class="rail"><span class="circ"><img src="assets/brands/step-brief.svg" alt=""></span><i></i></div><div class="t"><p class="label">01</p><h3>Brief.</h3></div><p>Tell us about the product, who it's for and what success looks like.</p></li>
+        <li><div class="rail"><span class="circ"><img src="assets/brands/step-format.svg" alt=""></span><i></i></div><div class="t"><p class="label">02</p><h3>Agree the format.</h3></div><p>We propose the show, the host and the timeline. You approve it.</p></li>
+        <li><div class="rail"><span class="circ"><img src="assets/brands/step-live.svg" alt=""></span><i></i></div><div class="t"><p class="label">03</p><h3>Produce and go live.</h3></div><p>We prep the host, build the run of show and go live.</p></li>
+        <li><div class="rail"><span class="circ"><img src="assets/brands/step-review.svg" alt=""></span></div><div class="t"><p class="label">04</p><h3>Review results.</h3></div><p>We walk you through the numbers and what we'd do differently next time.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec nums" aria-labelledby="nums-title">
+    <h2 id="nums-title">Numbers you can act on.</h2>
+    <p class="sub">After every episode you get a short report covering</p>
+    <div class="bento">
+      <figure class="chart" style="margin:0">
+        <p class="row label"><i></i>Episode report</p>
+        <img src="assets/brands/report-chart.svg" alt="Line chart of live audience over an episode, rising to a marked peak about two thirds of the way through" width="262" height="360">
+        <figcaption class="row label"><span>Live audience over time</span><span>0–60 min</span></figcaption>
+      </figure>
+      <div class="metric"><span class="glow-ic"><img src="assets/brands/metric-viewers.svg" alt=""></span><p>Viewers and peak live audience</p></div>
+      <div class="metric"><span class="glow-ic"><img src="assets/brands/metric-watch.svg" alt=""></span><p>Average watch time</p></div>
+      <div class="metric"><span class="glow-ic"><img src="assets/brands/metric-comments.svg" alt=""></span><p>Comments and questions</p></div>
+      <div class="metric"><span class="glow-ic"><img src="assets/brands/metric-clicks.svg" alt=""></span><p>Product clicks</p></div>
+      <div class="metric"><span class="glow-ic"><img src="assets/brands/metric-orders.svg" alt=""></span><p>Orders and sales</p></div>
+      <div class="metric"><span class="glow-ic"><img class="s24" src="assets/brands/metric-change.svg" alt=""></span><p>What we'd change next time</p></div>
+    </div>
+  </section>
+
+  <section class="sec cases" aria-labelledby="cases-title" data-cases>
+    <div class="tint" aria-hidden="true"></div>
+    <div class="blob" aria-hidden="true"></div>
+    <div class="grid">
+      <div class="intro">
+        <p>Case studies</p>
+        <h2 id="cases-title">Shows<br>that sold.</h2>
+        <p class="lede">Real campaigns, real shows, real results.</p>
+        <div class="dots"><button type="button" aria-label="Show case 1" aria-current="true"></button><button type="button" aria-label="Show case 2"></button></div>
+      </div>
+      <div class="phone">
+        <img data-case-img src="assets/brands/case-daily-hauls.png" alt="Host presenting skincare products on the Daily Hauls set" width="411" height="695">
+        <span aria-hidden="true" style="left:13.4px;top:10.74px;width:382px;height:668px;border-radius:24px"></span>
+        <span aria-hidden="true" style="left:149.41px;top:21.74px;width:90px;height:15px;border-radius:200px"></span>
+        <span aria-hidden="true" style="left:244.41px;top:21.74px;width:16px;height:15px;border-radius:200px"></span>
+      </div>
+      <div class="detail" aria-live="polite">
+        <h3 data-case="name">Daily Hauls</h3>
+        <dl>
+          <div><dt>Objective</dt><dd data-case="objective">Launch a new skincare line to a younger audience.</dd></div>
+          <div><dt>What we did</dt><dd data-case="did">Featured in three episodes of Daily Hauls, with the host testing the product live.</dd></div>
+          <div class="result"><dt><i></i>Result</dt><dd data-case="result">12K live viewers,<br>1,400 product clicks.</dd></div>
+        </dl>
+        <div class="links">
+          <a class="pill-btn primary" href="#" aria-disabled="true">See the Full Case Study</a>
+          <a class="replay" href="#" aria-disabled="true"><span><img src="assets/brands/icon-play.svg" alt=""></span>Watch the Replay</a>
+        </div>
+        <div class="arrows">
+          <button type="button" data-case-prev aria-label="Previous case study"><img src="assets/brands/icon-prev.svg" alt=""></button>
+          <button type="button" data-case-next aria-label="Next case study"><img src="assets/brands/icon-next.svg" alt=""></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec faq" id="faq" aria-labelledby="faq-title" data-faq>
+    <div class="grid">
+      <h2 class="h40" id="faq-title">Questions brands ask us.</h2>
+      <dl>
+        <div><dt><button type="button" aria-expanded="true">How soon can we go live?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd class="is-open"><div><p>Featuring in an existing show is the fastest route. A branded show takes longer because we build the format first. We'll give you a firm date once we've seen your brief.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">What does it cost?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>It depends on the format and the number of episodes. Tell us what you have in mind and we'll send a clear quote.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">What do we need to provide?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>Product samples, the key facts and claims you're happy for us to make, any offer you want to run, and one contact who can approve things quickly.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">Do we have to offer big discounts?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>No. A live offer helps, but our shows sell on demonstration and the host's credibility, not just on price.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">Who approves what the host says?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>You do. We share the run of show and key claims with you before we go live.</p></div></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec enquiry" id="enquiry" aria-labelledby="enquiry-title">
+    <div class="blob" aria-hidden="true"></div>
+    <div class="row">
+      <div class="intro">
+        <h2 id="enquiry-title">Let's get your<br>product on air.</h2>
+        <p>Tell us a little about it. We'll reply within five working days with ideas and next steps.</p>
+      </div>
+      <form data-proto-form aria-labelledby="enquiry-title">
+        <div class="fields" data-fields>
+          <label class="form-field"><span class="form-label">Name</span><input class="form-input" name="name" autocomplete="name" required></label>
+          <label class="form-field"><span class="form-label">Work email</span><input class="form-input" type="email" name="email" autocomplete="email" required></label>
+          <label class="form-field"><span class="form-label">WhatsApp</span><input class="form-input" type="tel" name="whatsapp" autocomplete="tel"></label>
+          <label class="form-field"><span class="form-label">Company</span><input class="form-input" name="company" autocomplete="organization" required></label>
+          <label class="form-field"><span class="form-label">Website or shop link</span><input class="form-input" type="url" name="website" autocomplete="url"></label>
+          <label class="form-field"><span class="form-label">Products to feature</span><input class="form-input" name="products"></label>
+          <label class="form-field"><span class="form-label">Main goal</span><input class="form-input" name="goal"></label>
+          <label class="form-field"><span class="form-label">Ideal timing</span><input class="form-input" name="timing"></label>
+          <fieldset class="wide">
+            <legend>Way in</legend>
+            <div class="form-chips">
+              <label class="chip"><input type="radio" name="way" value="Feature" required><span>Feature</span></label>
+              <label class="chip"><input type="radio" name="way" value="Branded show"><span>Branded show</span></label>
+              <label class="chip"><input type="radio" name="way" value="Pilot"><span>Pilot</span></label>
+              <label class="chip"><input type="radio" name="way" value="Not sure"><span>Not sure</span></label>
+            </div>
+          </fieldset>
+          <label class="form-field wide"><span class="form-label">Anything else</span><textarea class="form-input" name="message"></textarea></label>
+          <div class="send wide">
+            <label class="consent"><input type="checkbox" name="consent" required><span class="box" aria-hidden="true"></span><span class="text">I agree to Livelyhood using these details to respond to my enquiry, in line with the <a href="#" aria-disabled="true">Privacy Policy</a>.</span></label>
+            <button class="pill-btn primary" type="submit">Discuss a Partnership</button>
+          </div>
+        </div>
+        <div class="form-sent" data-sent hidden>
+          <span class="tick" tabindex="-1" aria-hidden="true">✓</span>
+          <p role="status">Thanks. We'll reply within five working days with ideas and next steps.</p>
+          <button class="pill-btn outline" type="button" data-reset>Send Another Enquiry</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <div data-site-footer></div>
+  <div class="abs" style="left:0;top:0"><div data-site-header></div></div>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

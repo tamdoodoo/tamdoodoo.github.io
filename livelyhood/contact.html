@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Contact — Livelyhood</title>
+<meta name="description" content="Talk to Livelyhood. Brands, creators, press and everyone else: tell us who you are and we'll get you to the right person.">
+<link rel="icon" href="assets/home/logomark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* Contact — follows the Figma frame "Contact — Desktop 1440" (sections stacked, 3733 tall) */
+  p,h1,h2,h3{margin:0}
+  .sec{position:relative;width:1440px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;pointer-events:none}
+
+  .hero{height:619.086px;background:var(--bg)}
+  .hero .photo,.hero .tint,.hero .shade{position:absolute;inset:0;width:100%;height:100%}
+  .hero .photo{object-fit:cover}
+  .hero .tint{background:var(--red);mix-blend-mode:saturation}
+  .hero .shade{background:linear-gradient(to bottom,rgba(0,0,0,.75) 18.414%,rgba(102,102,102,0))}
+  .hero .blob{left:40px;top:-360px;width:1400px;height:1400px;opacity:.15;filter:blur(80px);
+    background:radial-gradient(circle 989.95px at 50% 50%,#FF9FA0 0,#FF7779 7.5%,#FF5052 15%,#FF3C3F 18.75%,#FF282B 22.5%,#FF1418 26.25%,#FF0A0E 28.125%,#FF0004 30%,#C70003 39%,#8E0002 48%,#560001 57%,#390001 61.5%,#1D0000 66%,rgba(29,0,0,0) 72%)}
+  .hero .inner{position:absolute;left:60px;top:307px;width:1320px;display:flex;flex-direction:column;align-items:center}
+  .hero h1{font-weight:500;font-size:103.68px;line-height:98.496px;letter-spacing:-5.184px;white-space:nowrap;color:var(--cream)}
+  .hero .lede{padding-top:32px;font-weight:400;font-size:20px;line-height:26px;letter-spacing:-.5px;white-space:nowrap;color:var(--cream)}
+
+  h2.h40{font-weight:500;font-size:40px;line-height:42px;letter-spacing:-1.6px;white-space:nowrap;color:var(--cream)}
+
+  .routes{height:798.517px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .routes .grid{margin-top:63.36px;display:grid;grid-template-columns:429.33px 429.34px 429.34px;gap:16px}
+  .route{min-height:400px;height:413.797px;padding:40px;border-radius:24px;background:#2b0404;display:flex;flex-direction:column;align-items:flex-start;gap:20px}
+  .route .ic{display:flex;align-items:center;justify-content:center;width:80px;height:80px;border-radius:40px;
+    background:radial-gradient(109.25px 43.125px at 40px 58.16px,rgba(255,0,0,.46) 2.1%,rgba(191,0,0,.345) 26.6%,rgba(128,0,0,.23) 51.1%,rgba(64,0,0,.115) 75.5%,rgba(0,0,0,0) 100%),rgba(21,1,1,.2)}
+  .route .ic img{width:36px;height:36px}
+  .route h3{padding-top:48px;font-weight:500;font-size:36px;line-height:37.8px;letter-spacing:-1.44px;white-space:nowrap;color:var(--cream)}
+  .route p{width:340px;height:48px;font-size:16px;line-height:24px;color:var(--cream)}
+  .route .pill-btn{margin-top:8px}
+
+  .message{height:1024.359px;background:var(--bg)}
+  .message .blob{left:840px;top:-200px;width:1300px;height:1300px;opacity:.7;filter:blur(80px);
+    background:radial-gradient(circle 919.24px at 50% 50%,#FF0004 0,#C70003 15%,#8E0002 30%,#560001 45%,#390001 52.5%,#1D0000 60%,rgba(29,0,0,0) 70%)}
+  .message .row{position:absolute;left:60px;top:139.68px;width:1320px;display:flex;gap:24px;align-items:flex-start}
+  .message .row > h2{width:424px}
+  .panel{width:872px;min-height:745px;padding:56px;border-radius:32px;
+    background:linear-gradient(139.49deg,rgba(21,1,1,.92) 0%,rgba(21,1,1,.75) 55%,rgba(21,1,1,.55) 100%)}
+  .panel:has(.form-sent:not([hidden])){min-height:0}
+  .panel .fields{display:flex;flex-direction:column;gap:32px}
+  .panel .fields[hidden]{display:none}
+  .panel .pair{display:flex;gap:24px}
+  .panel .pair .form-field{width:368px}
+  .panel legend{padding:0 0 24px;font-size:16px;line-height:24px;color:var(--cream)}
+  .panel fieldset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:12px}
+  .panel .chip span{letter-spacing:-.3px}
+  .panel textarea.form-input{height:200px}
+  .panel .consent{width:760px;height:41px}
+  .panel .consent .text{width:560px}
+  .panel .submit{padding-top:8px}
+
+  .direct{height:529.36px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .direct .row{display:flex;gap:24px}
+  .direct .row > h2{width:424px}
+  .direct dl{margin:0;display:grid;grid-template-columns:424px 424px;grid-template-rows:113px 137px;column-gap:24px}
+  .direct dl > div{border-top:1px solid rgba(217,217,217,.5);padding:28px 0 32px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+  .direct dt{font-size:12px;line-height:16px;color:var(--cream)}
+  .direct dd{margin:0;font-weight:500;font-size:20px;line-height:24px;letter-spacing:-.4px;white-space:nowrap;color:var(--cream)}
+  .direct dd a{text-decoration:underline;text-underline-position:from-font;transition:color .2s}
+  .direct dd a:hover{color:#fff}
+  .direct .socials{gap:16px}
+  .direct .socials dd{display:flex;gap:12px}
+  .direct .socials a{display:flex;align-items:center;height:44px;padding:0 20px;border:1px solid #d9d9d9;border-radius:22px;
+    font-weight:500;font-size:15px;letter-spacing:0;text-decoration:none;transition:background-color .2s,color .2s}
+  .direct .socials a:hover{background:#fff;color:var(--deep)}
+</style>
+</head>
+<body data-page="contact">
+<main class="canvas">
+  <section class="sec hero" aria-labelledby="contact-title">
+    <img class="photo" src="assets/contact/hero.png" alt="" aria-hidden="true">
+    <div class="tint" aria-hidden="true"></div>
+    <div class="shade" aria-hidden="true"></div>
+    <div class="blob" aria-hidden="true"></div>
+    <div class="inner">
+      <h1 id="contact-title">Talk to us.</h1>
+      <p class="lede">Tell us who you are and we'll get you to the right person.</p>
+    </div>
+  </section>
+
+  <section class="sec routes" aria-labelledby="routes-title">
+    <h2 class="h40" id="routes-title">Choose your route</h2>
+    <div class="grid">
+      <div class="route">
+        <span class="ic"><img src="assets/contact/icon-brands.svg" alt="" width="36" height="36"></span>
+        <h3>Brands.</h3>
+        <p>Want your product on a show?</p>
+        <a class="pill-btn primary" href="for-brands.html#enquiry">Discuss a Partnership</a>
+      </div>
+      <div class="route">
+        <span class="ic"><img src="assets/contact/icon-creators.svg" alt="" width="36" height="36"></span>
+        <h3>Creators.</h3>
+        <p>Want to host or pitch a show?</p>
+        <a class="pill-btn primary" href="shows-and-creators.html#apply">Apply to Host</a>
+      </div>
+      <div class="route">
+        <span class="ic"><img src="assets/contact/icon-everyone.svg" alt="" width="36" height="36"></span>
+        <h3>Everyone else.</h3>
+        <p>Press, careers, questions about a show or anything else. Use the form below.</p>
+        <a class="pill-btn primary" href="#message">Send Us a Message</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec message" id="message" aria-labelledby="message-title">
+    <div class="blob" aria-hidden="true"></div>
+    <div class="row">
+      <h2 class="h40" id="message-title">Send us a message.</h2>
+      <form class="panel" data-proto-form aria-labelledby="message-title">
+        <div class="fields" data-fields>
+          <div class="pair">
+            <label class="form-field"><span class="form-label">Name</span><input class="form-input" name="name" autocomplete="name" placeholder="Your name" required></label>
+            <label class="form-field"><span class="form-label">Email</span><input class="form-input" type="email" name="email" autocomplete="email" placeholder="you@example.com" required></label>
+          </div>
+          <fieldset>
+            <legend>I'm a</legend>
+            <div class="form-chips">
+              <label class="chip"><input type="radio" name="role" value="Viewer" required><span>Viewer</span></label>
+              <label class="chip"><input type="radio" name="role" value="Press"><span>Press</span></label>
+              <label class="chip"><input type="radio" name="role" value="Job seeker"><span>Job seeker</span></label>
+              <label class="chip"><input type="radio" name="role" value="Other"><span>Other</span></label>
+            </div>
+          </fieldset>
+          <label class="form-field"><span class="form-label">Message</span><textarea class="form-input" name="message" placeholder="How can we help?" required></textarea></label>
+          <label class="consent"><input type="checkbox" name="consent" required><span class="box" aria-hidden="true"></span><span class="text">I agree to Livelyhood using these details to respond to my message, in line with the <a href="#" aria-disabled="true">Privacy Policy</a>.</span></label>
+          <div class="submit"><button class="pill-btn primary" type="submit">Send Message</button></div>
+        </div>
+        <div class="form-sent" data-sent hidden>
+          <span class="tick" tabindex="-1" aria-hidden="true">✓</span>
+          <p role="status">Thanks. We'll reply within five working days.</p>
+          <button class="pill-btn outline" type="button" data-reset>Send Another Message</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sec direct" aria-labelledby="direct-title">
+    <div class="row">
+      <h2 class="h40" id="direct-title">Reach us directly</h2>
+      <dl>
+        <div><dt>Email</dt><dd><a href="mailto:hello@livelyhood.sg">hello@livelyhood.sg</a></dd></div>
+        <div><dt>WhatsApp</dt><dd><a href="#" aria-disabled="true">+65 0000 0000 [PLACEHOLDER]</a></dd></div>
+        <div><dt>Location [PLACEHOLDER label]</dt><dd>Based in Singapore</dd></div>
+        <div class="socials"><dt>Socials</dt><dd><a href="#" aria-disabled="true">TikTok</a><a href="#" aria-disabled="true">Instagram</a><a href="#" aria-disabled="true">YouTube</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <div data-site-footer></div>
+  <div class="abs" style="left:0;top:0"><div data-site-header></div></div>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

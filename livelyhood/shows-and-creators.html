@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Shows &amp; Creators — Livelyhood</title>
+<meta name="description" content="Original live shopping shows from Singapore, and how creators can host one or pitch a format of their own.">
+<link rel="icon" href="assets/home/logomark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* Shows & Creators — follows the Figma frame "Shows & Creators — Desktop 1440" (sections stacked, 11154 tall) */
+  p,h1,h2,h3,h4,dl,dd,ol,ul{margin:0}
+  ol,ul{list-style:none;padding:0}
+  .sec{position:relative;width:1440px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;pointer-events:none}
+  .red-blob{background:radial-gradient(circle at 50% 50%,#FF0004 0,#C70003 15%,#8E0002 30%,#560001 45%,#390001 52.5%,#1D0000 60%,rgba(29,0,0,0) 70%)}
+  .h40{font-weight:500;font-size:40px;line-height:42px;letter-spacing:-1.6px;white-space:nowrap;color:var(--cream)}
+  .label{font-size:12px;line-height:16px;color:var(--cream)}
+  .eyebrow{font-size:16px;line-height:24px;color:var(--cream)}
+  .dot-row{display:flex;gap:8px}
+  .pill-sm{display:inline-flex;align-items:center;height:44px;padding:0 20px;border:1px solid #d9d9d9;border-radius:22px;font-weight:500;font-size:15px;color:var(--cream);white-space:nowrap;transition:background-color .2s,color .2s}
+  a.pill-sm:hover{background:#fff;color:var(--deep)}
+  .live-sm{position:absolute;left:17.25px;top:17.25px;display:flex;align-items:center;gap:5.176px;height:24.155px;padding:0 10.352px;border-radius:12.078px;background:var(--red);
+    font-weight:500;font-size:10.352px;line-height:15.528px;letter-spacing:.6211px;color:var(--cream)}
+  .live-sm i{width:5.176px;height:5.176px;border-radius:2.588px;background:var(--cream)}
+
+  /* Hero */
+  .hero{height:938.477px;background:var(--bg)}
+  .hero .blob{left:26px;top:158px;width:1500px;height:1500px;opacity:.75;filter:blur(80px);
+    background:radial-gradient(circle 1060.7px at 50% 50%,#FF9FA0 0,#FF7779 7.5%,#FF5052 15%,#FF3C3F 18.75%,#FF282B 22.5%,#FF1418 26.25%,#FF0A0E 28.125%,#FF0004 30%,#C70003 39%,#8E0002 48%,#560001 57%,#390001 61.5%,#1D0000 66%,rgba(29,0,0,0) 72%)}
+  .hero h1{position:absolute;left:60px;top:158.398px;width:678px;font-weight:600;font-size:80px;line-height:90px;letter-spacing:-5.184px;text-transform:uppercase;color:#fff}
+  .hero .side{position:absolute;left:910px;top:169.898px;display:flex;flex-direction:column;gap:24px}
+  .hero .side p{width:424px;font-weight:400;font-size:18px;line-height:26px;letter-spacing:-.5px;color:var(--cream)}
+  .hero .ctas{display:flex;gap:12px}
+  .hero .phone{position:absolute;width:259.668px;height:486.022px;border-radius:19.746px;overflow:hidden}
+  .hero .phone img{width:100%;height:100%;object-fit:cover}
+
+  /* Our shows */
+  .shows{height:1987.04px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .shows > h2{text-align:center;font-weight:500;font-size:72px;line-height:72px;letter-spacing:-3.6px;color:var(--cream)}
+  .show{display:flex;justify-content:center;align-items:center;gap:24px;height:700px}
+  .show:first-of-type{margin-top:96px}
+  .show + .show{margin-top:139.68px}
+  .show .shot{position:relative;flex:none;width:373.988px;height:700px;overflow:hidden}
+  .show .shot img{width:100%;height:100%;object-fit:cover}
+  .show .shot span{position:absolute;top:19.27px;height:13.231px;border:.882px solid #fff;border-radius:176.409px}
+  .show .text{display:flex;flex-direction:column;gap:28px}
+  .show h3{font-weight:500;font-size:103.68px;line-height:98.496px;letter-spacing:-5.184px;white-space:nowrap;color:var(--cream)}
+  .show .dot-row{padding-bottom:24px;border-bottom:1px solid rgba(217,217,217,.5)}
+  .show .text > p:not(.label){width:560px;font-size:20px;line-height:26px;color:var(--cream)}
+  .show dl{display:grid;gap:24px}
+  .show dl > div{display:flex;flex-direction:column;gap:4px}
+  .show dt{font-size:12px;line-height:16px;color:var(--cream)}
+  .show dd{font-weight:500;font-size:16px;white-space:nowrap;color:var(--cream)}
+  .show .pill-btn{align-self:flex-start}
+
+  /* Coming up */
+  .next{height:840.72px;background:var(--bg);padding:139.68px 60px 0}
+  .next .head{display:flex;justify-content:space-between;align-items:flex-end}
+  .next h2{font-weight:500;font-size:103.68px;line-height:98.496px;letter-spacing:-5.184px;white-space:nowrap;color:var(--cream)}
+  .next .countdown{display:flex;align-items:center;gap:10px;font-size:16px;line-height:24px;color:var(--cream)}
+  .next .countdown i{width:10px;height:10px;border-radius:5px;background:var(--red)}
+  .next ul{margin-top:63.36px;border-bottom:1px solid rgba(217,217,217,.5)}
+  .next li{display:grid;grid-template-columns:312px 312px minmax(0,1fr) fit-content(100%) 0 0;column-gap:24px;align-items:center;padding:40px 0;border-top:1px solid rgba(217,217,217,.5)}
+  .next .day{font-weight:500;font-size:72px;line-height:72px;letter-spacing:-3.6px;white-space:nowrap;color:var(--cream)}
+  .next .time,.next .name{font-weight:500;font-size:24px;letter-spacing:-.72px;white-space:nowrap;color:var(--cream)}
+  .next .foot{display:flex;justify-content:space-between;align-items:center;padding-top:40px}
+  .next .foot p{font-size:16px;line-height:24px;white-space:nowrap;color:var(--cream)}
+
+  /* Meet the hosts */
+  .hosts{height:1602.251px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .hosts .head{display:flex;justify-content:space-between;align-items:flex-end}
+  .hosts h2{padding-top:16px;width:900px;font-weight:500;font-size:64px;line-height:82.08px;letter-spacing:-4.32px;color:var(--cream)}
+  .hosts .head > p{width:360px;font-weight:400;font-size:20px;line-height:26px;color:var(--cream)}
+  .bento{display:grid;grid-template-columns:repeat(12,95.33px);gap:16px}
+  .bento.b1{margin-top:63.36px;grid-template-rows:398.27px 145.73px}
+  .bento.b2{margin-top:16px;grid-template-rows:376.53px 168px}
+  .bento > *{border-radius:24px}
+  .bento .photo{position:relative;grid-row:1 / span 2;min-height:560px;overflow:hidden}
+  .bento .photo img{width:100%;height:100%;object-fit:cover}
+  .show-tag{position:absolute;left:24px;top:24px;display:flex;align-items:center;gap:8px;height:32px;padding:0 14px;border-radius:16px;background:var(--bg);
+    font-weight:500;font-size:12px;line-height:18px;color:var(--cream)}
+  .show-tag i{width:6px;height:6px;border-radius:3px;background:var(--red)}
+  .bento .quote{padding:47.52px;background:#2b0404;display:flex;flex-direction:column;justify-content:space-between}
+  .bento.b2 .quote{justify-content:flex-start;gap:40px}
+  .bento .quote > img{width:48px;height:40px}
+  .bento blockquote{margin:0;width:669px;font-weight:400;font-size:56px;line-height:56px;letter-spacing:-2.8px;color:var(--cream)}
+  .bento .who{display:flex;flex-direction:column;gap:4px}
+  .bento .who p:first-child{font-weight:500;font-size:20px;letter-spacing:-.4px;color:var(--cream)}
+  .bento .who p:last-child{font-size:14px;line-height:20px;color:var(--cream)}
+  .bento .ask{padding:28px;background:#2b0404;display:flex;flex-direction:column;gap:16px}
+  .bento .ask ul{display:flex;flex-wrap:wrap;gap:8px}
+  .bento .ask li{display:flex;align-items:center;min-height:36px;padding:7px 16px;border:1px solid #d9d9d9;border-radius:18px;font-weight:400;font-size:14px;line-height:20px;white-space:nowrap;color:var(--cream)}
+  .bento .follow{padding:28px;background:var(--cream);color:var(--deep);display:flex;flex-direction:column;justify-content:space-between;transition:background-color .25s}
+  .bento .follow:hover{background:#fff}
+  .bento .follow .label{color:var(--deep)}
+  .bento .follow span{display:flex;align-items:flex-end;gap:12px;font-weight:500;font-size:18px;letter-spacing:-.36px}
+  .bento .follow img{width:20px;height:20px}
+
+  /* For creators */
+  .creators{height:1681.805px;background:var(--bg)}
+  .creators > .blob{left:-900px;top:-200px;width:1300px;height:1300px;opacity:.7;filter:blur(80px)}
+  .creators .inner{position:absolute;left:60px;top:139.68px;width:1320px}
+  .creators .lead{display:flex;align-items:center;gap:48px;padding-top:24px}
+  .creators h2{width:831px;font-weight:600;font-size:86.4px;line-height:84.672px;letter-spacing:-4.32px;color:var(--cream)}
+  .creators .lead img{width:273.594px;height:364.789px}
+  .creators .why{display:flex;justify-content:space-between;padding-top:63.36px;height:167.36px}
+  .creators .why p:first-child{width:424px;font-weight:500;font-size:24px;line-height:28.8px;letter-spacing:-.72px;color:var(--cream)}
+  .creators .why p:last-child{width:488px;margin-right:0;font-size:18px;line-height:26px;color:var(--cream)}
+  .creators .lists{display:flex;gap:24px;margin-top:64px}
+  .creators .get{flex:810.664 0 0;padding-top:40px}
+  .creators h3{font-weight:500;font-size:24px;letter-spacing:-.72px;white-space:nowrap;color:var(--cream)}
+  .creators .get ul{margin-top:24px;display:grid;grid-template-columns:393.33px 393.34px;grid-template-rows:224.4px 224.4px;column-gap:24px}
+  .creators .get li{border-top:1px solid rgba(217,217,217,.5);padding:28px 0 36px;display:flex;flex-direction:column;gap:16px}
+  .creators .get li img{width:56px;height:56px}
+  .creators h4{font-weight:500;font-size:18px;line-height:23.4px;letter-spacing:-.36px;white-space:nowrap;color:var(--cream)}
+  .creators .get li p,.creators .ask li p{font-size:16px;line-height:24px;color:var(--cream)}
+  .creators .ask{position:relative;flex:403.336 0 0;padding:40px;border-radius:16px;background:var(--bg-alt);overflow:hidden;display:flex;flex-direction:column;gap:24px}
+  .creators .ask .blob{left:40px;top:182.62px;width:719px;height:719px;opacity:.7;filter:blur(80px)}
+  .creators .ask > :not(.blob){position:relative}
+  .creators .ask ul{display:flex;flex-direction:column;gap:24px}
+  .creators .ask li{display:flex;gap:16px;padding-top:20px}
+  .creators .ask li img{width:40px;height:79.398px}
+  .creators .ask li div{display:flex;flex-direction:column;gap:8px}
+  .creators .ask li p{width:348px}
+  .creators .bar{display:flex;justify-content:space-between;align-items:center;margin-top:48px;padding-top:32px;border-top:1px solid rgba(217,217,217,.5)}
+  .creators .bar p{width:625px;font-weight:400;font-size:20px;line-height:26px;color:var(--cream)}
+  .creators .bar .pill-btn{font-size:20px}
+
+  /* How applying works */
+  .how{height:668.953px;background:var(--bg-alt)}
+  .how .blob{left:1040px;top:-300px;width:1300px;height:1300px;opacity:.6;filter:blur(80px)}
+  .how .inner{position:absolute;left:60px;top:139.68px;width:1320px}
+  .how h2{padding-top:16px}
+  .how ol{margin-top:96px;display:grid;grid-template-columns:repeat(4,330px)}
+  .how li{padding-right:24px;display:flex;flex-direction:column;gap:24px}
+  .how .rail{display:flex;align-items:center}
+  .how .circ{flex:none;width:88px;height:88px;border:1px solid #fff;border-radius:44px;display:flex;align-items:center;justify-content:center}
+  .how .circ img{width:40px;height:40px}
+  .how .rail i{margin-left:16px;width:202px;height:1px;background:rgba(217,217,217,.5)}
+  .how h3{font-weight:500;font-size:24px;line-height:27.6px;letter-spacing:-.72px;white-space:nowrap;color:var(--cream)}
+  .how li > p{width:300px;font-size:16px;line-height:24px;color:var(--cream)}
+
+  /* Apply form */
+  .apply{height:1087.359px;background:var(--bg)}
+  .apply > .blob{left:740px;top:-300px;width:1400px;height:1400px;opacity:.6;filter:blur(80px)}
+  .apply .row{position:absolute;left:60px;top:139.19px;width:1313px;display:flex;gap:24px;align-items:flex-start}
+  .apply .intro{flex:1;display:flex;flex-direction:column;gap:24px}
+  .apply h2{width:424px;font-weight:500;font-size:48px;line-height:56px;letter-spacing:-3.6px;color:var(--cream)}
+  .apply .intro p{width:424px;font-weight:400;font-size:20px;line-height:26px;letter-spacing:-1px;color:var(--cream)}
+  .apply form{padding:48px 32px;border-radius:24px;background:rgba(15,15,15,.47);display:flex;flex-direction:column;gap:24px}
+  .tabs{display:flex;width:424px;padding:4px;border:1px solid #fff;border-radius:30.5px}
+  .tabs button{flex:1;height:44px;padding:6px 12px;border-radius:22px;font-weight:500;font-size:15px;line-height:18px;white-space:nowrap;color:var(--cream);transition:background-color .25s,color .25s}
+  .tabs button[aria-selected=true]{background:#fff;color:var(--deep)}
+  .tabs button[aria-selected=false]:hover{background:rgba(255,255,255,.08)}
+  .apply .fields{display:grid;grid-template-columns:367px 367px;grid-template-rows:88px 88px 88px 80px 88px 42px 52px;gap:28px 24px}
+  .apply .fields[hidden]{display:none}
+  .apply .wide{grid-column:1 / span 2}
+  .apply fieldset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:12px}
+  .apply legend{padding:0 0 24px;font-size:16px;line-height:24px;color:var(--cream)}
+  .apply .consent .text{width:520px}
+  .apply .form-sent{width:758px}
+
+  /* FAQ */
+  .faq{background:var(--bg-alt);padding:139.68px 60px}
+  .faq .grid{display:grid;grid-template-columns:648px 648px;column-gap:24px;align-items:start}
+  .faq dl{border-bottom:1px solid rgba(217,217,217,.5)}
+  .faq dl > div{border-top:1px solid rgba(217,217,217,.5)}
+  .faq dt button{display:flex;align-items:center;justify-content:space-between;width:648px;padding:24px 0;text-align:left;
+    font-weight:500;font-size:20px;line-height:26px;letter-spacing:-.4px;color:var(--cream)}
+  .faq dt .pm{position:relative;display:flex;align-items:center;justify-content:center;width:49px;height:49px;border:1px solid #d9d9d9;border-radius:24.5px;transition:background-color .25s}
+  .faq dt .pm img{position:absolute;width:14px;height:14px;transition:opacity .2s}
+  .faq dt .pm .minus,.faq dt button[aria-expanded=true] .plus{opacity:0}
+  .faq dt button[aria-expanded=true] .pm{background:#fff}
+  .faq dt button[aria-expanded=true] .minus{opacity:1}
+  .faq dt button:hover .pm{border-color:#fff}
+  .faq dd{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.8,.2,1)}
+  .faq dd.is-open{grid-template-rows:1fr}
+  .faq dd > div{overflow:hidden}
+  .faq dd p{width:576px;padding-bottom:28px;font-size:16px;line-height:24px;color:var(--cream)}
+
+  /* Final CTA */
+  .final{height:837px;background:var(--bg)}
+  .final .blob{left:-80px;top:-1068.18px;width:1600px;height:1600px;opacity:.75;filter:blur(80px);
+    background:radial-gradient(circle 1131.4px at 50% 50%,#FF9FA0 0,#FF7779 7%,#FF5052 14%,#FF3C3F 17.5%,#FF282B 21%,#FF1418 24.5%,#FF0A0E 26.25%,#FF0004 28%,#C70003 36.5%,#8E0002 45%,#560001 53.5%,#390001 57.75%,#1D0000 62%,rgba(29,0,0,0) 70%)}
+  .final .ring{position:absolute;border:1px solid rgba(255,244,220,.6);border-radius:50%;pointer-events:none}
+  .final .icon{position:absolute;left:600px;top:151.82px;width:240px;height:210px}
+  .final h2{position:absolute;left:220px;top:389.82px;width:1000px;text-align:center;font-weight:500;font-size:96px;line-height:98.496px;letter-spacing:-5.184px;color:var(--cream)}
+  .final p{position:absolute;left:500px;top:614.8px;width:440px;text-align:center;font-weight:400;font-size:20px;line-height:26px;color:var(--cream)}
+  .final .pill-btn{position:absolute;left:720px;top:694.8px;transform:translateX(-50%)}
+</style>
+</head>
+<body data-page="shows">
+<main class="canvas">
+  <section class="sec hero" aria-labelledby="shows-title">
+    <div class="blob" aria-hidden="true"></div>
+    <h1 id="shows-title">Pull up a seat.<br>We're live.</h1>
+    <div class="side">
+      <p>Original live shopping shows from Singapore. Each one has its own host, its own world and its own reason to watch.</p>
+      <div class="ctas">
+        <a class="pill-btn primary" href="#shows">Watch a Show</a>
+        <a class="pill-btn outline" href="#apply">Apply to Host</a>
+      </div>
+    </div>
+    <div class="phone" style="left:60px;top:565.11px"><img src="assets/shows/hero-live-1.png" alt="A live tech deals show on a phone" width="260" height="486"><span class="live-sm"><i></i>LIVE</span></div>
+    <div class="phone" style="left:401.67px;top:419px"><img src="assets/shows/hero-live-2.png" alt="A host presenting haircare on a live show" width="260" height="486"><span class="live-sm"><i></i>LIVE</span></div>
+    <div class="phone" style="left:743.34px;top:565.11px"><img src="assets/shows/hero-live-3.png" alt="Behind the scenes of a beauty live stream" width="260" height="486"><span class="live-sm"><i></i>LIVE</span></div>
+    <div class="phone" style="left:1085px;top:419px"><img src="assets/shows/hero-live-4.png" alt="A host presenting skincare at a desk during a live show" width="260" height="486"><span class="live-sm"><i></i>LIVE</span></div>
+  </section>
+
+  <section class="sec shows" id="shows" aria-labelledby="our-shows-title">
+    <h2 id="our-shows-title">Two shows. Plenty to watch.</h2>
+    <article class="show" aria-labelledby="show-1">
+      <div class="shot" style="border-radius:35.282px">
+        <img src="assets/brands/case-truly-yours.png" alt="Hands holding jewellery and gift bags on the Truly Yours set" width="374" height="700">
+        <span aria-hidden="true" style="left:138.48px;width:79.384px"></span><span aria-hidden="true" style="left:222.28px;width:14.113px"></span>
+      </div>
+      <div style="width:716px;display:flex;justify-content:flex-end">
+        <div class="text" style="width:560px">
+          <p class="label">Show 01</p>
+          <h3 id="show-1">Truly Yours</h3>
+          <p class="dot-row label"><span>Jewellery</span><span>•</span><span>Gifting</span><span>•</span><span>Stories</span></p>
+          <p style="letter-spacing:-1px">Some pieces mean more. Truly Yours is a live jewellery show about the stories behind each piece: who it's for, how to wear it and what makes it feel personal. Ask about styling or gifting while we're live, and shop the piece right there.</p>
+          <dl style="grid-template-columns:repeat(3,minmax(0,1fr))">
+            <div><dt>Hosted by</dt><dd>Host Name</dd></div>
+            <div><dt>Live</dt><dd>Thursdays, 8pm SGT</dd></div>
+            <div><dt>Watch on</dt><dd>TikTok</dd></div>
+          </dl>
+          <a class="pill-btn primary" href="#" aria-disabled="true">Watch the Latest Episode</a>
+        </div>
+      </div>
+    </article>
+    <article class="show" aria-labelledby="show-2">
+      <div style="width:785px">
+        <div class="text" style="width:784px">
+          <p class="label">Show 02</p>
+          <h3 id="show-2">Daily Hauls</h3>
+          <p class="dot-row label"><span>Everyday Finds</span><span>•</span><span>Trending</span><span>•</span><span>Useful</span></p>
+          <p style="font-weight:400;letter-spacing:-.5px">Daily Hauls is a fast, friendly live show about the things people actually buy. Useful, interesting and trending finds, shown properly and explained honestly. One haul at a time, with your questions answered live.</p>
+          <dl style="grid-template-columns:237.33px 237.34px 237.33px 0">
+            <div><dt>Hosted by</dt><dd>Host Name</dd></div>
+            <div><dt>Live</dt><dd>Tuesdays, 8pm SGT</dd></div>
+            <div><dt>Watch on</dt><dd>TikTok</dd></div>
+          </dl>
+          <a class="pill-btn primary" href="#" aria-disabled="true">Watch the Latest Episode</a>
+        </div>
+      </div>
+      <div class="shot" style="border-radius:28.225px;background:var(--deep)">
+        <img src="assets/brands/case-daily-hauls.png" alt="Host presenting skincare products on the Daily Hauls set" width="374" height="700">
+        <span aria-hidden="true" style="left:138.04px;top:19.01px;width:79.384px"></span><span aria-hidden="true" style="left:221.83px;top:19.01px;width:14.113px"></span>
+      </div>
+    </article>
+  </section>
+
+  <section class="sec next" aria-labelledby="next-title">
+    <div class="head">
+      <h2 id="next-title">What's on next.</h2>
+      <p class="countdown"><i></i><span data-countdown>Daily Hauls goes live in 4d 3h</span></p>
+    </div>
+    <ul>
+      <li><span class="day">Thursday</span><span class="time">8pm SGT</span><span class="name">Truly Yours</span><a class="pill-sm" href="#" aria-disabled="true">TikTok</a><span></span><span></span></li>
+      <li><span class="day">Tuesday</span><span class="time">8pm SGT</span><span class="name">Daily Hauls</span><a class="pill-sm" href="#" aria-disabled="true">TikTok</a><span></span><span></span></li>
+    </ul>
+    <div class="foot">
+      <p>Times are Singapore time. Follow us so you never miss a live.</p>
+      <a class="pill-btn outline" href="#" aria-disabled="true">Follow on TikTok</a>
+    </div>
+  </section>
+
+  <section class="sec hosts" aria-labelledby="hosts-title">
+    <div class="head">
+      <div><p class="eyebrow">Meet the hosts</p><h2 id="hosts-title">The people behind the picks.</h2></div>
+      <p>Every show has a host worth listening to.</p>
+    </div>
+    <div class="bento b1">
+      <div class="photo" style="grid-column:1 / span 5"><img src="assets/shows/host-cheng-dao.png" alt="Cheng Dao, host of Truly Yours, holding up a phone" width="541" height="560"><span class="show-tag"><i></i>Truly Yours</span></div>
+      <figure class="quote" style="grid-column:6 / span 7;grid-row:1;margin:0">
+        <img src="assets/shows/icon-quote.svg" alt="">
+        <blockquote>“I'll tell you the story<br>behind every piece.”</blockquote>
+        <figcaption class="who"><p>Cheng Dao</p><p>Host of Truly Yours</p></figcaption>
+      </figure>
+      <div class="ask" style="grid-column:6 / span 4;grid-row:2"><p class="label">Ask me about</p><ul><li>gifting</li><li>layering</li><li>everyday wear</li></ul></div>
+      <a class="follow" href="#" aria-disabled="true" style="grid-column:10 / span 3;grid-row:2"><p class="label">Follow</p><span>@chengdao<img src="assets/shows/icon-arrow-up-right.svg" alt=""></span></a>
+    </div>
+    <div class="bento b2">
+      <figure class="quote" style="grid-column:1 / span 7;grid-row:1;margin:0">
+        <img src="assets/shows/icon-quote.svg" alt="">
+        <blockquote>“If it's not worth<br>buying, I'll say so.”</blockquote>
+        <figcaption class="who"><p>Luan Nia</p><p>Host of Daily Hauls</p></figcaption>
+      </figure>
+      <div class="ask" style="grid-column:1 / span 4;grid-row:2"><p class="label">Ask me about</p><ul><li>home finds</li><li>gadgets</li><li>deals that are actually good</li></ul></div>
+      <a class="follow" href="#" aria-disabled="true" style="grid-column:5 / span 3;grid-row:2"><p class="label">Follow</p><span>@luannia<img src="assets/shows/icon-arrow-up-right.svg" alt=""></span></a>
+      <div class="photo" style="grid-column:8 / span 5"><img src="assets/shows/host-luan-nia.png" alt="Luan Nia, host of Daily Hauls, on a busy city street" width="541" height="560"><span class="show-tag"><i></i>Daily Hauls</span></div>
+    </div>
+  </section>
+
+  <section class="sec creators" id="for-creators" aria-labelledby="creators-title">
+    <div class="blob red-blob" aria-hidden="true"></div>
+    <div class="inner">
+      <p class="eyebrow">For creators</p>
+      <div class="lead">
+        <h2 id="creators-title">Turn what you<br>love talking about<br>into a show.</h2>
+        <img src="assets/shows/creator-phone.svg" alt="" width="274" height="365">
+      </div>
+      <div class="why">
+        <p>A sponsored post ends when the<br>caption does. A show keeps going.</p>
+        <p>Livelyhood helps creators build a recurring live format around what they know and love, then brings the products, the brands &amp; the production to make it work.</p>
+      </div>
+      <div class="lists">
+        <div class="get">
+          <h3>What you get</h3>
+          <ul>
+            <li><img src="assets/shows/get-format.svg" alt=""><h4>A format built with you.</h4><p>We develop the concept, the segments and the run of show together.</p></li>
+            <li><img src="assets/shows/get-products.svg" alt=""><h4>Products and brands, sorted.</h4><p>We source the products and handle the brand relationships, so you can focus on the show.</p></li>
+            <li><img src="assets/shows/get-production.svg" alt=""><h4>Production support.</h4><p>Set, lighting, camera and a producer with you on the day.</p></li>
+            <li><img src="assets/shows/get-paid.svg" alt=""><h4>Paid for your time.</h4><p>Every show is paid, and how depends on the format.</p></li>
+          </ul>
+        </div>
+        <div class="ask">
+          <div class="blob red-blob" aria-hidden="true"></div>
+          <h3>What we ask</h3>
+          <ul>
+            <li><img src="assets/shows/ask-schedule.svg" alt=""><div><h4>Show up on schedule.</h4><p>Live shows run at set times, so reliability matters.</p></div></li>
+            <li><img src="assets/shows/ask-product.svg" alt=""><div><h4>Know the product.</h4><p>Prep before each show with the brief and samples we send.</p></div></li>
+            <li><img src="assets/shows/ask-honest.svg" alt=""><div><h4>Be honest on air.</h4><p>Only say what you actually believe about a product. Viewers can tell.</p></div></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bar">
+        <p>We look for people who are comfortable talking to camera and know their subject. A big following helps, but it isn't required.</p>
+        <a class="pill-btn primary" href="#apply">Apply to Host</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec how" aria-labelledby="applying-title">
+    <div class="blob red-blob" aria-hidden="true"></div>
+    <div class="inner">
+      <p class="eyebrow">How applying works</p>
+      <h2 class="h40" id="applying-title">From application to on air.</h2>
+      <ol>
+        <li><div class="rail"><span class="circ"><img src="assets/shows/apply-pitch.svg" alt=""></span><i></i></div><h3>Apply or pitch.</h3><p>Takes about five minutes.</p></li>
+        <li><div class="rail"><span class="circ"><img src="assets/shows/apply-reply.svg" alt=""></span><i></i></div><h3>We get back to you.</h3><p>Within five working days, whatever the answer.</p></li>
+        <li><div class="rail"><span class="circ"><img src="assets/shows/apply-camera.svg" alt=""></span><i></i></div><h3>Camera test.</h3><p>A short chat and a test on camera.</p></li>
+        <li><div class="rail"><span class="circ"><img src="assets/shows/apply-episode.svg" alt=""></span></div><h3>Your first episode.</h3><p>We plan it with you, prep you on the product and go live together.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec apply" id="apply" aria-labelledby="apply-title">
+    <div class="blob red-blob" aria-hidden="true"></div>
+    <div class="row">
+      <div class="intro">
+        <h2 id="apply-title">Your show<br>starts here.</h2>
+        <p>Apply to host one of our shows, or pitch a format of your own.</p>
+      </div>
+      <form data-proto-form aria-labelledby="apply-title">
+        <div class="tabs" role="tablist" aria-label="Application type">
+          <button type="button" role="tab" aria-selected="true" data-track="host">Host a Livelyhood show</button>
+          <button type="button" role="tab" aria-selected="false" data-track="pitch">Pitch my own show</button>
+        </div>
+        <input type="hidden" name="track" value="host">
+        <div class="fields" data-fields>
+          <label class="form-field"><span class="form-label">Name</span><input class="form-input" name="name" autocomplete="name" required></label>
+          <label class="form-field"><span class="form-label">Email</span><input class="form-input" type="email" name="email" autocomplete="email" required></label>
+          <label class="form-field"><span class="form-label">WhatsApp</span><input class="form-input" type="tel" name="whatsapp" autocomplete="tel"></label>
+          <label class="form-field"><span class="form-label">Main social handle</span><input class="form-input" name="handle" required></label>
+          <label class="form-field"><span class="form-label">Platform and follower count</span><input class="form-input" name="platform"></label>
+          <label class="form-field"><span class="form-label">Languages</span><input class="form-input" name="languages"></label>
+          <fieldset>
+            <legend>Based in Singapore?</legend>
+            <div class="form-chips">
+              <label class="chip"><input type="radio" name="singapore" value="Yes" required><span>Yes</span></label>
+              <label class="chip"><input type="radio" name="singapore" value="No"><span>No</span></label>
+            </div>
+          </fieldset>
+          <span></span>
+          <label class="form-field wide"><span class="form-label">Link to a video of you talking to camera</span><input class="form-input" type="url" name="video" placeholder=""></label>
+          <label class="consent wide"><input type="checkbox" name="consent" required><span class="box" aria-hidden="true"></span><span class="text">I agree to Livelyhood using these details to review my application, in line with the <a href="#" aria-disabled="true">Privacy Policy</a>.</span></label>
+          <div class="wide"><button class="pill-btn primary" type="submit">Send Application</button></div>
+        </div>
+        <div class="form-sent" data-sent hidden>
+          <span class="tick" tabindex="-1" aria-hidden="true">✓</span>
+          <p role="status">Thanks. We'll get back to you within five working days, whatever the answer.</p>
+          <button class="pill-btn outline" type="button" data-reset>Send Another Application</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sec faq" id="faq" aria-labelledby="faq-title" data-faq>
+    <div class="grid">
+      <h2 class="h40" id="faq-title">Frequently asked questions</h2>
+      <dl>
+        <div><dt><button type="button" aria-expanded="true">Do I need a big following?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd class="is-open"><div><p>No. We care more about how you hold attention on camera than how many followers you have.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">How do I get paid?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>[PLACEHOLDER] Answer to come.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">Do I need my own equipment?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>[PLACEHOLDER] Answer to come.</p></div></dd></div>
+        <div><dt><button type="button" aria-expanded="false">Can I pitch more than one idea?<span class="pm"><img class="plus" src="assets/brands/faq-plus.svg" alt=""><img class="minus" src="assets/brands/faq-minus.svg" alt=""></span></button></dt>
+          <dd><div><p>[PLACEHOLDER] Answer to come.</p></div></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec final" aria-labelledby="final-title">
+    <div class="blob" aria-hidden="true"></div>
+    <div aria-hidden="true">
+      <span class="ring" style="left:-83.04px;top:-859.94px;width:1606.081px;height:1606.081px;opacity:.11"></span>
+      <span class="ring" style="left:72.5px;top:-704.4px;width:1295px;height:1295px;opacity:.32"></span>
+      <span class="ring" style="left:417.8px;top:-359.1px;width:604.402px;height:604.402px;opacity:.49;border-width:.5px"></span>
+      <span class="ring" style="left:-150.43px;top:-927.33px;width:1740.865px;height:1740.865px;opacity:.03"></span>
+    </div>
+    <img class="icon" src="assets/shows/cta-box-star.svg" alt="" width="240" height="210">
+    <h2 id="final-title">Want your<br>products featured?</h2>
+    <p>Put them in front of viewers who are watching, asking and ready to buy.</p>
+    <a class="pill-btn primary" href="for-brands.html">See Brand Partnerships</a>
+  </section>
+
+  <div data-site-footer></div>
+  <div class="abs" style="left:0;top:0"><div data-site-header></div></div>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

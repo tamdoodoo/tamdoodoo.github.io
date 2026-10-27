@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>About — Livelyhood</title>
+<meta name="description" content="Livelyhood is a live commerce media network from Singapore, making original live shopping shows around creators people want to hear from.">
+<link rel="icon" href="assets/home/logomark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* About — follows the Figma frame "About — Desktop 1440" (sections stacked, 4419 tall) */
+  p,h1,h2,h3{margin:0}
+  .sec{position:relative;width:1440px;overflow:hidden}
+  .blob{position:absolute;border-radius:50%;pointer-events:none}
+
+  .hero{height:629px;background:var(--bg)}
+  .hero .blob{left:24px;top:-200px;width:1500px;height:1500px;opacity:.75;filter:blur(80px);
+    background:radial-gradient(circle 1060.7px at 50% 50%,#FF9FA0 0,#FF7779 7.5%,#FF5052 15%,#FF3C3F 18.75%,#FF282B 22.5%,#FF1418 26.25%,#FF0A0E 28.125%,#FF0004 30%,#C70003 39%,#8E0002 48%,#560001 57%,#390001 61.5%,#1D0000 66%,rgba(29,0,0,0) 72%)}
+  .hero .ring{position:absolute;left:232px;top:27px;width:975.6px;height:574.3px}
+  .hero .inner{position:absolute;left:60px;top:158.4px;width:1320px;display:flex;flex-direction:column;align-items:center;gap:47.52px}
+  .eyebrow{display:flex;align-items:center;gap:10px;font-size:16px;line-height:24px;color:var(--cream)}
+  .eyebrow i{width:10px;height:10px;border-radius:5px;background:var(--red)}
+  .hero h1{width:1142px;text-align:center;font-weight:500;font-size:80px;line-height:91px;letter-spacing:-5.184px;text-transform:uppercase;color:#fff}
+  .hero .lede{width:630px;text-align:center;font-weight:400;font-size:20px;line-height:26px;letter-spacing:-.5px;color:var(--cream)}
+
+  .story{height:561px;background:var(--bg-alt);padding:139.68px 60px 0}
+  .story .row{display:flex;gap:48px;align-items:center;width:1320px}
+  .story .text{flex:616 0 0;display:flex;flex-direction:column;gap:28px}
+  .story h2{font-weight:500;font-size:72px;line-height:72px;letter-spacing:-3.6px;white-space:nowrap;color:var(--cream)}
+  .story .p1{width:520px;font-weight:500;font-size:20px;line-height:28.8px;letter-spacing:-.72px;color:var(--cream)}
+  .story .p2{width:520px;font-size:18px;line-height:26px;letter-spacing:-.5px;color:var(--cream)}
+  .story figure{flex:656 0 0;margin:0}
+  .story figure img{width:656px;height:421.711px}
+
+  .numbers{height:251px;background:var(--bg-alt);padding:48px 60px}
+  .numbers dl{margin:0;display:grid;grid-template-columns:repeat(4,312px);gap:40px 24px}
+  .numbers dl div{border-top:1px solid rgba(217,217,217,.5);padding-top:24px;display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:12px}
+  .numbers dd{margin:0;font-weight:500;font-size:80px;line-height:93.312px;letter-spacing:-5.184px;color:var(--cream)}
+  .numbers dt{font-size:16px;line-height:24px;color:var(--cream)}
+
+  .believe{height:843px;background:var(--bg-alt)}
+  .believe .blob{left:-725px;top:-200px;width:1300px;height:1300px;opacity:.6;filter:blur(80px);
+    background:radial-gradient(circle 919.24px at 50% 50%,#FF0004 0,#C70003 15%,#8E0002 30%,#560001 45%,#390001 52.5%,#1D0000 60%,rgba(29,0,0,0) 70%)}
+  .believe .inner{position:absolute;left:60px;top:139.68px;width:1320px}
+  .believe h2{padding-top:24px;width:900px;font-weight:500;font-size:86.4px;line-height:84.672px;letter-spacing:-4.32px;color:var(--cream)}
+  .believe ol{list-style:none;margin:79.2px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,424px);gap:48px 24px}
+  .believe li{border-top:1px solid rgba(217,217,217,.5);padding-top:24px;display:flex;flex-direction:column;gap:20px}
+  .believe li img{width:88px;height:88px}
+  .believe h3{font-weight:500;font-size:40px;line-height:42px;letter-spacing:-1.6px;white-space:nowrap;color:var(--cream)}
+  .believe li p{width:340px;font-size:16px;line-height:24px;color:var(--cream)}
+
+  .going{height:713px;background:var(--bg);padding:139.68px 60px;display:flex;align-items:center;justify-content:space-between}
+  .going figure{margin:0;width:626px}
+  .going figure img{width:520px;height:433.328px}
+  .going .text{display:flex;flex-direction:column;gap:28px}
+  .going h2{width:646px;font-weight:500;font-size:64px;line-height:72px;letter-spacing:-3.6px;color:var(--cream)}
+  .going p{width:520px;font-weight:400;font-size:20px;line-height:26px;letter-spacing:-.5px;color:var(--cream)}
+
+  .cta{height:661px;background:var(--bg-alt)}
+  .cta .blob{left:-80px;top:136.73px;width:1600px;height:1600px;opacity:.75;filter:blur(80px);
+    background:radial-gradient(circle 1131.4px at 50% 50%,#FF9FA0 0,#FF7779 7%,#FF5052 14%,#FF3C3F 17.5%,#FF282B 21%,#FF1418 24.5%,#FF0A0E 26.25%,#FF0004 28%,#C70003 36.5%,#8E0002 45%,#560001 53.5%,#390001 57.75%,#1D0000 62%,rgba(29,0,0,0) 70%)}
+  .cta h2{position:absolute;left:222px;top:96px;transform:translateX(-50%);font-weight:500;font-size:60px;line-height:129.6px;letter-spacing:-2px;white-space:nowrap;color:var(--cream)}
+  .card{position:absolute;top:107px;width:430px;padding:47.52px;border:1px solid rgba(217,217,217,.5);border-radius:32px;background:var(--bg);display:flex;flex-direction:column;gap:24px}
+  .card .kicker{font-size:16px;line-height:24px;color:#FF575A}
+  .card h3{font-weight:500;font-size:32px;line-height:42px;letter-spacing:-1.6px;white-space:nowrap;color:var(--cream)}
+  .card img{width:334px;height:171px}
+  .btn-52{display:flex;align-items:center;justify-content:center;height:52px;padding:0 28px;border:1px solid #fff;border-radius:26px;
+    font-weight:500;font-size:16px;letter-spacing:-.16px;color:var(--cream);transition:background-color .25s,color .25s}
+  .btn-52:hover{background:#fff;color:var(--deep)}
+</style>
+</head>
+<body data-page="about">
+<main class="canvas">
+  <section class="sec hero" aria-labelledby="about-title">
+    <div class="blob" aria-hidden="true"></div>
+    <img class="ring" src="assets/about/hero-ring.svg" alt="" aria-hidden="true">
+    <div class="inner">
+      <p class="eyebrow"><i></i>About Livelyhood</p>
+      <h1 id="about-title">We make shopping<br>worth watching.</h1>
+      <p class="lede">Livelyhood is a live commerce media network from Singapore. We create original live shopping shows, build them around creators people want to hear from, and give brands a real place inside them.</p>
+    </div>
+  </section>
+
+  <section class="sec story" aria-labelledby="story-title">
+    <div class="row">
+      <div class="text">
+        <h2 id="story-title">Why we started.</h2>
+        <p class="p1">Shopping online got easier, but it also got quieter. Endless listings, star ratings and the same product photos everywhere.</p>
+        <p class="p2">Live brings back what a good shop assistant always gave you: someone who knows the product, shows it properly and answers your question before you've finished asking it. Livelyhood exists to turn that into a show worth tuning in for.</p>
+      </div>
+      <figure><img src="assets/about/story-illustration.svg" alt="A grid of identical product listings turning into a live show on a phone, with a host and chat messages" width="656" height="422"></figure>
+    </div>
+  </section>
+
+  <section class="sec numbers" aria-label="Livelyhood in numbers">
+    <dl>
+      <div><dt>original shows</dt><dd>2</dd></div>
+      <div><dt>episodes aired</dt><dd>50+</dd></div>
+      <div><dt>hosts</dt><dd>8</dd></div>
+      <div><dt>brands featured</dt><dd>30+</dd></div>
+    </dl>
+  </section>
+
+  <section class="sec believe" aria-labelledby="believe-title">
+    <div class="blob" aria-hidden="true"></div>
+    <div class="inner">
+      <h2 id="believe-title">What every show<br>stands on.</h2>
+      <ol>
+        <li><img src="assets/about/icon-entertainment.svg" alt=""><h3>Entertainment first.</h3><p>If it isn't worth watching, it isn't worth selling on.</p></li>
+        <li><img src="assets/about/icon-hosts.svg" alt=""><h3>Hosts, not ads.</h3><p>People trust people. Our hosts bring their own voice to every product.</p></li>
+        <li><img src="assets/about/icon-honest.svg" alt=""><h3>Honest selling.</h3><p>We show products as they are and answer questions straight. That's what brings viewers back.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec going" aria-labelledby="going-title">
+    <figure><img src="assets/about/rings-illustration.svg" alt="Singapore at the centre of rings reaching out across the region" width="520" height="434"></figure>
+    <div class="text">
+      <h2 id="going-title">Starting in Singapore. Built for more.</h2>
+      <p>Today, we make original live shopping shows from Singapore. Next, we're developing formats and creator talent that can travel across Southeast Asia, where live shopping is already part of how people buy.</p>
+    </div>
+  </section>
+
+  <section class="sec cta" aria-labelledby="cta-title">
+    <div class="blob" aria-hidden="true"></div>
+    <h2 id="cta-title">Want in?</h2>
+    <div class="card" style="left:468px">
+      <p class="kicker">Creators</p>
+      <h3>Get your own show.</h3>
+      <img src="assets/about/icon-creators-phone.svg" alt="">
+      <a class="btn-52" href="shows-and-creators.html#apply">Apply to Host</a>
+    </div>
+    <div class="card" style="left:932px">
+      <p class="kicker">Brands</p>
+      <h3>Get your product on air.</h3>
+      <img src="assets/about/icon-brands-box.svg" alt="">
+      <a class="btn-52" href="for-brands.html">Partner With Us</a>
+    </div>
+  </section>
+
+  <div data-site-footer></div>
+  <div class="abs" style="left:0;top:0"><div data-site-header></div></div>
+</main>
+<script src="site.js"></script>
+</body>
+</html>

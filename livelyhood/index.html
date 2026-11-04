@@ -7,7 +7,7 @@
 <title>Livelyhood — Live shopping shows from Singapore</title>
 <meta name="description" content="Livelyhood makes live shopping shows. Creators host, products get shown properly, and viewers shop while they watch.">
 <link rel="icon" href="assets/home/logomark.svg" type="image/svg+xml">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="site.css?v=8">
 <style>
   /* Homepage — positions and sizes follow the Figma frame "Homepage" (1440 × 6989) */
   .home{height:6989px;background:var(--bg)}
@@ -29,7 +29,7 @@
   .hero .explore{position:absolute;left:45px;top:1576px;width:375px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
   /* The phone rides down with the page and settles beside the show card (sticky, as in the prototype) */
   .phone-track{position:absolute;left:720px;top:381px;bottom:0;pointer-events:none}
-  .phone-wrap{position:sticky;top:0;transform:translateX(-50%);height:1030px;padding:40px 8px;display:flex;align-items:center;justify-content:center;pointer-events:auto}
+  .phone-wrap{position:sticky;top:calc((100vh / var(--z) - 1030px) / 2);transform:translateX(-50%);height:1030px;padding:40px 8px;display:flex;align-items:center;justify-content:center;pointer-events:auto}
   .phone{position:relative;width:382px;height:700px;border:1px solid #fff;border-radius:38px}
   .phone .screen{position:absolute;left:12px;top:13.5px;width:356px;height:668px;border-radius:24px;background:#290403;object-fit:cover}
   .phone .live{position:absolute;left:32px;top:33.5px;height:28px;padding:0 12px;border-radius:14px;background:var(--red);display:flex;align-items:center;gap:6px;
@@ -84,11 +84,23 @@
 
   /* Starting in Singapore (5442–6227) */
   .singapore{left:-1px;top:5442px;width:1440px;height:785px;background:var(--bg);overflow:hidden}
-  .singapore .map{position:absolute;left:-418px;top:-41px;width:1443px;height:1004px;overflow:hidden}
-  .singapore .map img{position:absolute;left:-.05%;top:4.08%;width:100.1%;height:95.92%;max-width:none}
+  /* Dot-matrix globe drawn on a canvas from real land data (assets/home/globe-dots.js, built by tools/build-globe-dots.mjs) */
+  .singapore .globe{position:absolute;left:0;top:0;width:1440px;height:785px}
+  .singapore .pin{position:absolute;left:295px;top:409.2px;width:0;height:0}
+  .singapore .pin i{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:#FF2A2E;box-shadow:0 0 0 2px rgba(255,244,220,.9),0 0 18px 4px rgba(255,0,4,.65)}
+  .singapore .pin b{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,80,82,.9);animation:pin-pulse 2.4s cubic-bezier(.2,.8,.2,1) infinite}
+  .singapore .pin b+b{animation-delay:1.2s}
+  @keyframes pin-pulse{from{transform:scale(1);opacity:.9}to{transform:scale(3.2);opacity:0}}
+  .singapore .leader{position:absolute;left:0;top:0;width:1440px;height:785px;overflow:visible;pointer-events:none}
+  .singapore .leader path{fill:none;stroke:var(--cream);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:260;transition:stroke-dashoffset 1.1s cubic-bezier(.2,.8,.2,1) .9s}
+  .singapore .leader circle{fill:var(--cream);transition:opacity .3s 1.8s}
+  .singapore .place{transition:opacity .5s 1.7s,transform .5s 1.7s}
+  /* site.js arms the reveal; until the section is in view the line draws from the pin and the label waits */
+  .singapore.is-armed:not(.is-on) .leader path{stroke-dashoffset:260}
+  .singapore.is-armed:not(.is-on) .leader circle,.singapore.is-armed:not(.is-on) .place{opacity:0;transform:translateX(-8px)}
+  @media (prefers-reduced-motion:reduce){.singapore .pin b{animation:none;opacity:0}}
   .singapore h2{position:absolute;left:60px;top:113px;width:456px;font-weight:500;font-size:48px;line-height:1.1;letter-spacing:-4.32px;color:var(--cream)}
   .singapore .place{position:absolute;left:513px;top:327px;font-weight:500;font-size:24px;line-height:1.1;letter-spacing:-2.16px;white-space:nowrap;color:var(--cream)}
-  .singapore .patch{position:absolute;left:295px;top:359px;width:161px;height:24px;background:linear-gradient(90deg,#250202,#1d0202)}
   .singapore .copy{position:absolute;left:954px;top:114px;width:426px;font-size:18px;line-height:24px;letter-spacing:-.9px;color:#fff}
   .singapore .copy p+p{margin-top:24px}
   .singapore .ctas{position:absolute;left:955px;top:490px;width:333px;display:flex;flex-direction:column;gap:16px}
@@ -105,26 +117,26 @@
   <div class="glow" style="left:497.39px;top:6374.51px;width:277.31px;height:216.119px" aria-hidden="true"><div style="width:145.759px;height:243.426px"><img src="assets/home/glow-ellipse31.svg" alt="" style="inset:-205.4% -343.03%;width:786.06%;height:510.8%"></div></div>
 
   <!-- How it works -->
-  <p class="abs how-label">How it works</p>
-  <h2 class="abs how-title">The shopping channel grew up</h2>
-  <p class="abs how-sub">It's live, it's social and it's actually fun to watch.</p>
+  <p class="abs how-label" data-reveal>How it works</p>
+  <h2 class="abs how-title" data-reveal style="--d:.08s">The shopping channel grew up</h2>
+  <p class="abs how-sub" data-reveal style="--d:.2s">It's live, it's social and it's actually fun to watch.</p>
 
-  <img class="abs" src="assets/home/divider-881.svg" alt="" style="left:507px;top:2965.5px;width:881px;height:1px">
-  <img class="abs" src="assets/home/circle-102.svg" alt="" style="left:60px;top:3030px;width:102px;height:102px"><span class="abs num-text" style="left:102px;top:3058px">1</span>
-  <div class="abs step" style="top:3038px"><h3>Creators host</h3><p>Get to know the people behind the recommendations. Our hosts bring their personality, perspective and product knowledge to every show.</p></div>
-  <div class="abs" style="left:1037px;top:3003px;width:308px;height:210px;overflow:hidden"><img src="assets/home/icon-livestream.svg" alt="" style="position:absolute;left:34.51%;top:13.18%;width:36.15%;height:74.21%"></div>
+  <img class="abs" src="assets/home/divider-881.svg" alt="" data-reveal="line" style="left:507px;top:2965.5px;width:881px;height:1px">
+  <img class="abs" src="assets/home/circle-102.svg" alt="" data-reveal style="--d:.1s;left:60px;top:3030px;width:102px;height:102px"><span class="abs num-text" data-reveal style="--d:.1s;left:102px;top:3058px">1</span>
+  <div class="abs step" data-reveal style="--d:.2s;top:3038px"><h3>Creators host</h3><p>Get to know the people behind the recommendations. Our hosts bring their personality, perspective and product knowledge to every show.</p></div>
+  <div class="abs" data-reveal style="--d:.32s;left:1037px;top:3003px;width:308px;height:210px;overflow:hidden"><img src="assets/home/icon-livestream.svg" alt="" style="position:absolute;left:34.51%;top:13.18%;width:36.15%;height:74.21%"></div>
 
-  <img class="abs" src="assets/home/divider-881.svg" alt="" style="left:507px;top:3263.5px;width:881px;height:1px">
-  <div class="abs num" style="top:3382px">2</div>
-  <div class="abs step" style="top:3365px"><h3>Products Perform</h3><p>Products are demonstrated, discussed and experienced as part of the content rather than simply listed for sale.</p></div>
-  <img class="abs" src="assets/home/icon-products.svg" alt="" style="left:1086px;top:3336px;width:204px;height:210px">
+  <img class="abs" src="assets/home/divider-881.svg" alt="" data-reveal="line" style="left:507px;top:3263.5px;width:881px;height:1px">
+  <div class="abs num" data-reveal style="--d:.1s;top:3382px">2</div>
+  <div class="abs step" data-reveal style="--d:.2s;top:3365px"><h3>Products Perform</h3><p>Products are demonstrated, discussed and experienced as part of the content rather than simply listed for sale.</p></div>
+  <img class="abs" src="assets/home/icon-products.svg" alt="" data-reveal style="--d:.32s;left:1086px;top:3336px;width:204px;height:210px">
 
-  <img class="abs" src="assets/home/divider-881.svg" alt="" style="left:507px;top:3609.5px;width:881px;height:1px">
-  <div class="abs num" style="top:3713px">3</div>
-  <div class="abs step" style="top:3711px"><h3>Audiences Buy Live</h3><p>Watching, chatting, discovering and purchasing happen in one place, at the same moment.</p></div>
-  <img class="abs" src="assets/home/icon-audience.svg" alt="" style="left:1065px;top:3684px;width:246px;height:210px">
+  <img class="abs" src="assets/home/divider-881.svg" alt="" data-reveal="line" style="left:507px;top:3609.5px;width:881px;height:1px">
+  <div class="abs num" data-reveal style="--d:.1s;top:3713px">3</div>
+  <div class="abs step" data-reveal style="--d:.2s;top:3711px"><h3>Audiences Buy Live</h3><p>Watching, chatting, discovering and purchasing happen in one place, at the same moment.</p></div>
+  <img class="abs" src="assets/home/icon-audience.svg" alt="" data-reveal style="--d:.32s;left:1065px;top:3684px;width:246px;height:210px">
 
-  <a class="abs btn btn-secondary btn-sm see-all" href="shows-and-creators.html">See All Shows</a>
+  <a class="abs btn btn-secondary btn-sm see-all" data-reveal href="shows-and-creators.html">See All Shows</a>
 
   <!-- Hero -->
   <section class="abs hero" aria-label="Introduction">
@@ -195,12 +207,11 @@
 
   <!-- Starting in Singapore -->
   <section class="abs singapore" aria-labelledby="sg-title">
-    <div class="map"><img src="assets/home/singapore-map.png" alt="Dotted globe centred on Southeast Asia, with Singapore marked"></div>
+    <canvas class="globe" data-globe width="1440" height="785" role="img" aria-label="Dotted globe centred on Southeast Asia, with Singapore marked"></canvas>
     <div class="glow" style="left:-849px;top:-186px;width:1325.441px;height:1491.735px" aria-hidden="true"><div style="width:1243.711px;height:978.294px"><img src="assets/home/glow-ellipse32.svg" alt="" style="inset:-34.26% -26.95%;width:153.9%;height:168.52%"></div></div>
     <h2 id="sg-title">Starting in Singapore. Built for more.</h2>
-    <div class="patch" aria-hidden="true"></div>
-    <img class="abs" src="assets/home/map-pin-tail.svg" alt="" style="left:297.5px;top:381.5px;width:46px;height:31.5px">
-    <img class="abs" src="assets/home/map-label-line.svg" alt="" style="left:310.65px;top:343.5px;width:185.35px;height:64.85px">
+    <svg class="leader" viewBox="0 0 1440 785" aria-hidden="true"><path d="M303.5 400.7 L360 344 H496"/><circle cx="496" cy="344" r="2"/></svg>
+    <span class="pin" aria-hidden="true"><b></b><b></b><i></i></span>
     <p class="place">Singapore</p>
     <div class="copy"><p>We’re building Livelyhood around shows people recognise, hosts they connect with and products they’re curious about.</p><p>Our starting point is original live shopping shows from Singapore. Our ambition is to develop formats and creator talent that can reach audiences across Southeast Asia.</p><p>Have a product, a personality or a show idea that belongs on screen? Let’s talk.</p></div>
     <div class="ctas">
@@ -212,6 +223,7 @@
   <div class="abs footer-slot"><div data-site-footer></div></div>
   <div data-site-header></div>
 </main>
-<script src="site.js"></script>
+<script src="assets/home/globe-dots.js?v=3"></script>
+<script src="site.js?v=6"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@ const PAGES = [
   {id: 'about', label: 'About', href: 'about.html'},
   {id: 'contact', label: 'Contact', href: 'contact.html'},
 ];
+document.documentElement.classList.add('js');
 const current = document.body.dataset.page;
 const cur = id => (id === current ? ' aria-current="page"' : '');
 const headerSlot = document.querySelector('[data-site-header]');
@@ -21,10 +22,10 @@ document.body.insertAdjacentHTML('beforeend', `
     <button class="scrim" type="button" tabindex="-1" aria-label="Close menu"></button>
     <div class="drawer">
       <div class="drawer-head"><button class="close" type="button" aria-label="Close menu"><img src="assets/menu/close.svg" alt="" width="24" height="24"></button></div>
-      <nav aria-label="Main">${PAGES.map(p => `<a class="menu-item" href="${p.href}"${cur(p.id)}><span class="label"><span class="dot"></span>${p.label}</span><img class="arrow" src="assets/menu/arrow-hover.svg" alt="" width="36" height="36"></a>`).join('')}</nav>
+      <nav aria-label="Main">${PAGES.map((p, i) => `<a class="menu-item" style="--i:${i}" href="${p.href}"${cur(p.id)}><span class="menu-label"><span class="menu-dot"></span>${p.label}</span><img class="menu-arrow" src="assets/menu/arrow-hover.svg" alt="" width="36" height="36"></a>`).join('')}</nav>
       <div class="drawer-foot">
         <div class="secondary"><a href="for-brands.html#faq">FAQ</a><a href="contact.html">Work with us</a><a href="#" aria-disabled="true">Policy</a></div>
-        <a class="cta" href="for-brands.html#enquiry">Discuss a Partnership</a>
+        <a class="menu-cta" href="for-brands.html#enquiry">Discuss a Partnership</a>
       </div>
     </div>
   </div>`);
@@ -263,4 +264,135 @@ if (countdown) {
   };
   tick();
   setInterval(tick, 30e3);
+}
+
+// Homepage → "Starting in Singapore": dot-matrix globe on a canvas.
+// Dots come from real land outlines (assets/home/globe-dots.js). Brightness comes from a top-left light and is
+// ordered-dithered (4×4 Bayer) between five dot sizes. On first view the dots spread out from Singapore, then a
+// slow ripple keeps travelling outward and the land twinkles. Reduced motion gets a single still frame.
+const globe = document.querySelector('[data-globe]');
+if (globe) {
+  const section = globe.closest('section'), ctx = globe.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + .5) / 16);
+  const light = [-.45, .6, .66].map((c, _, v) => c / Math.hypot(...v));
+  const LEVELS = [[.7, 'rgba(255,244,220,.14)'], [1.15, 'rgba(255,244,220,.42)'], [1.55, 'rgba(255,244,220,.66)'], [1.9, 'rgba(255,244,220,.88)'], [2.15, '#FFF4DC']];
+  const HOT = [[1.9, 'rgba(255,80,82,.9)'], [2.15, '#FF5052'], [2.35, '#FF9FA0']];
+  const buckets = [...LEVELS, ...HOT].map(([r, c]) => ({r, c, pts: []}));
+  let dots = [], geo = null, start = null, raf = 0, onScreen = false;
+
+  const fitCanvas = () => {
+    const k = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--z')) * (devicePixelRatio || 1);
+    globe.width = Math.round(1440 * k); globe.height = Math.round(785 * k);
+    ctx.setTransform(k, 0, 0, k, 0, 0);
+  };
+  const draw = now => {
+    const p = reduce || start === null ? (reduce ? 1 : 0) : Math.min(1, (now - start) / 2400);
+    const front = (1 - Math.pow(1 - p, 3)) * 3.2;             // reveal radius from Singapore, in radians
+    const sec = now / 1000, wave = (sec % 6) / 6 * 2.4;        // ripple radius
+    buckets.forEach(b => (b.pts.length = 0));
+    for (const d of dots) {
+      if (d.dist > front) continue;
+      const edge = Math.min(1, (front - d.dist) / .3);
+      const ring = reduce ? 0 : Math.exp(-(((d.dist - wave) / .045) ** 2)) * (1 - wave / 2.4) * p;
+      const twinkle = reduce ? 0 : .08 * Math.sin(sec * 1.4 + d.seed);
+      const b = Math.min(1, d.base * edge * (1 + twinkle) + (d.land ? ring * .3 : ring * .1));
+      const q = b * LEVELS.length, lvl = Math.floor(q) + (q % 1 > d.bayer ? 1 : 0) - 1;
+      if (lvl < 0) continue;
+      if (d.land && ring > .45) buckets[LEVELS.length + Math.min(HOT.length - 1, Math.floor(ring * HOT.length))].pts.push(d);
+      else buckets[Math.min(LEVELS.length - 1, lvl)].pts.push(d);
+    }
+    ctx.clearRect(0, 0, 1440, 785);
+    // Faint atmosphere on the rim, so the sphere reads even over the ocean.
+    const rim = ctx.createRadialGradient(geo.cx, geo.cy, geo.r * .94, geo.cx, geo.cy, geo.r * 1.05);
+    rim.addColorStop(0, 'rgba(255,60,60,0)'); rim.addColorStop(.55, `rgba(255,90,80,${.07 * p})`); rim.addColorStop(1, 'rgba(255,60,60,0)');
+    ctx.fillStyle = rim; ctx.beginPath(); ctx.arc(geo.cx, geo.cy, geo.r * 1.05, 0, Math.PI * 2); ctx.fill();
+    for (const {r, c, pts} of buckets) {
+      if (!pts.length) continue;
+      ctx.fillStyle = c; ctx.beginPath();
+      for (const d of pts) { const s = r * d.size; ctx.moveTo(d.x + s, d.y); ctx.arc(d.x, d.y, s, 0, Math.PI * 2); }
+      ctx.fill();
+    }
+  };
+  const loop = now => { draw(now); raf = onScreen && !reduce ? requestAnimationFrame(loop) : 0; };
+  const kick = () => { if (!raf && geo) raf = requestAnimationFrame(loop); };
+
+  const init = data => {
+    geo = data;
+    dots = data.dots.map(([x, y, z, land, dist, row, col]) => {
+      const n = [(x - data.cx) / data.r, -(y - data.cy) / data.r, z];
+      const lit = .2 + .8 * Math.max(0, n[0] * light[0] + n[1] * light[1] + n[2] * light[2]);
+      const shade = lit * (.5 + .5 * z);                       // also fade towards the limb
+      return {x, y, land, dist, size: .7 + .3 * z, base: land ? .42 + .58 * shade : .14 * shade,
+        bayer: BAYER[(row % 4) * 4 + (col % 4)], seed: (Math.sin(row * 12.9898 + col * 78.233) * 43758.5453 % 1) * 6.283};
+    });
+    fitCanvas(); draw(performance.now());
+    if (!reduce) section.classList.add('is-armed');
+    new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting;
+      if (onScreen && start === null) { start = performance.now(); section.classList.add('is-on'); }
+      if (onScreen) kick();
+    }, {threshold: .1}).observe(section);
+  };
+  // The dot list ships as a script (assets/home/globe-dots.js) so it also works when the page is opened from disk.
+  if (window.LIVELYHOOD_GLOBE) init(window.LIVELYHOOD_GLOBE);
+  else addEventListener('load', () => window.LIVELYHOOD_GLOBE && init(window.LIVELYHOOD_GLOBE));
+  addEventListener('resize', () => { if (geo) { fitCanvas(); draw(performance.now()); } });
+}
+
+// Scroll reveal: each [data-reveal] gets .is-in the first time it enters the viewport (see site.css).
+// Sections are tagged automatically: their visible blocks, stepping into tall wrappers (.inner, .row, .grid…) so
+// long sections reveal piece by piece. Decorative layers (aria-hidden) and sections with their own motion are left alone.
+// Interactive blocks (tabs, sliders, accordions…) are revealed whole, never split, so their own states keep working.
+const INTERACTIVE = '[data-why], [data-ways], [data-incl], [data-cases], [data-faq], [data-proto-form], .tabs';
+const revealUnits = (el, depth) => [...el.children].flatMap(c => {
+  if (c.matches('[aria-hidden="true"], [data-reveal], script, style, input[type=hidden]')) return [];
+  const cs = getComputedStyle(c);
+  if (cs.opacity !== '1' || cs.visibility === 'hidden' || cs.display === 'none') return [];
+  const wrapper = /^(UL|OL|DL)$/.test(c.tagName) || c.offsetHeight > 600 || /\b(inner|row|grid|text|copy|head|side|lists|cols?)\b/.test(c.className);
+  if (depth < 3 && wrapper && c.children.length > 1 && /^(DIV|UL|OL|DL|ARTICLE)$/.test(c.tagName)
+      && !c.closest(INTERACTIVE) && !c.querySelector(INTERACTIVE)) return revealUnits(c, depth + 1);
+  return [c];
+});
+document.querySelectorAll('main section, .canvas > section').forEach(sec => {
+  if (sec.matches('.singapore') || sec.querySelector('[data-reveal]')) return;
+  revealUnits(sec, 0).forEach(el => el.setAttribute('data-reveal', ''));
+});
+const reveals = document.querySelectorAll('[data-reveal]');
+if (reveals.length) {
+  // Blocks that arrive together are staggered top-to-bottom, left-to-right (unless the markup sets --d).
+  const io = new IntersectionObserver(entries => {
+    entries.filter(e => e.isIntersecting).map(e => [e.target, e.boundingClientRect])
+      .sort(([, a], [, b]) => Math.abs(a.top - b.top) > 24 ? a.top - b.top : a.left - b.left)
+      .forEach(([el], i) => {
+        if (!el.style.getPropertyValue('--d')) el.style.setProperty('--d', `${Math.min(i, 6) * .09}s`);
+        el.classList.add('is-in'); io.unobserve(el);
+      });
+  }, {rootMargin: '0px 0px -10% 0px'});
+  reveals.forEach(el => io.observe(el));
+}
+
+// Smooth wheel scrolling. The page still scrolls natively (so sticky elements, keyboard, touch and anchors behave
+// as before); each wheel step just eases toward its target instead of jumping. Off for reduced motion and touch.
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches && matchMedia('(pointer: fine)').matches) {
+  let target = 0, y = 0, last = 0, raf = 0;
+  const stop = () => { cancelAnimationFrame(raf); raf = 0; };
+  const step = now => {
+    const dt = Math.min(64, now - (last || now - 16)); last = now;
+    y += (target - y) * (1 - Math.exp(-dt / 110));
+    if (Math.abs(target - y) < .5) { y = target; raf = 0; } else raf = requestAnimationFrame(step);
+    scrollTo({top: y, behavior: 'instant'});
+  };
+  addEventListener('wheel', e => {
+    if (e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY) || document.body.style.overflow === 'hidden') return;
+    if (e.target.closest && e.target.closest('textarea, .side-menu')) return;
+    e.preventDefault();
+    if (!raf) { target = y = scrollY; last = 0; }
+    const d = e.deltaY * (e.deltaMode === 1 ? 40 : e.deltaMode === 2 ? innerHeight : 1);
+    target = Math.max(0, Math.min(document.documentElement.scrollHeight - innerHeight, target + d));
+    if (!raf) raf = requestAnimationFrame(step);
+  }, {passive: false});
+  addEventListener('keydown', stop);
+  addEventListener('mousedown', stop);   // grabbing the scrollbar
+  addEventListener('click', e => { if (e.target.closest && e.target.closest('a[href^="#"]')) stop(); });
 }

@@ -16,7 +16,7 @@ img{display:block}
 :focus-visible{outline:2px solid var(--cream);outline-offset:3px}
 
 /* 1440px design canvas, scaled to the window (desktop only) */
-.canvas{position:relative;width:1440px;zoom:var(--z);overflow:hidden}
+.canvas{position:relative;width:1440px;zoom:var(--z);overflow:clip}
 .abs{position:absolute}
 
 /* Buttons */
@@ -29,7 +29,7 @@ img{display:block}
 .btn-sm{height:auto;padding:12px 24px;font-size:18px;letter-spacing:0}
 
 /* Header (scrolls with the page, as in the prototype) */
-.site-header{position:absolute;top:0;left:0;width:1440px;height:105px;z-index:30;background:rgba(30,4,4,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.site-header{position:fixed;top:0;left:0;width:1440px;height:105px;z-index:30;background:rgba(30,4,4,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .site-header .logo{position:absolute;left:36px;top:36px;width:190.056px;height:39.159px;transition:opacity .2s}
 .site-header .logo:hover{opacity:.8}
 .site-header .menu-btn{position:absolute;left:1364px;top:45px;width:32px;height:21px}
@@ -48,19 +48,24 @@ img{display:block}
 .side-menu nav{border-top:1px solid var(--line)}
 .menu-item{display:flex;align-items:center;justify-content:space-between;height:88px;padding:0 40px;border-bottom:1px solid var(--line);
   font-weight:500;font-size:32px;line-height:1.1;letter-spacing:-.96px;text-transform:uppercase;color:var(--cream)}
-.menu-item .label{display:flex;align-items:center;gap:16px}
-.menu-item .dot{width:10px;height:10px;border-radius:50%;background:var(--red);display:none}
-.menu-item[aria-current=page] .dot{display:block}
-.menu-item .arrow{width:36px;height:36px;opacity:0;transition:opacity .2s}
-.menu-item:hover{background:radial-gradient(619px 88px at 50% 100%,rgba(184,28,20,.95) 0,rgba(129,17,13,.775) 25%,rgba(74,6,5,.6) 50%,rgba(37,3,3,.3) 75%,rgba(0,0,0,0) 100%)}
-.menu-item:hover .arrow,.menu-item:focus-visible .arrow{opacity:1}
+.menu-item .menu-label{display:flex;align-items:center;gap:16px}
+.menu-item .menu-dot{width:10px;height:10px;border-radius:50%;background:var(--red);display:none}
+.menu-item[aria-current=page] .menu-dot{display:block}
+.menu-item .menu-arrow{width:36px;height:36px;opacity:0;translate:-8px 0;transition:opacity .4s,translate .5s cubic-bezier(.22,.8,.24,1)}
+/* Hover glow: the gradient sits on a layer that fades and rises in from the bottom edge (gradients can't transition). */
+.menu-item{position:relative;isolation:isolate}
+.menu-item::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transform:scaleY(.6);transform-origin:50% 100%;
+  background:radial-gradient(619px 88px at 50% 100%,rgba(184,28,20,.95) 0,rgba(129,17,13,.775) 25%,rgba(74,6,5,.6) 50%,rgba(37,3,3,.3) 75%,rgba(0,0,0,0) 100%);
+  transition:opacity .5s cubic-bezier(.22,.8,.24,1),transform .6s cubic-bezier(.22,.8,.24,1)}
+.menu-item:hover::before,.menu-item:focus-visible::before{opacity:1;transform:none}
+.menu-item:hover .menu-arrow,.menu-item:focus-visible .menu-arrow{opacity:1;translate:none}
 .menu-item:focus-visible{outline:none;border:2px solid var(--cream)}
 .side-menu .drawer-foot{margin-top:auto;display:flex;flex-direction:column;align-items:flex-start;gap:28px;padding:24px 40px 40px}
 .side-menu .secondary{display:flex;gap:28px;font-weight:500;font-size:16px}
 .side-menu .secondary a{text-decoration:underline;text-underline-position:from-font}
 .side-menu .secondary a:hover{color:#fff}
-.side-menu .cta{height:52px;padding:0 28px;border-radius:26px;background:#fff;color:var(--deep);display:flex;align-items:center;font-weight:500;font-size:16px;letter-spacing:-.16px;transition:background-color .25s}
-.side-menu .cta:hover{background:var(--cream)}
+.side-menu .menu-cta{height:52px;padding:0 28px;border-radius:26px;background:#fff;color:var(--deep);display:flex;align-items:center;font-weight:500;font-size:16px;letter-spacing:-.16px;transition:background-color .25s}
+.side-menu .menu-cta:hover{background:var(--cream)}
 
 /* Footer */
 .site-footer{position:relative;width:1440px;height:761.82px;background:#000;overflow:hidden}
@@ -87,7 +92,6 @@ img{display:block}
 .site-footer .copy{position:absolute;left:60px;top:701.82px;margin:0;font-weight:400;font-size:14px;line-height:20px;opacity:.7}
 
 /* Forms (prototype only: validate, then show the sent state; nothing is submitted) */
-html{scroll-behavior:smooth}
 .form-field{display:flex;flex-direction:column;gap:12px;position:relative}
 .form-label{font-size:16px;line-height:24px;color:var(--cream)}
 .form-input{width:100%;height:52px;padding:0 20px;border:1px solid #fff;border-radius:26px;background:transparent;
@@ -125,3 +129,14 @@ textarea.form-input{height:auto;padding:16px 20px;line-height:24px;resize:none}
 .form-sent[hidden]{display:none}
 .form-sent .tick{display:flex;align-items:center;justify-content:center;width:72px;height:72px;border:1px solid #fff;border-radius:36px;font-weight:300;font-size:28px}
 .form-sent p{margin:0;width:520px;font-weight:500;font-size:24px;line-height:27.6px;letter-spacing:-.72px}
+
+/* Scroll reveal: [data-reveal] rises and fades in on first view; [data-reveal=line] draws in from the left.
+   Only hidden once site.js has marked <html class="js">, so content still shows without JavaScript. */
+html{scroll-behavior:smooth}
+.js [data-reveal]{opacity:0;translate:0 48px;transition:opacity 1s cubic-bezier(.22,.8,.24,1) var(--d,0s),translate 1.2s cubic-bezier(.22,.8,.24,1) var(--d,0s)}
+.js [data-reveal=line]{opacity:1;translate:none;scale:0 1;transform-origin:left;transition:scale 1.4s cubic-bezier(.7,0,.25,1) var(--d,0s)}
+.js [data-reveal].is-in{opacity:1;translate:none;scale:none}
+@media (prefers-reduced-motion:reduce){.js [data-reveal]{opacity:1;translate:none;scale:none;transition:none}}
+.side-menu .menu-item,.side-menu .drawer-foot{opacity:0;translate:48px 0;transition:opacity .5s,translate .7s cubic-bezier(.22,.8,.24,1)}
+.side-menu.is-open .menu-item,.side-menu.is-open .drawer-foot{opacity:1;translate:none;transition-delay:calc(.12s + var(--i,5) * .06s)}
+@media (prefers-reduced-motion:reduce){.side-menu .menu-item,.side-menu .drawer-foot{opacity:1;translate:none;transition:none}}

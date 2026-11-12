@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lành Menu Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght,SOFT@9..144,500..900,0..100&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<style>
+  /* ============ LÀNH BRAND ============ */
+  :root {
+    --green: #0C4725; --green-2: #155C36; --green-ink: #0A3A1F;
+    --lime: #B9D76B; --lime-2: #D3E8A1; --lime-soft: #EEF5DA;
+    --cream: #F6F0DE; --cream-2: #EDE5CC; --white: #FFFFFF;
+    --muted: #5E7364; --line: #DCD3B8; --panel: #F9F6EF; --field-line: #ECE8DF;
+    --display: "Fraunces", Georgia, serif;
+    --body: "Bricolage Grotesque", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--cream); color: var(--green-ink); font: 15px/1.45 var(--body); -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .display { font-family: var(--display); font-variation-settings: "SOFT" 100; }
+
+  /* ---------- Top bar ---------- */
+  .top { position: sticky; top: 0; z-index: 20; background: var(--green); color: var(--white); }
+  .top-in { max-width: 1440px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; gap: 16px; }
+  .mark { display: inline-flex; }
+  .mark svg { height: 44px; width: auto; display: block; }
+  .top .sub { color: var(--lime); font-size: 13px; font-weight: 500; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.18); }
+  .top .grow { flex: 1; }
+  .pill { border: 1.5px solid currentColor; background: transparent; border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 13px; letter-spacing: .02em; white-space: nowrap; transition: background .15s, color .15s; }
+  .top .pill { color: var(--white); border-color: rgba(255,255,255,.4); }
+  .top .pill:hover { background: rgba(255,255,255,.1); border-color: var(--white); }
+  .pill.lime { background: var(--lime); color: var(--green); border-color: var(--lime); }
+  .top .pill.lime { color: var(--green); border-color: var(--lime); }
+  .top .pill.lime:hover { background: var(--lime-2); border-color: var(--lime-2); }
+  .menu-more { position: relative; }
+  .more-list { position: absolute; right: 0; top: calc(100% + 8px); background: var(--white); color: var(--green-ink); border-radius: 16px; box-shadow: 0 12px 32px rgba(13,74,42,.18); padding: 6px; min-width: 200px; display: none; }
+  .more-list.open { display: block; }
+  .more-list button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 10px 12px; border-radius: 10px; font-size: 14px; }
+  .more-list button:hover { background: var(--lime-soft); }
+
+  /* ---------- Layout ---------- */
+
+  .pills { position: sticky; top: 68px; z-index: 10; background: var(--cream); padding: 14px 0; margin-bottom: 8px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .pills::-webkit-scrollbar { display: none; }
+  .pills .pill { color: var(--green); border-color: var(--green); background: transparent; padding: 9px 18px; }
+  .pills .pill:hover { background: var(--lime-soft); }
+  .pills .pill.on { background: var(--green); color: var(--lime); }
+
+  .step { display: flex; align-items: baseline; gap: 12px; margin: 28px 0 14px; }
+  .step h2 { margin: 0; font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 21px; font-weight: 800; line-height: 1.15; color: var(--green); }
+  .step .aside { margin-left: auto; font-size: 13px; color: var(--muted); }
+
+  .panel { background: var(--white); border-radius: 28px; padding: 24px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+  .f { display: block; }
+  .f > span { display: block; font-size: 15px; font-weight: 500; color: #111; margin-bottom: 8px; }
+  .f > span small { font-size: 12px; font-weight: 400; color: var(--muted); }
+  .inp { width: 100%; border: 1.5px solid var(--line); border-radius: 14px; padding: 11px 14px; font: inherit; background: var(--cream); color: var(--green-ink); transition: border-color .15s, background .15s; }
+  .inp:hover { border-color: #C8BE9E; }
+  .inp:focus { outline: none; border-color: var(--green); background: var(--white); box-shadow: 0 0 0 4px rgba(184,217,110,.45); }
+  textarea.inp { resize: vertical; min-height: 92px; }
+  .full { grid-column: 1 / -1; }
+
+  .icon-btn { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--white); display: grid; place-items: center; font-size: 14px; color: var(--green); }
+  .icon-btn:hover:not(:disabled) { border-color: var(--green); }
+  .icon-btn:disabled { opacity: .35; cursor: default; }
+
+  .plate { position: relative; width: 100%; aspect-ratio: 1; border-radius: 50%; background: var(--cream) center/cover no-repeat; box-shadow: inset 0 0 0 10px var(--white), inset 0 0 0 11px var(--cream-2), 0 6px 18px rgba(13,74,42,.10); display: grid; place-items: center; transition: transform .2s; }
+  .plate.sm { width: 112px; flex: none; }
+  .plate .ph { color: #BFB596; display: grid; place-items: center; gap: 6px; font-size: 12px; text-align: center; }
+  .plate.drag { outline: 3px dashed var(--lime); outline-offset: 4px; }
+  .plus { position: absolute; right: 4%; bottom: 4%; width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--green); color: var(--lime); font-size: 24px; line-height: 1; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(13,74,42,.3); transition: transform .15s, background .15s; }
+  .plus:hover { transform: scale(1.08); background: var(--green-2); }
+  .plate.sm .plus { width: 34px; height: 34px; font-size: 20px; right: -2px; bottom: -2px; }
+  .x-img { position: absolute; left: 4%; bottom: 4%; width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--white); color: var(--green); box-shadow: 0 3px 10px rgba(0,0,0,.15); font-size: 14px; }
+  .plate.sm .x-img { left: -2px; bottom: -2px; width: 28px; height: 28px; }
+
+
+  .switch { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); cursor: pointer; user-select: none; }
+  .switch input { appearance: none; width: 34px; height: 20px; border-radius: 999px; background: var(--cream-2); position: relative; margin: 0; cursor: pointer; transition: background .15s; }
+  .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: var(--white); box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .15s; }
+  .switch input:checked { background: var(--green); }
+  .switch input:checked::after { transform: translateX(14px); background: var(--lime); }
+  .switch:has(input:checked) { color: var(--green); }
+
+  .img-field { display: flex; align-items: center; gap: 18px; }
+  .img-field .meta strong { display: block; font-size: 16px; color: var(--green); margin-bottom: 2px; }
+  .img-field .meta { font-size: 13px; color: var(--muted); }
+  .swatches { display: flex; gap: 14px; flex-wrap: wrap; }
+  .swatch { display: flex; align-items: center; gap: 10px; background: var(--cream); border-radius: 999px; padding: 6px 14px 6px 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .swatch input { appearance: none; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--white); box-shadow: 0 0 0 1px var(--line); padding: 0; cursor: pointer; background: none; }
+  .swatch input::-webkit-color-swatch-wrapper { padding: 0; }
+  .swatch input::-webkit-color-swatch { border: 0; border-radius: 50%; }
+  .swatch input::-moz-color-swatch { border: 0; border-radius: 50%; }
+
+  .pager { display: flex; justify-content: space-between; margin-top: 28px; gap: 12px; }
+  .pager .pill { color: var(--green); border-color: var(--green); padding: 11px 20px; }
+  .pager .pill:hover { background: var(--lime-soft); }
+  .pager .pill.solid { background: var(--green); color: var(--lime); }
+  .pager .pill.solid:hover { background: var(--green-2); }
+
+  /* ---------- Preview ---------- */
+  .frame { border-radius: 18px; overflow: hidden; cursor: zoom-in; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+  .scaler { transform-origin: top left; }
+
+  .zoom { position: fixed; inset: 0; z-index: 50; background: rgba(11,58,33,.92); display: none; align-items: flex-start; justify-content: center; overflow: auto; padding: 32px 16px; cursor: zoom-out; }
+  .zoom.open { display: flex; }
+  .zoom .close { position: fixed; top: 16px; right: 16px; z-index: 2; }
+
+  .fab { display: none; position: fixed; right: 16px; bottom: 16px; z-index: 30; box-shadow: 0 8px 24px rgba(13,74,42,.35); padding: 13px 20px; font-size: 14px; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 12px); background: var(--green); color: var(--white); padding: 12px 18px; border-radius: 999px; font-size: 14px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 60; box-shadow: 0 10px 30px rgba(13,74,42,.3); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .toast::before { content: "✓ "; color: var(--lime); font-weight: 700; }
+
+  @media (max-width: 640px) {
+    .top-in { padding: 12px 16px; }
+    .top .sub { display: none; }
+    .top .hide-sm { display: none; }
+  }
+
+  /* ---------- Sidebar + stage layout ---------- */
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+  .top-in { max-width: none; }
+  .app { flex: 1; min-height: 0; display: grid; grid-template-columns: 440px minmax(0, 1fr); }
+  .side { background: var(--white); display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--line); }
+  .side .pills { position: static; background: var(--white); padding: 14px 18px; margin: 0; border-bottom: 1px solid var(--cream-2); }
+  .side .pills .pill { padding: 7px 14px; }
+  .side-body { flex: 1; overflow-y: auto; padding: 4px 20px 28px; }
+  .side .step { margin: 26px 0 12px; }
+  .side .panel { background: var(--panel); border-radius: 16px; padding: 20px 18px; }
+  .side .grid2 { grid-template-columns: 1fr; }
+  .side .inp { background: var(--white); border: 1px solid var(--field-line); border-radius: 8px; padding: 12px 14px; }
+  .side .inp:hover { border-color: #DCD7CB; }
+  .side .swatches { gap: 8px; }
+  .side .swatch { background: var(--white); border: 1px solid var(--field-line); border-radius: 8px; }
+  .warn { margin: 0; font-size: 13px; color: #A33A1E; background: #FBEDE7; border-radius: 8px; padding: 8px 12px; }
+  .warn[hidden] { display: none; }
+  .side .times { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .side .times .inp { padding: 8px 6px; text-align: center; }
+  .rows { display: flex; flex-direction: column; gap: 10px; }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; background: var(--panel); border-radius: 16px; padding: 12px; }
+  .row .plate.sm { width: 56px; }
+  .row .plate { box-shadow: inset 0 0 0 4px var(--white), 0 2px 8px rgba(12,71,37,.10); }
+  .row .plate .ph svg { width: 18px; height: 26px; }
+  .row .plate.sm .plus { width: 24px; height: 24px; font-size: 16px; right: -4px; bottom: -4px; }
+  .row .plate.sm .x-img { width: 22px; height: 22px; font-size: 10px; left: -4px; bottom: -4px; }
+  .row-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .row-name { font-weight: 600; padding: 9px 12px; }
+  .row-ing { font-size: 13px; padding: 7px 12px; color: var(--muted); }
+  .row-side { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .row-move { display: flex; gap: 4px; }
+  .row-move .icon-btn { width: 26px; height: 26px; font-size: 12px; }
+  .side .img-field .plate.sm { width: 84px; }
+  .side .pager { margin-top: 22px; }
+  .side .pager .pill { padding: 9px 16px; }
+  .stage { min-height: 0; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px; background: var(--cream); }
+  .stage .frame { border-radius: 14px; box-shadow: 0 24px 60px rgba(12,71,37,.22); flex: none; }
+  .stage-note { margin: 16px 0 0; font-size: 12px; color: var(--muted); }
+  @media (max-width: 1000px) {
+    body { overflow: auto; display: block; }
+    .app { grid-template-columns: 1fr; }
+    .stage { display: none; }
+    .side-body { overflow: visible; }
+    .fab { display: inline-flex; }
+  }
+
+  /* ============ MENU TEMPLATE (designer: restyle here) ============ */
+  /* Built on the 595 × 842 A4 artboard from the Figma file; exported at 2480 px wide */
+  .menu {
+    --m-bg: #004821; --m-lime: #B9D76B; --m-cream: #F7F0DC; --m-bottle: #0D4726; --m-ink: #1B1B1B;
+    width: 595px; height: 842px; position: relative; overflow: hidden;
+    background: var(--m-bg); color: var(--m-ink); font-family: var(--body);
+  }
+  .m-deco { position: absolute; left: 0; top: 0; width: 595px; height: 842px; pointer-events: none; }
+  .m-deco .lime { fill: var(--m-lime); }
+  .m-logo { position: absolute; left: 31px; top: 34px; width: 172px; }
+  .m-logo svg { width: 100%; height: auto; display: block; }
+  .m-logo-img { position: absolute; left: 31px; top: 30px; width: 172px; height: 92px; background: left center/contain no-repeat; }
+  .m-pills { position: absolute; left: 308px; top: 48px; display: flex; gap: 6px; }
+  .m-pill { height: 18px; padding: 0 8px; border-radius: 9px; background: var(--m-lime); color: var(--m-bg); font-size: 9px; font-weight: 600; display: inline-flex; align-items: center; white-space: nowrap; }
+  .m-title { position: absolute; left: 308px; top: 72px; width: 245px; margin: 0; color: #fff; font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 800; font-size: 23px; line-height: 23px; letter-spacing: -.01em; text-wrap: balance; }
+  .m-day { position: absolute; width: 261px; height: 150px; border-radius: 12px; background: var(--m-cream); }
+  .m-day-head { position: absolute; left: 14px; right: 64px; top: 10px; height: 18px; display: flex; align-items: center; gap: 7px; }
+  .m-day-tag { flex: none; height: 18px; padding: 0 7px; border-radius: 9px; background: var(--m-bg); color: #fff; font-size: 8.5px; font-weight: 600; display: flex; align-items: center; white-space: nowrap; }
+  .m-day-name { min-width: 0; font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 800; font-size: 12.5px; color: var(--m-bg); white-space: nowrap; overflow: hidden; flex: 1; }
+  .m-items { position: absolute; left: 0; top: 36px; width: 192px; list-style: none; margin: 0; padding: 0; }
+  .m-item { display: grid; grid-template-columns: 58px minmax(0, 1fr); height: 22px; }
+  .m-time { padding-left: 20px; font-size: 7.5px; font-weight: 600; line-height: 10px; }
+  .m-name { font-size: 7.5px; font-weight: 600; line-height: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-new { display: inline-block; background: var(--m-lime); color: var(--m-bg); font-size: 5.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: 1px 4px; border-radius: 4px; margin-left: 4px; vertical-align: 1px; }
+  .m-ing { font-size: 5.6px; line-height: 8px; color: #3A3A3A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-bottle { position: absolute; left: 194px; top: 13px; width: 46px; height: 127px; background: center bottom/contain no-repeat; }
+  .m-bottle svg { width: 100%; height: 100%; display: block; fill: var(--m-bottle); }
+  /* Notes stay above the lime shapes; anything longer is hidden */
+  .m-extra { position: absolute; left: 308px; top: 668px; width: 261px; height: 80px; overflow: hidden; color: #fff; }
+  .m-note { font-size: 7.5px; line-height: 10px; }
+  .m-note b { display: block; font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 13px; line-height: 16px; font-weight: 800; margin-bottom: 5px; }
+  .m-note ul { list-style: none; margin: 5px 0 0; padding: 0; }
+  .m-note li { position: relative; padding-left: 9px; margin-top: 3px; }
+  .m-note li::before { content: ""; position: absolute; left: 0; top: 3.5px; width: 3.5px; height: 3.5px; border-radius: 50%; background: var(--m-lime); }
+
+  @media print {
+    @page { size: 595px 842px; margin: 0; }
+    body > *:not(.print-root) { display: none !important; }
+    .print-root { display: block !important; }
+  }
+  .print-root { display: none; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <span class="mark" id="topMark" aria-label="lành healthy"></span>
+    <span class="sub">Menu Maker</span>
+    <span class="grow"></span>
+    <button class="pill hide-sm" id="openJson">Mở bản nháp</button>
+    <button class="pill hide-sm" id="saveJson">Lưu bản nháp</button>
+    <div class="menu-more">
+      <button class="pill" id="moreBtn" aria-label="Thêm">•••</button>
+      <div class="more-list" id="moreList">
+        <button data-act="open">Mở bản nháp</button>
+        <button data-act="save">Lưu bản nháp</button>
+        <button data-act="print">In / Lưu PDF</button>
+        <button data-act="reset">Về menu mẫu</button>
+      </div>
+    </div>
+    <button class="pill lime" id="exportPng">Lưu ảnh menu</button>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="side">
+    <nav class="pills" id="tabs"></nav>
+    <div class="side-body" id="panel"></div>
+  </aside>
+  <main class="stage" id="stage">
+    <div class="frame" id="frame"><div class="scaler" id="scaler"><div class="menu" id="menu"></div></div></div>
+    <p class="stage-note">Bấm vào menu để phóng to · Ảnh lưu ra 2480 × 3508 px (A4)</p>
+  </main>
+</div>
+
+<div class="zoom" id="zoom"><button class="pill lime close">Đóng</button><div class="scaler" id="zoomScaler"></div></div>
+<button class="pill lime fab" id="fab">Xem menu</button>
+<div class="print-root" id="printRoot"></div>
+<input type="file" id="fileImg" accept="image/*" hidden>
+<input type="file" id="fileJson" accept="application/json,.json" hidden>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE_KEY = 'lanh-detox-menu-v4';
+
+const b = (name, ing, isNew = false) => ({ name, ing, isNew, image: null });
+const DEFAULT = {
+  logo: null,
+  title: 'Gói đặc biệt chuyên sâu',
+  subtitle: 'Toàn diện 7 ngày',
+  note: '<b>Lưu ý:</b> Liều lượng và Detox sẽ được điều chỉnh tùy vào mục đích của khách, số kg khách muốn giảm và thể trạng của khách.\n- Lắc đều trước khi uống và dùng đúng khung giờ trên menu.\n- Bảo quản lạnh 2–6°C và dùng hết trong ngày.',
+  times: ['9:00', '12:00', '15:00', '17:00', '19:00'],
+  theme: { bg: '#004821', lime: '#B9D76B', cream: '#F7F0DC' },
+  days: [
+    { name: 'Thanh lọc', image: null, items: [
+      b('Detox rau má', 'Rau má, dừa, hạt chia'),
+      b('Smoothie xoài chuối', 'Xoài, chuối, yến mạch'),
+      b('Detox dưa hấu', 'Dưa hấu, củ dền, cam', true),
+      b('Detox khổ qua', 'Khổ qua, dưa leo, táo'),
+      b('Detox gạo lứt', 'Gạo lứt, đậu đen') ] },
+    { name: 'Nhẹ bụng', image: null, items: [
+      b('Detox bí đao', 'Bí đao, dưa leo, táo'),
+      b('Smoothie thanh long đỏ', 'Thanh long đỏ, yến mạch'),
+      b('Ginger shot', 'Gừng'),
+      b('Detox cam', 'Cam, nước dừa, hạt chia'),
+      b('Detox gạo lứt', 'Gạo lứt, đậu đen') ] },
+    { name: 'Thanh lọc sâu', image: null, items: [
+      b('Detox cần tây', 'Cần tây, dưa leo, táo'),
+      b('Smoothie cải bó xôi', 'Cải bó xôi, bột mầm lúa mạch'),
+      b('Detox củ dền', 'Củ dền, táo, ổi'),
+      b('Detox lá tía tô', 'Lá tía tô'),
+      b('Detox gạo lứt', 'Gạo lứt') ] },
+    { name: 'Tăng tốc thanh lọc', image: null, items: [
+      b('Detox rau má', 'Rau má, nước dừa, hạt chia'),
+      b('Smoothie thanh long đỏ', 'Thanh long đỏ, yến mạch'),
+      b('Detox lựu', 'Lựu, táo, chanh', true),
+      b('Detox dưa leo', 'Dưa leo, táo, gừng, chanh'),
+      b('Detox gạo lứt', 'Gạo lứt, đậu đen') ] },
+    { name: 'Giảm cân nhẹ', image: null, items: [
+      b('Detox khổ qua', 'Khổ qua'),
+      b('Smoothie cải bó xôi', 'Cải bó xôi, mầm lúa mạch'),
+      b('Ginger shot', 'Gừng'),
+      b('Detox táo củ dền', 'Táo, củ dền, cà rốt, cam', true),
+      b('Detox gạo lứt', 'Gạo lứt, đậu đen') ] },
+    { name: 'Đào thải sâu', image: null, items: [
+      b('Detox cần tây', 'Cần tây, dưa leo, táo'),
+      b('Smoothie việt quất', 'Việt quất, xoài, chuối', true),
+      b('Detox củ dền', 'Củ dền, táo, ổi'),
+      b('Detox lá tía tô', 'Lá tía tô'),
+      b('Detox gạo lứt', 'Gạo lứt') ] },
+    { name: 'Tăng sinh tế bào mới', image: null, items: [
+      b('Detox cần tây', 'Cần tây, dưa leo, táo'),
+      b('Detox dưa hấu', 'Dưa hấu, củ dền, cam', true),
+      b('Ginger shot', 'Gừng'),
+      b('Detox bí đao', 'Bí đao, dưa leo'),
+      b('Detox lá tía tô', 'Lá tía tô') ] },
+  ],
+};
+
+const withDefaults = data => ({ ...structuredClone(DEFAULT), ...data, theme: { ...DEFAULT.theme, ...data.theme }, times: data.times || [...DEFAULT.times] });
+let state = load();
+let tab = 'general';
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) return withDefaults(JSON.parse(raw));
+  } catch (e) {}
+  return structuredClone(DEFAULT);
+}
+function save() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch (e) { if (e.name === 'QuotaExceededError') toast('Bộ nhớ trình duyệt đầy — hãy bấm “Lưu bản nháp” để giữ file.'); }
+}
+
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// Allow only <b>/<em> so she can bold or italicise a word
+const rich = s => esc(s).replace(/&lt;(\/?)(b|em)&gt;/g, '<$1$2>');
+// Lines starting with "- " become bullet points; other lines stay as text
+const noteHTML = s => {
+  const lines = String(s || '').split('\n');
+  const text = lines.filter(l => !/^\s*[-•]\s/.test(l)).map(rich).join('<br>');
+  const items = lines.filter(l => /^\s*[-•]\s/.test(l)).map(l => `<li>${rich(l.replace(/^\s*[-•]\s+/, ''))}</li>`).join('');
+  return text + (items ? `<ul>${items}</ul>` : '');
+};
+const splitIng = s => String(s || '').split(',').map(x => x.trim()).filter(Boolean);
+
+/* ---------- Menu render ---------- */
+/* Lành brand shapes, taken from the brand SVG */
+const LANH_LOGO = `<svg viewBox="330 445 785 400" fill="#fff" role="img" aria-label="lành healthy">
+<path d="M387.3,835.47c-46.88,0-51.950-38.01-51.95-54.350,0-24.35,8.82-55.73,18.15-88.95,10.85-38.63,23.15-82.4,23.15-122.39,0-19.47-6.21-38.060-12.78-49.170,14.68-13.2,33.94-15.27,44.56-15.27,36.07,0,56.75,24.36,56.75,66.840,0,43.79-14.37,95.15-27.05,140.47-10.54,37.67-20.5,73.26-20.5,98.73,0,7.05.69,12.91,2.13,18.03-5.11,2.42-15.58,6.06-32.47,6.06Z"/>
+<path d="M503.6,837.39c-28.49,0-59.15-17.16-59.15-54.83,0-53.95,50.75-73.09,94.22-73.09,10.66,0,22.2,1.28,33.37,3.71l5.83,1.27.99-5.88c.56-3.35.56-7.07.56-10.07,0-12.97-8.31-26.82-31.63-26.82-17.570,0-37.27,9.84-46.69,22.89-17.79-1.94-31.2-20.93-31.2-37.38,0-50.36,66.56-55.79,95.18-55.79,54.79,0,87.49,26.25,87.49,70.21,0,16.05-4.06,31.92-8.35,48.72-4.87,19.05-9.91,38.75-9.91,61.28,0,17.43,3.45,31.67,10.04,41.61-9.46,7.74-23.28,12.26-37.97,12.26-17.95,0-31.41-6.28-39.99-18.68l-4.15-5.98-4.81,5.47c-12.15,13.82-30.77,21.12-53.85,21.12ZM543.46,734.6c-23.6,0-35.95,13.25-35.95,26.35,0,9.29,7.87,15.78,19.14,15.78,16.83,0,31.6-11.01,41.59-31l3.12-6.24-6.74-1.8c-7.54-2.02-14.86-3.08-21.16-3.08ZM584.77,585.7c-29.19,0-66.84-28.45-66.84-58.68,0-10,9.71-21.69,37.06-21.69,4.58,0,9.01.88,11.46,2.2,3.43,24.88,16.28,51.36,33.51,69.17-4.53,7.74-11.29,8.99-15.2,8.99Z"/>
+<path d="M825.52,835.47c-33.43,0-53.39-17.09-53.39-45.71,0-19.71,8.39-42.72,15.79-63.01,6.48-17.77,12.07-33.1,12.07-45.06,0-10.25-7.39-15.78-14.34-15.78-22.31,0-40.28,57.5-40.28,105.12,0,9.14,1.11,30.77,10.83,45.04-8.02,11.4-26.61,19.39-45.97,19.39-46.88,0-51.95-38.01-51.95-54.35,0-19.14,6.35-41.39,12.5-62.9,6.13-21.46,12.47-43.65,12.47-62.94,0-14.03-3.28-26.98-6.9-34.97,9.78-8.89,25.51-14.1,42.99-14.1,29.16,0,40.45,19.88,44.58,31.72l3.48,9.96,6.42-8.37c18.56-24.23,40.9-38.12,61.29-38.12,32.56,0,49.07,19.25,49.07,57.24,0,18.18-5.19,36.58-10.68,56.06-6.08,21.58-12.38,43.9-12.38,68.34,0,16.07,3.6,30.31,10.02,40.1-10.06,7.88-26.34,12.33-45.64,12.33Z"/>
+<path d="M1051.43,835.47c-33.43,0-53.39-17.09-53.39-45.71,0-19.71,8.39-42.72,15.79-63.01,6.48-17.77,12.07-33.1,12.07-45.06,0-10.25-7.39-15.78-14.34-15.78-22.31,0-40.28,57.5-40.28,105.12,0,9.14,1.11,30.77,10.83,45.04-8.02,11.4-26.61,19.39-45.97,19.39-46.88,0-51.95-38.01-51.95-54.35,0-24.35,8.82-55.73,18.15-88.95,10.85-38.63,23.15-82.4,23.15-122.39,0-19.47-6.21-38.06-12.78-49.17,14.68-13.2,33.94-15.27,44.56-15.27,30.94,0,53.39,23.26,53.39,55.31,0,20.35-5.67,43.66-17.32,71.27l-2.71,6.41s24.38-36.94,73.76-36.94c29.350,0,46.18,20.51,46.18,56.28,0,18.18-5.3,36.79-10.9,56.5-6.21,21.84-12.63,44.42-12.630,68.86,0,16.07,3.6,30.31,10.02,40.1-10.06,7.88-26.34,12.33-45.64,12.33Z"/>
+<path d="M697.72,514.23c-.03-2.22-1.69-6.59-5.02-6.55-3.27.04-5.21,3.59-5.15,8.28.02,1.92.23,3.71.68,5.31l7.92-4.11c1.1-.57,1.59-1.63,1.57-2.93Z"/>
+<path d="M723.19,519.55c-2.6.03-4.49,2.090-4.450,5.24.05,4.26,2.14,8.01,5.29,7.97,2.84-.03,4.54-2.84,4.32-5.62l-.21-2.16c-.42-3.64-2.42-5.47-4.95-5.44Z"/>
+<path d="M824.26,462.85c-25.59-8.61-52.97-12.17-79.91-10.32-26.35,1.81-50.14,11.64-75.74,17.15-3.91.84-75.95,11.98-76.34,5.33,0,0,3.61,62.45,58.2,85.5,36.9,15.91,84.44-9.8,115.09,22.39,5.15,5.41,11.83,19.62,11.84,19.63-1.09-2.32,21.47-17.74,23.23-18.93,7.49-5.07,15.84-10.53,24.25-13.83,10.48-4.11,21.25-6.02,31.21-11.66,10.13-5.73,19.11-14.19,23.33-25.04,12.94-33.2-28.51-61.24-55.17-70.21ZM675.17,535.46l-10.75.13c-.8,0-1.36-.35-1.37-1.04v-.25c-.02-1.55,2.32-2.07,2.16-4.73l-.76-11.86c-.39-6.18-2.21-8.88-5.49-8.84-3.34.04-5.22,2.85-5.17,6.86l.17,14.03c.03,2.6,2.69,3.06,2.71,4.6v.25c.01.62-.6,1.06-1.47,1.07l-11.43.14c-.87,0-1.43-.42-1.43-1.04v-.25c-.02-1.55,2.57-2.07,2.54-4.67l-.38-30.78c-.03-2.72-2.82-2.93-2.83-4.42v-.18c-.01-.68.48-1.18,1.21-1.56l8.12-3.68c1.35-.64,2.22-.15,2.24,1.08l.17,18.54c1.83-2.25,4.59-3.52,8.05-3.56,5.63-.07,11.11,3.2,11.84,12.53l.95,11.55c.28,2.72,2.26,3.19,2.28,4.73v.25c.01.68-.54,1.06-1.34,1.07ZM694.15,535.85c-8.59.11-15.03-6-15.15-15.51-.11-8.96,6.67-15.29,14.77-15.39,8.09-.1,11.74,4.56,11.79,8.64.03,2.1-1.01,3.35-2.67,4.11l-13.64,6.41c1.65,3.38,4.52,5.32,8.22,5.28,3.27-.04,5.85-1.74,7-3.67.73-.94,2.16-.65,2.11.65-.33,3.59-4.46,9.39-12.43,9.49ZM735.060,535.1c-3.52.04-5.14-.62-5.54-3.27-1.34,2.05-3.91,3.63-8.18,3.68-6.67.08-11.66-3.01-11.73-9.19-.14-6.17,5.01-9.45,11.07-9.53,2.84-.03,5.14.68,6.76,1.77l-.07-.74c-.83-7.22-1.86-10.67-5.63-10.63-4.94.06-3.43,7.95-8.06,8.01-2.22.03-3.72-1.31-3.75-3.41-.05-4.45,5.35-7.12,11.78-7.2,8.03-.1,13.53,4.72,14.5,12.5l1.5,11.42c.55,4.26,3.25,3.05,3.27,4.72.02,1.42-2.94,1.83-5.91,1.86ZM755.45,534.48l-11.37.14c-.87,0-1.430-.41-1.43-1.03v-.25c-.02-1.55,2.38-2.07,2.35-4.67l-.37-30.41c-.03-2.78-2.45-3.37-2.47-4.66v-.25c-.01-.62.48-.93,1.22-1.25l7.74-3.93c1.6-.83,2.54.03,2.55,1.08l.48,39.31c.03,2.6,2.69,3.06,2.71,4.6v.25c.01.62-.6,1.06-1.41,1.07ZM772.4,534.89c-5.62.07-9.38-3.53-9.46-10.58l-.2-16-2.91.04c-.74,0-1.24-.48-1.25-1.22v-1.05c-.02-.8.4-1.3,1.21-1.31l1.55-.02c3.46-.04,5.84-2.55,6.48-6.2.17-.93.72-1.49,1.4-1.5l1.24-.02c.87,0,1.37.54,1.38,1.47l.14,6.12,7.11-.09c.68,0,1.24.54,1.25,1.28v1.05c.02.74-.53,1.25-1.21,1.25l-7.11.09.2,16.13c.03,2.47,1.41,3.94,3.2,3.92,2.47-.03,3.69-1.4,4.17-2.83.73-1.06,2.22-.83,2.23.34.06,4.45-3.23,9.07-9.41,9.14ZM804.51,532.83v-.25c-.02-1.55,2.32-2.07,2.16-4.73l-.76-11.86c-.38-6.18-2.21-8.87-5.49-8.83-3.34.04-5.22,2.84-5.17,6.86l.17,14.03c.03,2.6,2.69,3.06,2.71,4.61v.25c.01.62-.6,1.06-1.47,1.07l-11.43.14c-.87.01-1.43-.41-1.43-1.03v-.25c-.02-1.55,2.57-2.07,2.54-4.67l-.38-30.78c-.03-2.72-2.82-2.93-2.83-4.42v-.18c-.01-.68.48-1.18,1.21-1.56l8.12-3.69c1.35-.63,2.22-.15,2.24,1.08l.17,18.55c1.83-2.25,4.59-3.52,8.05-3.56,5.63-.07,11.11,3.2,11.84,12.53l.95,11.55c.28,2.72,2.26,3.19,2.28,4.73v.25c.01.68-.54,1.06-1.34,1.07l-10.75.13c-.8,0-1.36-.35-1.37-1.03ZM848.24,509.79l-11.37,25.54c-1.92,4.41-5.05,11.44-11.42,11.51-5.56.07-9.13-3.29-9.17-6.5-.03-2.16,1.31-3.72,3.66-3.76,5.07-.06,3.55,7.38,6.76,7.34,2.16-.03,4.58-4.45,6.26-8.73l-12.61-25.07c-1.39-2.76-3.38-3.230-3.4-4.78v-.31c-.01-.62.54-1,1.28-1l11.56-.14c.68,0,1.18.42,1.19,1.04v.25c.02,1.55-2.26,1.76-.86,4.96l7.44,16.66,6.48-15.96c1.56-3.91-2.77-4.23-2.79-5.78v-.25c-.01-.62.48-1.06,1.28-1.07l7.54-.09c.74,0,1.24.35,1.25.97v.31c.02,1.55-1.89,2.13-3.09,4.86Z"/>
+</svg>`;
+const MENU_DECO = `<svg class="m-deco" viewBox="0 0 595 842" aria-hidden="true">
+<defs>
+<clipPath id="mClipA"><rect width="83" height="81" transform="translate(410 751)"/></clipPath>
+<clipPath id="mClipB"><rect width="79.5218" height="122.219" transform="translate(559.208 701) rotate(41.6401)"/></clipPath>
+</defs>
+<path class="lime" d="M311.446 802.157C314.405 819.28 329.298 829.088 345.679 830.804C353.947 831.664 362.627 831.037 370.821 829.683C378.452 828.424 386.021 825.566 391.11 819.501C401.936 806.623 397.852 788.419 388.184 776.295C383.495 770.417 377.571 764.353 370.393 761.671C361.477 758.341 350.885 760.107 341.898 762.182C332.325 764.523 323.702 768.361 317.641 776.412C312.131 783.735 309.892 793.15 311.447 802.154L311.446 802.157ZM364.711 781.7C363.287 781.874 361.773 782.027 360.471 781.419C359.17 780.803 358.277 779.112 359.03 777.88C359.586 776.966 360.845 776.673 361.898 776.925C362.945 777.177 363.838 777.853 364.692 778.513C365.266 777.858 365.232 776.877 365.041 776.028C364.849 775.178 364.536 774.325 364.679 773.471C364.82 772.608 365.651 771.784 366.485 772.046C367.915 772.496 367.365 775.153 368.767 775.675C369.72 776.029 370.63 775.004 370.946 774.033C371.371 772.725 373.393 768.882 374.886 771.823C375.526 773.076 374.066 774.367 373.833 775.511C373.398 777.638 374.43 777.605 376.332 777.94C377.049 778.068 378.059 777.938 378.533 778.626C378.958 779.255 378.664 780.292 378.09 780.745C377.824 780.955 377.385 781.014 376.898 781.015C375.788 781.004 374.428 780.67 374.229 781.043C374.127 781.235 374.214 781.489 374.38 781.641C374.538 781.8 374.753 781.871 374.962 781.95C376.53 782.575 380.435 785.698 378.749 787.662C376.725 790.029 373.51 783.193 371.637 786.919C371.282 787.613 371.4 788.436 371.367 789.212C371.333 789.989 371.03 790.879 370.276 791.091C369.457 791.325 368.664 790.553 368.43 789.735C368.196 788.917 368.314 788.046 368.188 787.207C367.617 783.542 364.219 786.799 362.252 786.964C361.269 787.046 360.209 786.915 359.453 786.292C358.686 785.667 358.36 784.458 358.946 783.667C359.591 782.804 360.863 782.836 361.94 782.879C363.017 782.921 364.345 782.719 364.712 781.701L364.711 781.7Z"/>
+<path class="lime" d="M254.354 -20.619C272.021 -40.2878 301.223 -35.3334 323.287 -45.8454C342.829 -55.1575 361.493 -65.9926 379.984 -77.403C394.161 -86.1497 416.173 -86.376 432.145 -83.8862C439.228 -82.7823 446.285 -80.9166 453.441 -81.2892C467.402 -82.0153 479.47 -91.0282 492.93 -94.8155C508.126 -99.0903 524.625 -96.469 539.178 -90.3515C553.731 -84.234 566.63 -74.8171 579.092 -65.1351C599.066 -49.6202 618.887 -32.4657 629.774 -9.63912C640.662 13.1875 640.405 43.0972 622.856 61.3055C616.524 67.8782 608.375 72.5368 599.737 75.4744C582.693 81.2813 563.461 80.4087 547.014 73.0694C530.856 65.8626 516.142 52.4503 498.473 53.3857C492.534 53.6989 486.835 55.6769 481.044 57.0122C463.977 60.9652 438.916 60.8085 425.605 48.7181C407.087 31.8972 399.958 14.2525 374.077 4.0979C352.477 -4.37505 329.286 -5.5604 307.22 -11.8882C294.468 -15.5507 262.425 -12.3684 254.353 -20.6279L254.354 -20.619Z"/>
+<path class="lime" d="M347.903 -77.6342C348.295 -77.9011 348.683 -78.1629 349.07 -78.4247C367.476 -90.8439 384.25 -94.7417 404.934 -100.336C424.733 -105.691 437.432 -90.1816 456.088 -93.6087C465.704 -95.3766 474.212 -100.735 483.318 -104.294C511.855 -115.432 539.053 -113.238 565.624 -96.8394C588.075 -82.9829 605.61 -62.6029 622.761 -42.5503C619.183 -57.7277 611.677 -71.9634 601.158 -83.4799C581.916 -104.559 553.344 -114.851 530.854 -131.276C510.338 -146.263 481.025 -146.353 458.641 -135.001C445.969 -128.581 434.872 -118.466 420.989 -115.452C400.31 -110.959 379.623 -122.482 358.891 -119.226C336.725 -115.744 328.006 -87.525 312.23 -73.8855C296.103 -59.949 270.09 -51.358 250.707 -43.5312C268.099 -37.4678 287.062 -41.176 303.307 -48.9061C319.294 -56.509 333.261 -67.6643 347.894 -77.6328L347.903 -77.6342Z"/>
+<g clip-path="url(#mClipA)"><path class="lime" d="M491.156 787.226C488.722 777.159 482.599 759.507 468.746 763.147C465.568 763.981 464.071 766.328 461.453 767.936C458.994 769.445 457.487 766.309 456.609 764.306C454.264 758.974 452.618 752.094 445.776 751.058C443.342 750.689 440.913 752.03 440.898 754.753C440.888 757.307 441.161 760.839 439.177 762.797C437.437 764.518 435.603 763.172 433.872 762.101C429.876 759.635 426.193 757.505 421.532 759.734C420.417 760.267 419.514 761.81 419.623 763.043C419.817 765.214 420.263 767.226 420.957 769.125C414.467 770.451 408.086 775.315 410.531 781.233C412.583 786.205 419.038 787.216 424.958 787.122C423.451 788.404 421.835 789.618 420.764 790.999C417.63 795.043 416.356 800.217 417.184 805.247C418.716 814.554 427.878 819.496 435.102 824.172C449.48 833.356 475.464 836.734 487.105 821.489C494.423 811.906 493.838 798.328 491.151 787.221L491.156 787.226ZM445.474 778.994C445.206 779.285 444.904 779.546 444.562 779.783C443.555 780.474 442.341 780.824 441.121 780.814C439.837 780.804 438.568 780.991 437.274 780.898C435.841 780.794 434.423 780.414 433.02 780.128C431.865 779.896 430.526 779.561 429.946 778.427C429.351 777.263 429.688 775.911 430.898 775.319C431.428 775.063 431.969 774.841 432.529 774.654C432.816 774.555 433.689 774.53 433.515 774.136C433.218 773.475 432.896 772.868 432.578 772.227C431.622 770.299 433.193 768.064 435.39 768.587C436.431 768.834 437.432 769.238 438.364 769.766C438.86 770.047 439.336 770.609 439.921 770.698C440.913 770.841 440.516 769.1 440.526 768.484C440.427 767.931 440.551 767.413 440.823 766.974C441.19 766.299 441.855 765.894 442.578 765.771C443.164 765.643 443.788 765.712 444.329 766.037C444.358 766.052 444.388 766.067 444.413 766.082C444.423 766.091 444.438 766.096 444.448 766.106C444.839 766.343 445.157 766.693 445.335 767.157C446.565 769.218 447.427 771.67 447.264 774.096C447.145 775.887 446.679 777.687 445.474 778.989V778.994Z"/></g>
+<g clip-path="url(#mClipB)"><path class="lime" d="M531.965 832.632C553.226 835.665 560.12 820.854 566.506 802.689C568.256 797.708 569.977 792.005 568.43 786.748C566.751 781.049 561.186 778.826 559.368 773.396C561.712 769.398 566.069 766.997 570.464 765.509C574.859 764.021 579.484 763.255 583.777 761.491C588.069 759.728 592.154 756.713 593.703 752.341C595.252 747.968 593.285 742.228 588.843 740.895C585.358 739.85 581.528 741.631 577.998 740.731C569.59 738.59 574.111 730.05 575.222 724.911C575.672 722.825 576.533 720.503 576.451 718.354C576.311 714.493 572.136 712.851 568.823 712.436C565.111 711.976 561.153 712.972 558.2 715.295C555.189 717.666 553.357 721.116 551.654 724.464C550.588 726.557 549.555 728.873 547.947 730.577C546.828 727.652 544.94 725.07 541.592 724.703C537.677 724.271 534.835 727.919 533.399 731.096C531.399 735.516 530.958 740.874 530.978 745.661C530.987 748.541 531.266 751.414 531.849 754.231C532.106 755.479 532.423 756.71 532.773 757.932C532.978 758.647 533.683 760.208 533.779 761.358C525.205 761.053 516.309 765.771 511.515 772.986C497.863 793.559 502.48 826.677 529.112 832.125C530.092 832.325 531.042 832.49 531.965 832.623L531.965 832.632Z"/></g>
+</svg>`;
+const BOTTLE = `<svg viewBox="225 161 46 127" aria-hidden="true"><path d="M248.256 161C238.974 161 231.324 162.126 231.324 164.173V168.983C231.324 170.313 233.567 171.03 236.219 171.541V173.792C229.08 177.272 225 185.766 225 193.543V283.088C225 286.056 226.938 288 229.691 288H266.307C269.265 288 270.998 286.056 270.998 283.088V193.543C270.998 185.049 267.123 177.169 260.084 173.792V171.541C263.042 171.03 265.082 170.212 265.082 168.983V164.173C265.082 162.126 257.534 161 248.252 161H248.256Z"/></svg>`;
+// Day cards fill the 2-column grid left→right; slot 8 (bottom right) holds the notes
+const CARD_X = [31, 308], CARD_Y = [148, 320, 492, 664];
+
+function menuHTML() {
+  const day = (d, i) => `
+    <section class="m-day" style="left:${CARD_X[i % 2]}px;top:${CARD_Y[i >> 1]}px">
+      <div class="m-day-head"><span class="m-day-tag">Ngày ${i + 1}</span><span class="m-day-name">${esc(d.name)}</span></div>
+      <ol class="m-items">${d.items.map((it, j) => `
+        <li class="m-item">
+          <span class="m-time">${esc(state.times[j] || '')}</span>
+          <div>
+            <div class="m-name">${esc(it.name)}${it.isNew ? '<span class="m-new">Mới</span>' : ''}</div>
+            ${it.ing ? `<div class="m-ing">${esc(splitIng(it.ing).join(', '))}</div>` : ''}
+          </div>
+        </li>`).join('')}
+      </ol>
+      <div class="m-bottle" ${d.image ? `style="background-image:url(${d.image})"` : ''}>${d.image ? '' : BOTTLE}</div>
+    </section>`;
+  return `
+    ${MENU_DECO}
+    ${state.logo
+      ? `<div class="m-logo-img" style="background-image:url(${state.logo})"></div>`
+      : `<div class="m-logo">${LANH_LOGO}</div>`}
+    <div class="m-pills">
+      ${state.subtitle ? `<span class="m-pill">${esc(state.subtitle)}</span>` : ''}
+    </div>
+    <h1 class="m-title">${esc(state.title)}</h1>
+    ${state.days.map(day).join('')}
+    <section class="m-extra">
+      <div class="m-note">${noteHTML(state.note)}</div>
+    </section>`;
+}
+
+function paintMenu(el) {
+  const t = state.theme;
+  el.style.setProperty('--m-bg', t.bg);
+  el.style.setProperty('--m-lime', t.lime);
+  el.style.setProperty('--m-cream', t.cream);
+  el.innerHTML = menuHTML();
+  // Long day names shrink to fit beside the bottle instead of being cut off
+  el.querySelectorAll('.m-day-name').forEach(n => {
+    let size = 12.5;
+    while (n.scrollWidth > n.clientWidth && size > 8) n.style.fontSize = (size -= 0.5) + 'px';
+  });
+}
+function renderMenu() {
+  paintMenu($('#menu'));
+  if ($('#zoom').classList.contains('open')) paintMenu($('#zoomScaler .menu'));
+  checkNoteFits();
+}
+// Warn in the editor when the notes no longer fit their box on the menu
+function checkNoteFits() {
+  const warn = $('#noteWarn');
+  if (!warn) return;
+  const probe = document.createElement('div');
+  probe.style.cssText = 'position:fixed;left:-20000px;top:0;';
+  probe.innerHTML = '<div class="menu"></div>';
+  document.body.appendChild(probe);
+  paintMenu(probe.firstChild);
+  const box = probe.querySelector('.m-extra');
+  warn.hidden = box.scrollHeight <= box.clientHeight + 1;
+  probe.remove();
+}
+
+/* ---------- Editor ---------- */
+function renderTabs() {
+  const tabs = [['general', 'Thông tin chung'], ...state.days.map((_, i) => [String(i), 'Ngày ' + (i + 1)])];
+  $('#tabs').innerHTML = tabs.map(([k, l]) => `<button class="pill ${tab === k ? 'on' : ''}" data-tab="${k}">${l}</button>`).join('');
+}
+
+const step = (n, title, aside = '') => `<div class="step"><h2>${title}</h2>${aside ? `<span class="aside">${aside}</span>` : ''}</div>`;
+const field = (label, path, val, opts = {}) => `<label class="f ${opts.full ? 'full' : ''}"><span>${label}</span>${opts.multi
+  ? `<textarea class="inp" data-path="${path}">${esc(val)}</textarea>`
+  : `<input class="inp" type="text" data-path="${path}" value="${esc(val)}" placeholder="${esc(opts.ph || '')}">`}</label>`;
+
+const BOTTLE_ICON = `<svg width="38" height="56" viewBox="0 0 38 56" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M13 3h12v8l5 7v31a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V18l5-7V3Z"/><path d="M8 28h22" stroke-dasharray="3 4"/></svg>`;
+const plate = (path, val, sm, label = 'Thả ảnh vào đây') => `
+  <div class="plate ${sm ? 'sm' : ''} drop" data-drop="${path}" style="${val ? `background-image:url(${val})` : ''}">
+    ${val ? '' : `<div class="ph">${BOTTLE_ICON}${sm ? '' : `<span>${label}</span>`}</div>`}
+    <button class="plus" data-img="${path}" title="${val ? 'Đổi ảnh' : 'Thêm ảnh'}" aria-label="Thêm ảnh">+</button>
+    ${val ? `<button class="x-img" data-clear="${path}" title="Xoá ảnh" aria-label="Xoá ảnh">✕</button>` : ''}
+  </div>`;
+const imgField = (title, help, path, val) => `
+  <div class="img-field">${plate(path, val, true)}<div class="meta"><strong>${title}</strong>${help}</div></div>`;
+
+function renderPanel() {
+  const p = $('#panel');
+  if (tab === 'general') {
+    p.innerHTML = `
+      ${step(1, 'Tiêu đề menu')}
+      <div class="panel grid2">
+        ${field('Tên gói', 'title', state.title, { full: true })}
+        ${field('Loại gói', 'subtitle', state.subtitle, { full: true })}
+      </div>
+      ${step(3, 'Lưu ý')}
+      <div class="panel grid2">
+        ${field('Lưu ý <small>(dòng bắt đầu bằng “- ” là gạch đầu dòng; bọc chữ bằng &lt;b&gt;…&lt;/b&gt; để in đậm)</small>', 'note', state.note, { multi: true, full: true })}
+        <p class="warn full" id="noteWarn" hidden>Lưu ý đang dài quá khung trên menu, phần cuối sẽ bị ẩn. Hãy rút gọn bớt.</p>
+      </div>
+      ${step(4, 'Giờ uống', 'Dùng cho cả 7 ngày')}
+      <div class="panel times">
+        ${state.times.map((t, j) => `<label class="f"><span>Chai ${j + 1}</span><input class="inp" type="text" data-path="times.${j}" value="${esc(t)}"></label>`).join('')}
+      </div>
+      ${step(5, 'Màu sắc')}
+      <div class="panel swatches">
+        <label class="swatch"><input type="color" data-path="theme.bg" value="${state.theme.bg}">Nền</label>
+        <label class="swatch"><input type="color" data-path="theme.lime" value="${state.theme.lime}">Điểm nhấn</label>
+        <label class="swatch"><input type="color" data-path="theme.cream" value="${state.theme.cream}">Thẻ ngày</label>
+      </div>
+      <div class="pager"><span></span><button class="pill solid" data-tab="0">Bắt đầu với Ngày 1 →</button></div>`;
+    return;
+  }
+  const i = +tab, d = state.days[i], last = state.days.length - 1;
+  p.innerHTML = `
+    ${step(1, `Chủ đề ngày ${i + 1}`)}
+    <div class="panel grid2">
+      ${field('Tên chủ đề', `days.${i}.name`, d.name, { full: true })}
+      <div class="full">${imgField('Ảnh chai của ngày', 'Thay hình chai xanh trong thẻ ngày. PNG nền trong suốt là đẹp nhất.', `days.${i}.image`, d.image)}</div>
+    </div>
+    ${step(2, '5 chai nước')}
+    <div class="rows">
+      ${d.items.map((it, j) => `
+        <article class="row">
+          <div class="row-main">
+            <input class="inp row-name" type="text" placeholder="Tên nước" data-path="days.${i}.items.${j}.name" value="${esc(it.name)}">
+            <input class="inp row-ing" type="text" placeholder="Thành phần, cách nhau bằng dấu phẩy" data-path="days.${i}.items.${j}.ing" value="${esc(it.ing)}">
+          </div>
+          <div class="row-side">
+            <label class="switch" title="Gắn nhãn món mới"><input type="checkbox" data-path="days.${i}.items.${j}.isNew" ${it.isNew ? 'checked' : ''}>Mới</label>
+            <div class="row-move">
+              <button class="icon-btn" data-move="${i},${j},-1" ${j === 0 ? 'disabled' : ''} aria-label="Lên">↑</button>
+              <button class="icon-btn" data-move="${i},${j},1" ${j === d.items.length - 1 ? 'disabled' : ''} aria-label="Xuống">↓</button>
+            </div>
+          </div>
+        </article>`).join('')}
+    </div>
+    <div class="pager">
+      <button class="pill" data-tab="${i === 0 ? 'general' : i - 1}">← ${i === 0 ? 'Thông tin chung' : 'Ngày ' + i}</button>
+      ${i < last ? `<button class="pill solid" data-tab="${i + 1}">Ngày ${i + 2} →</button>` : `<button class="pill solid" data-act="export">Lưu ảnh menu</button>`}
+    </div>`;
+}
+
+function setPath(path, val) {
+  const keys = path.split('.');
+  let o = state;
+  keys.slice(0, -1).forEach(k => o = o[k]);
+  o[keys.at(-1)] = val;
+}
+
+function update() { renderMenu(); save(); }
+function full() { renderTabs(); renderPanel(); update(); }
+function goTab(t) {
+  tab = t; renderTabs(); renderPanel(); checkNoteFits();
+  $('.side-body').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-tab]');
+  if (t) goTab(t.dataset.tab);
+});
+
+$('#panel').addEventListener('input', e => {
+  const el = e.target, path = el.dataset.path;
+  if (!path) return;
+  setPath(path, el.type === 'checkbox' ? el.checked : el.value);
+  update();
+});
+
+let imgTarget = null;
+$('#panel').addEventListener('click', e => {
+  const t = e.target.closest('button');
+  if (!t) return;
+  if (t.dataset.img) { imgTarget = t.dataset.img; $('#fileImg').value = ''; $('#fileImg').click(); }
+  if (t.dataset.clear) { setPath(t.dataset.clear, null); renderPanel(); update(); }
+  if (t.dataset.move) {
+    const [i, j, dir] = t.dataset.move.split(',').map(Number);
+    const items = state.days[i].items;
+    [items[j], items[j + dir]] = [items[j + dir], items[j]];
+    renderPanel(); update();
+  }
+  if (t.dataset.act === 'export') exportPng();
+});
+
+/* Images: pick or drag-and-drop. Shrink so drafts stay small; keep PNG for transparent logos */
+function readImage(file, maxSide) {
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, maxSide / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      const png = file.type === 'image/png' || file.type === 'image/svg+xml';
+      res(c.toDataURL(png ? 'image/png' : 'image/jpeg', 0.88));
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror = rej;
+    img.src = URL.createObjectURL(file);
+  });
+}
+async function placeImage(path, file) {
+  if (!file || !file.type.startsWith('image/')) return toast('Hãy chọn một file ảnh.');
+  try {
+    const max = path === 'logo' ? 700 : 600;
+    setPath(path, await readImage(file, max));
+    renderPanel(); update();
+  } catch { toast('Không đọc được ảnh này.'); }
+}
+$('#fileImg').addEventListener('change', e => imgTarget && placeImage(imgTarget, e.target.files[0]));
+$('#panel').addEventListener('dragover', e => {
+  const d = e.target.closest('.drop'); if (!d) return;
+  e.preventDefault(); d.classList.add('drag');
+});
+$('#panel').addEventListener('dragleave', e => e.target.closest('.drop')?.classList.remove('drag'));
+$('#panel').addEventListener('drop', e => {
+  const d = e.target.closest('.drop'); if (!d) return;
+  e.preventDefault(); d.classList.remove('drag');
+  placeImage(d.dataset.drop, e.dataTransfer.files[0]);
+});
+
+/* ---------- Save / open / export ---------- */
+const stamp = () => new Date().toLocaleDateString('sv-SE'); // local YYYY-MM-DD
+function download(href, name) {
+  const a = document.createElement('a');
+  a.href = href; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+}
+
+async function exportPng() {
+  const btn = $('#exportPng');
+  btn.disabled = true; btn.textContent = 'Đang tạo ảnh…';
+  try {
+    await document.fonts.ready;
+    // Render an off-screen copy so export works even when the preview is hidden (phones)
+    const host = document.createElement('div');
+    host.style.cssText = 'position:fixed;left:-20000px;top:0;';
+    host.innerHTML = '<div class="menu"></div>';
+    document.body.appendChild(host);
+    paintMenu(host.firstChild);
+    let url;
+    try { url = await htmlToImage.toPng(host.firstChild, { pixelRatio: 2480 / 595, width: 595, height: 842, cacheBust: true }); }
+    finally { host.remove(); }
+    download(url, `menu-lanh-detox-7-ngay-${stamp()}.png`);
+    toast('Đã lưu ảnh vào thư mục Downloads');
+  } catch (err) {
+    console.error(err);
+    toast('Không tạo được ảnh — kiểm tra mạng rồi thử lại.');
+  }
+  btn.disabled = false; btn.textContent = 'Lưu ảnh menu';
+}
+function saveJson() {
+  const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  download(url, `menu-lanh-${stamp()}.json`);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Đã lưu bản nháp — mở lại bằng “Mở bản nháp”');
+}
+function openJson() { $('#fileJson').value = ''; $('#fileJson').click(); }
+function printMenu() {
+  const root = $('#printRoot');
+  root.innerHTML = '<div class="menu"></div>';
+  paintMenu(root.firstChild);
+  window.print();
+}
+function reset() {
+  if (!confirm('Xoá mọi thay đổi và quay về menu mẫu?')) return;
+  state = structuredClone(DEFAULT); tab = 'general'; full();
+}
+
+$('#exportPng').addEventListener('click', exportPng);
+$('#saveJson').addEventListener('click', saveJson);
+$('#openJson').addEventListener('click', openJson);
+$('#fileJson').addEventListener('change', async e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  try {
+    const data = JSON.parse(await f.text());
+    if (!Array.isArray(data.days)) throw 0;
+    state = withDefaults(data);
+    tab = 'general'; full(); toast('Đã mở bản nháp');
+  } catch { toast('File này không phải bản nháp menu.'); }
+});
+
+$('#moreBtn').addEventListener('click', e => { e.stopPropagation(); $('#moreList').classList.toggle('open'); });
+document.addEventListener('click', () => $('#moreList').classList.remove('open'));
+$('#moreList').addEventListener('click', e => {
+  const a = e.target.dataset.act;
+  ({ open: openJson, save: saveJson, print: printMenu, reset })[a]?.();
+});
+
+/* ---------- Preview sizing + zoom ---------- */
+function fitTo(scaler, width, height) {
+  const k = Math.min(width / 595, height ? height / 842 : Infinity);
+  scaler.style.transform = `scale(${k})`;
+  scaler.style.width = 595 * k + 'px';
+  scaler.style.height = 842 * k + 'px';
+}
+function fit() {
+  const st = $('#stage');
+  if (st.offsetParent) fitTo($('#scaler'), st.clientWidth - 64, st.clientHeight - 84);
+  if ($('#zoom').classList.contains('open')) {
+    const w = innerWidth - 32, h = innerWidth < 700 ? 0 : innerHeight - 64;
+    fitTo($('#zoomScaler'), w, h);
+  }
+}
+function openZoom() {
+  const z = $('#zoom');
+  $('#zoomScaler').innerHTML = '<div class="menu"></div>';
+  z.classList.add('open'); renderMenu(); fit();
+  document.body.style.overflow = 'hidden';
+}
+$('#zoom').addEventListener('click', () => { $('#zoom').classList.remove('open'); document.body.style.overflow = ''; });
+$('#frame').addEventListener('click', openZoom);
+$('#fab').addEventListener('click', openZoom);
+window.addEventListener('resize', fit);
+
+let tt;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+$('#topMark').innerHTML = LANH_LOGO;
+full(); fit();
+</script>
+</body>
+</html>

@@ -159,7 +159,7 @@ window.PROJECTS = [
     tagline: "Healthy, the gentle way",
     year: "2024",
     tags: ["Brand identity", "Packaging", "Illustration", "Web tool"],
-    cover: "images/lanh-cover-3.jpg",
+    cover: "images/lanh-cover-4.jpg",
     coverPos: "center",
     accent: "#0c4826",
     summary:
